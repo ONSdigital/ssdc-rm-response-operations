@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 function CreateSurvey() {
-  const [value, setValue] = useState("");
+  const [surveyName, setSurveyName] = useState("");
 
-  function handleValueChange(event) {
-    setValue(event.target.value);
+  function handleSurveyNameChange(event) {
+    setSurveyName(event.target.value);
   }
 
   let history = useHistory();
@@ -13,7 +13,7 @@ function CreateSurvey() {
   async function createSurvey(event) {
     event.preventDefault();
     const newSurvey = {
-      name: value,
+      name: surveyName,
     };
 
     const response = await fetch("/api/surveys", {
@@ -39,8 +39,8 @@ function CreateSurvey() {
             className="input input--text input-type__input"
             type="text"
             required
-            value={value}
-            onChange={handleValueChange}
+            value={surveyName}
+            onChange={handleSurveyNameChange}
           />
         </div>
 
