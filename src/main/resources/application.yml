@@ -33,13 +33,6 @@ spring:
           lob:
             non_contextual_creation: true
 
-  rabbitmq:
-    username: guest
-    password: guest
-    host: localhost
-    port: 6672
-    virtualhost: /
-
   task:
     scheduling:
       pool:
