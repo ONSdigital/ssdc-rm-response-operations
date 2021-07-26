@@ -1,0 +1,64 @@
+version: '2.1'
+services:
+  postgres:
+    container_name: postgres-response-operations-it
+    image: postgres:13
+    command: ["-c", "shared_buffers=256MB", "-c", "max_connections=500"]
+    ports:
+      - "16432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    container_name: rabbitmq-response-operations-it
+    image: rabbitmq:3.8-management
+    ports:
+      - "34369:4369"
+      - "55672:25672"
+      - "35671:5671"
+      - "35672:5672"
+      - "46671:15671"
+      - "46672:15672"
+    environment:
+      - RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq.conf
+    volumes:
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./definitions.json:/opt/definitions.json
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 30s
+      retries: 5
+
+  case-processor:
+    container_name: case-processor-response-operations-it
+    image: eu.gcr.io/ssdc-rm-ci/rm/ssdc-rm-caseprocessor
+    external_links:
+      - postgres-response-operations-it
+      - rabbitmq-response-operations-it
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-response-operations-it:5432/postgres?sslmode=disable
+      - SPRING_RABBITMQ_HOST=rabbitmq-response-operations-it
+      - SPRING_RABBITMQ_PORT=5672
+      - CASEREFGENERATORKEY=6+VLkvz5XYkF7vFLVX7FDnfxavQ7M+iY
+    healthcheck:
+      test: [ "CMD", "find", "/tmp/case-processor-healthy", "-mmin", "-1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  start_dependencies:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      case-processor:
+        condition: service_healthy
