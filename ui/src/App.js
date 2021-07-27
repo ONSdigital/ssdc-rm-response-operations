@@ -13,12 +13,17 @@ import NotFound from "./NotFound";
 
 function App() {
   const [authorisedActivities, setAuthorisedActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function fetchData() {
       const response = await fetch("/api/auth");
-      const authorisedActivities = await response.json();
+      setLoading(false);
 
-      setAuthorisedActivities(authorisedActivities);
+      if (response.ok) {
+        const authorisedActivities = await response.json();
+
+        setAuthorisedActivities(authorisedActivities);
+      }
     }
     fetchData();
   }, [authorisedActivities]);
@@ -26,9 +31,14 @@ function App() {
     <div className="container container--wide page__container">
       <div className="page__container container container--wide">
         <main id="main-content" className="page__main">
-          <Router>
-            <QueryRouting authorisedActivities={authorisedActivities} />
-          </Router>
+          {authorisedActivities.length === 0 && !loading && (
+            <p>User not authorised</p>
+          )}
+          {authorisedActivities.length > 0 && (
+            <Router>
+              <QueryRouting authorisedActivities={authorisedActivities} />
+            </Router>
+          )}
         </main>
       </div>
     </div>
