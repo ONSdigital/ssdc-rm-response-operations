@@ -1,5 +1,5 @@
 import React from "react";
-import { screen } from '@testing-library/react';
+import { screen } from "@testing-library/react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import ViewSurvey from "./ViewSurvey";
@@ -20,11 +20,11 @@ afterEach(() => {
 
 it("renders survey data", async () => {
   const fakeSurvey = {
-    name: "Test Survey"
+    name: "Test Survey",
   };
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
-      json: () => Promise.resolve(fakeSurvey)
+      json: () => Promise.resolve(fakeSurvey),
     })
   );
 

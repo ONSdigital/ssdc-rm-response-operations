@@ -1,10 +1,8 @@
 import React from "react";
-import { screen } from '@testing-library/react';
+import { screen } from "@testing-library/react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import {
-  BrowserRouter as Router
-} from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import Surveys from "./Surveys";
 
 let container = null;
@@ -22,18 +20,25 @@ afterEach(() => {
 });
 
 it("renders survey data", async () => {
-  const fakeSurveys = [{
-    name: "Test Survey"
-  }];
+  const fakeSurveys = [
+    {
+      name: "Test Survey",
+    },
+  ];
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
-      json: () => Promise.resolve(fakeSurveys)
+      json: () => Promise.resolve(fakeSurveys),
     })
   );
 
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
-    render(<Router><Surveys authorisedActivities={[]} /></Router>, container);
+    render(
+      <Router>
+        <Surveys authorisedActivities={[]} />
+      </Router>,
+      container
+    );
   });
 
   const surveyNameElement = screen.getByText(/Test Survey/i);
