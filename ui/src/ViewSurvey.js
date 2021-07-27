@@ -17,9 +17,11 @@ function ViewSurvey(props) {
   return (
     <>
       <h2>View Survey</h2>
-      <p>
-        <b>Survey name</b>: {survey.name}
-      </p>
+      {survey && (
+        <p>
+          <b>Survey name</b>: {survey.name}
+        </p>
+      )}
     </>
   );
 }
