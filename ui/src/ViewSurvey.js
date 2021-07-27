@@ -1,31 +1,27 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 
-class ViewSurvey extends Component {
-  state = {
-    survey: [],
-  };
+function ViewSurvey(props) {
+  const [survey, setSurvey] = useState();
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`/api/surveys/${props.surveyId}`);
 
-  componentDidMount() {
-    this.getSurvey();
-  }
+      if (response.ok) {
+        const survey = await response.json();
+        setSurvey(survey);
+      }
+    }
+    fetchData();
+  }, [props.surveyId, survey]);
 
-  getSurvey = async () => {
-    const response = await fetch(`/api/surveys/${this.props.surveyId}`);
-    const survey = await response.json();
-
-    this.setState({ survey: survey });
-  };
-
-  render() {
-    return (
-      <>
-        <h2>View Survey</h2>
-        <p>
-          <b>Survey name</b>: {this.state.survey.name}
-        </p>
-      </>
-    );
-  }
+  return (
+    <>
+      <h2>View Survey</h2>
+      <p>
+        <b>Survey name</b>: {survey.name}
+      </p>
+    </>
+  );
 }
 
 export default ViewSurvey;
