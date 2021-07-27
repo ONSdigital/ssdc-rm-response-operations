@@ -32,9 +32,7 @@ function CreateSurvey() {
       <h2>Create a New Survey</h2>
       <form onSubmit={createSurvey}>
         <div className="field">
-          <label className="label venus" for="search">
-            Enter a survey name
-          </label>
+          <label className="label venus">Enter a survey name</label>
           <input
             className="input input--text input-type__input"
             type="text"
