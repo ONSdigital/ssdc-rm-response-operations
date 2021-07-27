@@ -4,12 +4,11 @@ import { Link } from "react-router-dom";
 function Surveys(props) {
   const [surveys, setSurveys] = useState([]);
 
-  async function fetchData() {
-    const response = await fetch("/api/surveys");
-    setSurveys(await response.json());
-  }
-
   useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("/api/surveys");
+      setSurveys(await response.json());
+    }
     fetchData();
   }, [surveys]);
 

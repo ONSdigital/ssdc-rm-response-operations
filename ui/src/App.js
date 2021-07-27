@@ -15,18 +15,17 @@ function App() {
   const [authorisedActivities, setAuthorisedActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  async function fetchData() {
-    const response = await fetch("/api/auth");
-    setLoading(false);
-
-    if (response.ok) {
-      const authorisedActivities = await response.json();
-
-      setAuthorisedActivities(authorisedActivities);
-    }
-  }
-
   useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("/api/auth");
+      setLoading(false);
+
+      if (response.ok) {
+        const authorisedActivities = await response.json();
+
+        setAuthorisedActivities(authorisedActivities);
+      }
+    }
     fetchData();
   }, [authorisedActivities]);
 

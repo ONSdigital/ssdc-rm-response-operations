@@ -3,12 +3,11 @@ import React, { useState, useEffect } from "react";
 function ViewSurvey(props) {
   const [survey, setSurvey] = useState();
 
-  async function fetchData() {
-    const response = await fetch(`/api/surveys/${props.surveyId}`);
-    setSurvey(await response.json());
-  }
-
   useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`/api/surveys/${props.surveyId}`);
+      setSurvey(await response.json());
+    }
     fetchData();
   }, [props.surveyId, survey]);
 
