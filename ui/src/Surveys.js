@@ -6,17 +6,13 @@ function Surveys(props) {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch("/api/surveys");
-
-      if (response.ok) {
-        const surveys = await response.json();
-        setSurveys(surveys);
-      }
+      setSurveys(await response.json());
     }
     fetchData();
   }, [surveys]);
 
-  const tableRows = surveys.map((survey) => (
-    <tr className="table__row">
+  const tableRows = surveys.map((survey, index) => (
+    <tr className="table__row" key={index}>
       <td className="table__cell">
         <Link to={`/viewSurvey?surveyId=${survey.id}`}>{survey.name}</Link>
       </td>

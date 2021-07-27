@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 
 function ViewSurvey(props) {
   const [survey, setSurvey] = useState();
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`/api/surveys/${props.surveyId}`);
 
-      if (response.ok) {
-        const survey = await response.json();
-        setSurvey(survey);
-      }
-    }
+  async function fetchData() {
+    const response = await fetch(`/api/surveys/${props.surveyId}`);
+    setSurvey(await response.json());
+  }
+
+  useEffect(() => {
     fetchData();
   }, [props.surveyId, survey]);
 
@@ -18,7 +16,7 @@ function ViewSurvey(props) {
     <>
       <h2>View Survey</h2>
       {survey && (
-        <p>
+        <p data-testid="surveyName">
           <b>Survey name</b>: {survey.name}
         </p>
       )}
