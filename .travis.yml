@@ -28,7 +28,7 @@ jobs:
       before_install:
         - make format-check-ui
 
-      script: echo "SKIPPING DEFAULT SCRIPT" # Travis has a default node script step we do not want to run
+      script: make test-ui
 
 branches:
   only:
