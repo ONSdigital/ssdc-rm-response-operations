@@ -14,19 +14,22 @@ import NotFound from "./NotFound";
 function App() {
   const [authorisedActivities, setAuthorisedActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch("/api/auth");
-      setLoading(false);
 
-      if (response.ok) {
-        const authorisedActivities = await response.json();
+  async function fetchData() {
+    const response = await fetch("/api/auth");
+    setLoading(false);
 
-        setAuthorisedActivities(authorisedActivities);
-      }
+    if (response.ok) {
+      const authorisedActivities = await response.json();
+
+      setAuthorisedActivities(authorisedActivities);
     }
+  }
+
+  useEffect(() => {
     fetchData();
   }, [authorisedActivities]);
+
   return (
     <div className="container container--wide page__container">
       <div className="page__container container container--wide">
