@@ -38,9 +38,11 @@ You can GET all surveys from `/api/surveys` which will return a body like this:
 ```json
 [
   {
+    "id": "caa3856c-beae-4a66-bcc6-38afa656af4e",
     "surveyName": "Test survey one"
   },
   {
+    "id": "4c6d537b-7245-42ac-9b15-806fa4c2cf36",
     "surveyName": "Test survey two"
   }
 ]
@@ -51,6 +53,7 @@ You can GET a specific survey from `/api/surveys/<id>` which will return a body 
 
 ```json
 {
+  "id": "1fd6e053-3e96-4590-bc08-bc6c399247db",
   "surveyName": "Test survey"
 }
 ```
