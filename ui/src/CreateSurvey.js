@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 function CreateSurvey() {
+  let surveyNameInput = null;
+
+  useEffect(() => {
+    surveyNameInput.focus();
+  });
+
   const [surveyName, setSurveyName] = useState("");
 
   function handleSurveyNameChange(event) {
@@ -41,6 +47,9 @@ function CreateSurvey() {
             required
             value={surveyName}
             onChange={handleSurveyNameChange}
+            ref={(input) => {
+              surveyNameInput = input;
+            }}
           />
         </div>
 

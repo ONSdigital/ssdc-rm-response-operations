@@ -13,8 +13,8 @@ import ViewSurvey from "./ViewSurvey";
 import NotFound from "./NotFound";
 
 function App() {
-  const [authorisedActivities, setAuthorisedActivities] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [authorisedActivities, setAuthorisedActivities] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,7 +28,7 @@ function App() {
       }
     }
     fetchData();
-  }, [authorisedActivities]);
+  }, []);
 
   return (
     <DocumentTitle title="Response Operations">
