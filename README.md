@@ -33,9 +33,7 @@ You can POST a new survey with a body like this:
 }
 ```
 
-You can GET all surveys from `/api/surveys`
-
-You can GET a specific survey from `/api/surveys/<id>` which will return a body like this:
+You can GET all surveys from `/api/surveys` which will return a body like this:
 
 ```json
 [
@@ -46,4 +44,13 @@ You can GET a specific survey from `/api/surveys/<id>` which will return a body 
     "surveyName": "Test survey two"
   }
 ]
+```
+
+
+You can GET a specific survey from `/api/surveys/<id>` which will return a body like this:
+
+```json
+{
+  "surveyName": "Test survey"
+}
 ```
