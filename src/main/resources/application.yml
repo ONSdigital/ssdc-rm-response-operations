@@ -1,0 +1,78 @@
+server:
+  port: 7777
+
+info:
+  app:
+    name: Response Operations
+    version: 1.0
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  datasource:
+    url: jdbc:postgresql://localhost:6432/postgres?readOnly=true
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+    hikari:
+      maximumPoolSize: 50
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: casev3
+        jdbc:
+          batch_size: 500
+          order_inserts: true
+          lob:
+            non_contextual_creation: true
+
+  task:
+    scheduling:
+      pool:
+        size: 10
+
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+logging:
+  level:
+    ROOT: INFO
+
+management:
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
+  metrics:
+    tags:
+      application: Support Tool
+      pod: ${HOSTNAME}
+    export:
+      stackdriver:
+        project-id: dummy-project-id
+        enabled: false
+        step: PT1M
+
+iapaudience: DUMMY
+
+# TODO: Remove this before releasing to prod
+dummyuseridentity: dummy@fake-email.com
+
+printsupplierconfig: '{"SUPPLIER_A":{"sftpDirectory":"foo","encryptionKeyFilename": "bar"},"SUPPLIER_B":{"sftpDirectory":"foo","encryptionKeyFilename":"bar"}}'
+
+queueconfig:
+  case-event-exchange: events
+  sample-queue: supportTool.caseProcessor.sample
+  fulfilment-routing-key: events.fulfilment
+  deactivate-uac-routing-key: events.deactivateUac
+  refusal-event-routing-key: events.refusal
+  invalid-address-event-routing-key: events.invalidAddress

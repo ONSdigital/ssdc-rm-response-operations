@@ -1,0 +1,28 @@
+import React, { useState, useEffect } from "react";
+import Announcer from "react-a11y-announcer";
+
+function ViewSurvey(props) {
+  const [survey, setSurvey] = useState();
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`/api/surveys/${props.surveyId}`);
+      setSurvey(await response.json());
+    }
+    fetchData();
+  }, [props.surveyId]);
+
+  return (
+    <>
+      <h2>View Survey</h2>
+      <Announcer text={"View Survey"} />
+      {survey && (
+        <p data-testid="surveyName">
+          <b>Survey name</b>: {survey.name}
+        </p>
+      )}
+    </>
+  );
+}
+
+export default ViewSurvey;
