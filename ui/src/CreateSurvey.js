@@ -36,6 +36,8 @@ function CreateSurvey() {
           <input
             className="input input--text input-type__input"
             type="text"
+            aria-label={"Enter a survey name"}
+            aria-required="true"
             required
             value={surveyName}
             onChange={handleSurveyNameChange}

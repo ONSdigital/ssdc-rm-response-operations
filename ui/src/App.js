@@ -5,6 +5,7 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+import DocumentTitle from "react-document-title";
 import Home from "./Home";
 import CreateSurvey from "./CreateSurvey";
 import Surveys from "./Surveys";
@@ -30,20 +31,22 @@ function App() {
   }, [authorisedActivities]);
 
   return (
-    <div className="container container--wide page__container">
-      <div className="page__container container container--wide">
-        <main id="main-content" className="page__main">
-          {authorisedActivities.length === 0 && !loading && (
-            <p>User not authorised</p>
-          )}
-          {authorisedActivities.length > 0 && (
-            <Router>
-              <QueryRouting authorisedActivities={authorisedActivities} />
-            </Router>
-          )}
-        </main>
+    <DocumentTitle title="Response Operations">
+      <div className="container container--wide page__container">
+        <div className="page__container container container--wide">
+          <main id="main-content" className="page__main">
+            {authorisedActivities.length === 0 && !loading && (
+              <p>User not authorised</p>
+            )}
+            {authorisedActivities.length > 0 && (
+              <Router>
+                <QueryRouting authorisedActivities={authorisedActivities} />
+              </Router>
+            )}
+          </main>
+        </div>
       </div>
-    </div>
+    </DocumentTitle>
   );
 }
 
@@ -57,22 +60,32 @@ function QueryRouting(props) {
   return (
     <Switch>
       <Route exact path="/">
-        <Home authorisedActivities={props.authorisedActivities} />
+        <DocumentTitle title="Home">
+          <Home authorisedActivities={props.authorisedActivities} />
+        </DocumentTitle>
       </Route>
       <Route path="/surveys">
-        <Surveys
-          authorisedActivities={props.authorisedActivities}
-          flashMessageUntil={query.get("flashMessageUntil")}
-        />
+        <DocumentTitle title="Surveys">
+          <Surveys
+            authorisedActivities={props.authorisedActivities}
+            flashMessageUntil={query.get("flashMessageUntil")}
+          />
+        </DocumentTitle>
       </Route>
       <Route path="/createsurvey">
-        <CreateSurvey />
+        <DocumentTitle title="Create Survey">
+          <CreateSurvey />
+        </DocumentTitle>
       </Route>
       <Route path="/viewsurvey">
-        <ViewSurvey surveyId={query.get("surveyId")} />
+        <DocumentTitle title="View Survey">
+          <ViewSurvey surveyId={query.get("surveyId")} />
+        </DocumentTitle>
       </Route>
       <Route path="*">
-        <NotFound />
+        <DocumentTitle title="Page Not Found">
+          <NotFound />
+        </DocumentTitle>
       </Route>
     </Switch>
   );
