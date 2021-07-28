@@ -12,7 +12,6 @@ import lombok.ToString;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-import uk.gov.ons.ssdc.responseoperations.validation.ColumnValidator;
 
 @ToString(onlyExplicitlyIncluded = true) // Bidirectional relationship causes IDE stackoverflow
 @Data
@@ -25,7 +24,7 @@ public class Survey {
 
   @Type(type = "jsonb")
   @Column(columnDefinition = "jsonb")
-  private ColumnValidator[] sampleValidationRules;
+  private String sampleValidationRules;
 
   @Column private boolean sampleWithHeaderRow;
 
