@@ -20,42 +20,29 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyDto;
 import uk.gov.ons.ssdc.responseoperations.model.entity.Survey;
-import uk.gov.ons.ssdc.responseoperations.model.entity.User;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroup;
 import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupMember;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupPermission;
 import uk.gov.ons.ssdc.responseoperations.model.repository.SurveyRepository;
-import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
-import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupPermissionRepository;
-import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
-import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
+import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class SurveyEndpointIT {
   @Autowired private SurveyRepository surveyRepository;
-  @Autowired private UserRepository userRepository;
-  @Autowired private UserGroupRepository userGroupRepository;
-  @Autowired private UserGroupMemberRepository userGroupMemberRepository;
-  @Autowired private UserGroupPermissionRepository userGroupPermissionRepository;
+  @Autowired private UserPermissionHelper userPermissionHelper;
 
   @LocalServerPort private int port;
 
   @BeforeEach
   @Transactional
   public void setUp() {
-    userGroupPermissionRepository.deleteAllInBatch();
-    userGroupMemberRepository.deleteAllInBatch();
-    userGroupRepository.deleteAllInBatch();
-    userRepository.deleteAllInBatch();
+    userPermissionHelper.clearDown();
     surveyRepository.deleteAllInBatch();
   }
 
   @Test
   public void getSurveys() {
-    setUpTestUserPermission(UserGroupAuthorisedActivityType.LIST_SURVEYS, null);
+    userPermissionHelper.setUpTestUserPermission(UserGroupAuthorisedActivityType.LIST_SURVEYS);
 
     Survey survey = new Survey();
     survey.setId(UUID.randomUUID());
@@ -103,7 +90,7 @@ public class SurveyEndpointIT {
 
   @Test
   public void createSurvey() {
-    setUpTestUserPermission(UserGroupAuthorisedActivityType.CREATE_SURVEY, null);
+    userPermissionHelper.setUpTestUserPermission(UserGroupAuthorisedActivityType.CREATE_SURVEY);
 
     SurveyDto survey = new SurveyDto();
     survey.setName("Test survey");
@@ -133,31 +120,5 @@ public class SurveyEndpointIT {
             () -> restTemplate.postForEntity(url, survey, SurveyDto.class));
 
     assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-  }
-
-  private void setUpTestUserPermission(
-      UserGroupAuthorisedActivityType authorisedActivity, Survey survey) {
-    User user = new User();
-    user.setId(UUID.randomUUID());
-    user.setEmail("test@test.com");
-    userRepository.saveAndFlush(user);
-
-    UserGroup group = new UserGroup();
-    group.setId(UUID.randomUUID());
-    group.setName("Test group");
-    userGroupRepository.saveAndFlush(group);
-
-    UserGroupMember userGroupMember = new UserGroupMember();
-    userGroupMember.setId(UUID.randomUUID());
-    userGroupMember.setUser(user);
-    userGroupMember.setGroup(group);
-    userGroupMemberRepository.saveAndFlush(userGroupMember);
-
-    UserGroupPermission permission = new UserGroupPermission();
-    permission.setId(UUID.randomUUID());
-    permission.setAuthorisedActivity(authorisedActivity);
-    permission.setSurvey(survey);
-    permission.setGroup(group);
-    userGroupPermissionRepository.saveAndFlush(permission);
   }
 }

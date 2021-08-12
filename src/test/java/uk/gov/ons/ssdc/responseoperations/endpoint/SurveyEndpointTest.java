@@ -12,8 +12,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.ons.ssdc.responseoperations.test_utils.JsonHelper.asJsonString;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -113,15 +113,5 @@ class SurveyEndpointTest {
     ArgumentCaptor<Survey> surveyArgumentCaptor = ArgumentCaptor.forClass(Survey.class);
     verify(surveyRepository).saveAndFlush(surveyArgumentCaptor.capture());
     assertThat(surveyArgumentCaptor.getValue().getName()).isEqualTo("Test survey");
-  }
-
-  public static String asJsonString(final Object obj) {
-    try {
-      final ObjectMapper mapper = new ObjectMapper();
-      final String jsonContent = mapper.writeValueAsString(obj);
-      return jsonContent;
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 }
