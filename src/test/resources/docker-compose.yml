@@ -14,38 +14,17 @@ services:
       timeout: 5s
       retries: 5
 
-  rabbitmq:
-    container_name: rabbitmq-response-operations-it
-    image: rabbitmq:3.8-management
-    ports:
-      - "34369:4369"
-      - "55672:25672"
-      - "35671:5671"
-      - "35672:5672"
-      - "46671:15671"
-      - "46672:15672"
-    environment:
-      - RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq.conf
-    volumes:
-      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
-      - ./definitions.json:/opt/definitions.json
-    healthcheck:
-      test: rabbitmq-diagnostics -q ping
-      interval: 10s
-      timeout: 30s
-      retries: 5
-
   case-processor:
     container_name: case-processor-response-operations-it
     image: eu.gcr.io/ssdc-rm-ci/rm/ssdc-rm-caseprocessor
     external_links:
       - postgres-response-operations-it
-      - rabbitmq-response-operations-it
+      - pubsub-emulator-response-operations-it
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-response-operations-it:5432/postgres?sslmode=disable
-      - SPRING_RABBITMQ_HOST=rabbitmq-response-operations-it
-      - SPRING_RABBITMQ_PORT=5672
       - CASEREFGENERATORKEY=6+VLkvz5XYkF7vFLVX7FDnfxavQ7M+iY
+      - SPRING_CLOUD_GCP_PUBSUB_EMULATOR_HOST=localhost:18538
+      - SPRING_CLOUD_GCP_PUBSUB_PROJECT_ID=project
     healthcheck:
       test: [ "CMD", "find", "/tmp/case-processor-healthy", "-mmin", "-1" ]
       interval: 10s
@@ -54,8 +33,22 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+
+  pubsub-emulator:
+    container_name: pubsub-emulator-response-operations-it
+    image: eu.gcr.io/ssdc-rm-ci/rm/gcloud-pubsub-emulator:latest
+    ports:
+      - "18538:8538"
+
+  setup-pubsub-emulator:
+    image: eu.gcr.io/ssdc-rm-ci/rm/gcloud-pubsub-emulator:latest
+    environment:
+      - PUBSUB_SETUP_HOST=pubsub-emulator:8538
+    volumes:
+      - ./setup_pubsub.sh:/setup_pubsub.sh
+    depends_on:
+      - pubsub-emulator
+    entrypoint: sh -c "/setup_pubsub.sh"
 
   start_dependencies:
     image: dadarek/wait-for-dependencies
