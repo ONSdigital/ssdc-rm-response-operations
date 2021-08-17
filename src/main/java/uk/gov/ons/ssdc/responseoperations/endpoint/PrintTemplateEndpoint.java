@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.PrintTemplateDto;
 import uk.gov.ons.ssdc.responseoperations.model.entity.PrintTemplate;
 import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
@@ -53,9 +54,7 @@ public class PrintTemplateEndpoint {
     userIdentity.checkGlobalUserPermission(
         userEmail, UserGroupAuthorisedActivityType.CREATE_PRINT_TEMPLATE);
 
-    if (!checkPrintSupplierValid(printTemplateDto.getPrintSupplier())) {
-      return new ResponseEntity(HttpStatus.BAD_REQUEST);
-    }
+    checkPrintSupplierValid(printTemplateDto.getPrintSupplier());
 
     PrintTemplate printTemplate = new PrintTemplate();
     printTemplate.setPackCode(printTemplateDto.getPackCode());
@@ -67,7 +66,7 @@ public class PrintTemplateEndpoint {
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
-  private boolean checkPrintSupplierValid(String printSupplier) {
+  private void checkPrintSupplierValid(String printSupplier) {
     Map printSupplierMap = null;
 
     try {
@@ -76,7 +75,10 @@ public class PrintTemplateEndpoint {
       throw new RuntimeException(e);
     }
 
-    return printSupplierMap.containsKey(printSupplier);
+    if (!printSupplierMap.containsKey(printSupplier)) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "Print supplier unknown: " + printSupplier);
+    }
   }
 
   private PrintTemplateDto mapPrintTemplates(PrintTemplate printTemplate) {
