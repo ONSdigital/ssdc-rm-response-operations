@@ -81,7 +81,7 @@ public class PrintTemplateEndpointIT {
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode2");
     printTemplateDto.setTemplate(new String[] {"a", "b", "c"});
-    printTemplateDto.setPrintSupplier("printyMcPrinter");
+    printTemplateDto.setPrintSupplier("SUPPLIER_A");
 
     RestTemplate restTemplate = new RestTemplate();
     String url = "http://localhost:" + port + "/api/printtemplates";
