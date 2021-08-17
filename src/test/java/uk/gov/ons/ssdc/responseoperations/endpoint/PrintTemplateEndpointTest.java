@@ -21,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.PrintTemplateDto;
@@ -74,10 +75,16 @@ class PrintTemplateEndpointTest {
 
   @Test
   public void testCreatePrintTemplate() throws Exception {
+
+    ReflectionTestUtils.setField(
+        underTest,
+        "printSupplierConfig",
+        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
+
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode1");
     printTemplateDto.setTemplate(new String[] {"a", "b", "c"});
-    printTemplateDto.setPrintSupplier("printyMcPrinter");
+    printTemplateDto.setPrintSupplier("SUPPLIER_A");
 
     mockMvc
         .perform(
@@ -97,5 +104,28 @@ class PrintTemplateEndpointTest {
         .isEqualTo(printTemplateDto.getTemplate());
     assertThat(printTemplateArgumentCaptor.getValue().getPrintSupplier())
         .isEqualTo(printTemplateDto.getPrintSupplier());
+  }
+
+  @Test
+  public void testCreatePrintTemplateFailsWithInvalidPrintSupplier() throws Exception {
+
+    ReflectionTestUtils.setField(
+        underTest,
+        "printSupplierConfig",
+        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
+
+    PrintTemplateDto printTemplateDto = new PrintTemplateDto();
+    printTemplateDto.setPackCode("packCode1");
+    printTemplateDto.setTemplate(new String[] {"a", "b", "c"});
+    printTemplateDto.setPrintSupplier("BAD_PRINT_SUPPLIERR");
+
+    mockMvc
+        .perform(
+            post("/api/printtemplates", printTemplateDto)
+                .content(asJsonString(printTemplateDto))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(PrintTemplateEndpoint.class))
+        .andExpect(handler().methodName("createPrintTemplate"));
   }
 }
