@@ -55,7 +55,7 @@ public class PrintTemplateEndpoint {
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
-  private PrintTemplateDto mapPirntTemplates(PrintTemplate printTemplate) {
+  private PrintTemplateDto mapPrintTemplates(PrintTemplate printTemplate) {
     PrintTemplateDto dto = new PrintTemplateDto();
     dto.setPackCode(printTemplate.getPackCode());
     dto.setTemplate(printTemplate.getTemplate());
