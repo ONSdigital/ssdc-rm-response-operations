@@ -35,7 +35,7 @@ public class PrintTemplateEndpoint {
         userEmail, UserGroupAuthorisedActivityType.LIST_PRINT_TEMPLATES);
 
     List<PrintTemplate> printTemplates = printTemplateRepository.findAll();
-    return printTemplates.stream().map(this::mapPirntTemplates).collect(Collectors.toList());
+    return printTemplates.stream().map(this::mapPrintTemplates).collect(Collectors.toList());
   }
 
   @PostMapping
