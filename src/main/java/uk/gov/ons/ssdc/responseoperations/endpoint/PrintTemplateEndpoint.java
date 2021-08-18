@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,8 @@ public class PrintTemplateEndpoint {
     userIdentity.checkGlobalUserPermission(
         userEmail, UserGroupAuthorisedActivityType.CREATE_PRINT_TEMPLATE);
 
+    checkPackCodeValid(printTemplateDto.getPackCode());
+    checkTemplateIsValid(printTemplateDto.getTemplate());
     checkPrintSupplierValid(printTemplateDto.getPrintSupplier());
 
     PrintTemplate printTemplate = new PrintTemplate();
@@ -64,6 +67,34 @@ public class PrintTemplateEndpoint {
     printTemplateRepository.saveAndFlush(printTemplate);
 
     return new ResponseEntity(HttpStatus.CREATED);
+  }
+
+  private void checkPackCodeValid(String packCode) {
+
+    if (StringUtils.isBlank(packCode)) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "PackCode cannot be empty or blank");
+    }
+
+    if (printTemplateRepository.findAll().stream()
+        .anyMatch(printTemplate -> printTemplate.getPackCode().equals(packCode))) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "PackCode " + packCode + " is already in use");
+    }
+  }
+
+  private void checkTemplateIsValid(String[] template) {
+    if (template == null || template.length == 0) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "Template must have at least one column");
+    }
+
+    for (String column : template) {
+      if (StringUtils.isBlank(column)) {
+        throw new ResponseStatusException(
+            HttpStatus.BAD_REQUEST, "Template cannot have empty columns");
+      }
+    }
   }
 
   private void checkPrintSupplierValid(String printSupplier) {

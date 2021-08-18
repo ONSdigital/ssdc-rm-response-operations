@@ -107,6 +107,64 @@ class PrintTemplateEndpointTest {
   }
 
   @Test
+  public void testThatEmptyPackCodeIsRejected() throws Exception {
+    ReflectionTestUtils.setField(
+        underTest,
+        "printSupplierConfig",
+        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
+
+    PrintTemplateDto printTemplateDto = new PrintTemplateDto();
+    printTemplateDto.setPackCode("");
+    printTemplateDto.setTemplate(new String[] {"a", "b", "c"});
+    printTemplateDto.setPrintSupplier("SUPPLIER_A");
+
+    mockMvc
+        .perform(
+            post("/api/printtemplates", printTemplateDto)
+                .content(asJsonString(printTemplateDto))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(PrintTemplateEndpoint.class))
+        .andExpect(handler().methodName("createPrintTemplate"))
+        .andExpect(
+            result ->
+                assertThat("400 BAD_REQUEST \"PackCode cannot be empty or blank\"")
+                    .isEqualTo(result.getResolvedException().getMessage()));
+  }
+
+  @Test
+  public void testThatNoneUniquePackCodeIsRejected() throws Exception {
+    ReflectionTestUtils.setField(
+        underTest,
+        "printSupplierConfig",
+        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
+
+    PrintTemplateDto printTemplateDto = new PrintTemplateDto();
+    printTemplateDto.setPackCode("PackCodeA");
+    printTemplateDto.setTemplate(new String[] {"a", "b", "c"});
+    printTemplateDto.setPrintSupplier("SUPPLIER_A");
+
+    PrintTemplate printTemplate = new PrintTemplate();
+    printTemplate.setPackCode("PackCodeA");
+    printTemplate.setTemplate(new String[] {"a", "b", "c"});
+    printTemplate.setPrintSupplier("printyMcPrinter");
+    when(printTemplateRepository.findAll()).thenReturn(List.of(printTemplate));
+
+    mockMvc
+        .perform(
+            post("/api/printtemplates", printTemplateDto)
+                .content(asJsonString(printTemplateDto))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(PrintTemplateEndpoint.class))
+        .andExpect(handler().methodName("createPrintTemplate"))
+        .andExpect(
+            result ->
+                assertThat("400 BAD_REQUEST \"PackCode PackCodeA is already in use\"")
+                    .isEqualTo(result.getResolvedException().getMessage()));
+  }
+
+  @Test
   public void testCreatePrintTemplateFailsWithInvalidPrintSupplier() throws Exception {
 
     ReflectionTestUtils.setField(
@@ -126,6 +184,62 @@ class PrintTemplateEndpointTest {
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError())
         .andExpect(handler().handlerType(PrintTemplateEndpoint.class))
-        .andExpect(handler().methodName("createPrintTemplate"));
+        .andExpect(handler().methodName("createPrintTemplate"))
+        .andExpect(
+            result ->
+                assertThat("400 BAD_REQUEST \"Print supplier unknown: BAD_PRINT_SUPPLIERR\"")
+                    .isEqualTo(result.getResolvedException().getMessage()));
+  }
+
+  @Test
+  public void testEmptyTemplateThrowsError() throws Exception {
+    ReflectionTestUtils.setField(
+        underTest,
+        "printSupplierConfig",
+        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
+
+    PrintTemplateDto printTemplateDto = new PrintTemplateDto();
+    printTemplateDto.setPackCode("packCode1");
+    printTemplateDto.setTemplate(null);
+    printTemplateDto.setPrintSupplier("SUPPLIER_A");
+
+    mockMvc
+        .perform(
+            post("/api/printtemplates", printTemplateDto)
+                .content(asJsonString(printTemplateDto))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(PrintTemplateEndpoint.class))
+        .andExpect(handler().methodName("createPrintTemplate"))
+        .andExpect(
+            result ->
+                assertThat("400 BAD_REQUEST \"Template must have at least one column\"")
+                    .isEqualTo(result.getResolvedException().getMessage()));
+  }
+
+  @Test
+  public void testEmptyColumnInTemplateThrowsError() throws Exception {
+    ReflectionTestUtils.setField(
+        underTest,
+        "printSupplierConfig",
+        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
+
+    PrintTemplateDto printTemplateDto = new PrintTemplateDto();
+    printTemplateDto.setPackCode("packCode1");
+    printTemplateDto.setTemplate(new String[] {"a", "", "c"});
+    printTemplateDto.setPrintSupplier("SUPPLIER_A");
+
+    mockMvc
+        .perform(
+            post("/api/printtemplates", printTemplateDto)
+                .content(asJsonString(printTemplateDto))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(PrintTemplateEndpoint.class))
+        .andExpect(handler().methodName("createPrintTemplate"))
+        .andExpect(
+            result ->
+                assertThat("400 BAD_REQUEST \"Template cannot have empty columns\"")
+                    .isEqualTo(result.getResolvedException().getMessage()));
   }
 }
