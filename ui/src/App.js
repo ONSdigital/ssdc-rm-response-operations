@@ -10,7 +10,9 @@ import Home from "./Home";
 import CreateSurvey from "./CreateSurvey";
 import Surveys from "./Surveys";
 import ViewSurvey from "./ViewSurvey";
+import PrintTemplates from "./PrintTemplates";
 import NotFound from "./NotFound";
+import CreatePrintTemplate from "./CreatePrintTemplate";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -80,6 +82,19 @@ function QueryRouting(props) {
       <Route path="/viewsurvey">
         <DocumentTitle title="View Survey">
           <ViewSurvey surveyId={query.get("surveyId")} />
+        </DocumentTitle>
+      </Route>
+      <Route path="/printtemplates">
+        <DocumentTitle title="View Print Templates">
+          <PrintTemplates
+              authorisedActivities={props.authorisedActivities}
+              flashMessageUntil={query.get("flashMessageUntil")}
+          />
+        </DocumentTitle>
+      </Route>
+      <Route path="/createprinttemplate">
+        <DocumentTitle title="Create Print Template">
+          <CreatePrintTemplate />
         </DocumentTitle>
       </Route>
       <Route path="*">
