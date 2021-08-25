@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {Link, useHistory} from "react-router-dom";
 
-
-// '{"SUPPLIER_A":{"sftpDirectory":"foo","encryptionKeyFilename": "bar"},"SUPPLIER_B":{"sftpDirectory":"foo","encryptionKeyFilename":"bar"}}'
-
-
 function CreatePrintTemplate() {
   const [printSupplierOptions, setPrintSupplierOptions] = useState([]);
   const [printSupplier, setPrintSupplier] = useState([]);
@@ -19,36 +15,18 @@ function CreatePrintTemplate() {
     async function fetchData() {
       // const response = await fetch("/api/printsuppliers");
       // const printSuppliers = await response.json();
-      const printSuppliers = [{
-        "SUPPLIER_A":
-            {"sftpDirectory":"foo","encryptionKeyFilename": "bar"},
-        "SUPPLIER_B":
-            {"sftpDirectory":"foo","encryptionKeyFilename":"bar"}
-      }]
-
-      // let suppliers = [];
-      // for (let supplier in printSuppliers) {
-      //   suppliers.push(supplier)
-      // }
-      // setPrintSupplierOptions(suppliers)
-
+      const printSuppliers = ["SUPPLIER_A", "SUPPLIER_B"]
 
       const printSupplierOptions = printSuppliers.map((supplier, index) => (
-          <option
-              key={index}
-              value={supplier}
-          >
-            {supplier}</option>
+          <option key={index} value={supplier}>
+            {supplier}
+          </option>
       ));
-
       setPrintSupplierOptions(printSupplierOptions);
     }
 
     fetchData();
-    // printSupplierInput.focus();
-    packCodeInput.focus();
-    printTemplateInput.focus();
-
+    printSupplierInput.focus();
   }, []);
 
   function handlePrintSupplierChange(event) {
@@ -66,13 +44,14 @@ function CreatePrintTemplate() {
       const parsedJson = JSON.parse(printTemplateValue);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
         setPrintTemplate(null);
+        return;
       }
     } catch (err) {
       setPrintTemplate(null);
+      return;
       // this.setState({ templateValidationError: true });
       // failedValidation = true;
     }
-
     setPrintTemplate(printTemplateValue);
   }
 
@@ -86,7 +65,7 @@ function CreatePrintTemplate() {
       template: JSON.parse(printTemplate),
     };
 
-    const response = await fetch("/api/printTemplates", {
+    const response = await fetch("/api/printtemplates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPrintTemplate),
@@ -104,10 +83,18 @@ function CreatePrintTemplate() {
 
         <div className="field field--select">
           <label className="label venus">Select a print supplier</label>
-          <select className="input input--select" id="select" name="select" onChange={handlePrintSupplierChange}>
+          <select
+              className="input input--select"
+              id="select"
+              name="select"
+              onChange={handlePrintSupplierChange}
+              required
+              value={printSupplier}
+              ref={(input) => {
+                printSupplierInput = input;
+              }}
+          >
             <option selected disabled>Select a print supplier</option>
-            {/*<option value="SUPPLIER_A">SUPPLIER_A</option>*/}
-            {/*<option value="SUPPLIER_B">SUPPLIER_B</option>*/}
             {printSupplierOptions}
           </select>
         </div>
@@ -122,9 +109,9 @@ function CreatePrintTemplate() {
             required
             value={packCode}
             onChange={handlePackCodeChange}
-            ref={(input) => {
-              packCodeInput = input;
-            }}
+            // ref={(input) => {
+            //   packCodeInput = input;
+            // }}
           />
         </div>
 
@@ -138,9 +125,9 @@ function CreatePrintTemplate() {
               required
               value={printTemplate}
               onChange={handleTemplateChange}
-              ref={(input) => {
-                printTemplateInput = input;
-              }}
+              // ref={(input) => {
+              //   printTemplateInput = input;
+              // }}
           />
         </div>
         <p></p>
