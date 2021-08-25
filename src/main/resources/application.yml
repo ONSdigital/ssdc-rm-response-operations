@@ -1,5 +1,8 @@
 server:
   port: 7777
+  error:
+#    TODO: Enable this with 'on_param' instead at class level?
+    include-message: always
 
 info:
   app:

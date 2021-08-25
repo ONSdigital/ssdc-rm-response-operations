@@ -38,10 +38,15 @@ function CreatePrintTemplate() {
   }
 
   function handleTemplateChange(event) {
-    let printTemplateValue = event.target.value;
+    setPrintTemplate(event.target.value);
+  }
 
+  let history = useHistory();
+
+  async function createPrintTemplate(event) {
+    // TODO: Shift validation on parsing template here instead
     try {
-      const parsedJson = JSON.parse(printTemplateValue);
+      const parsedJson = JSON.parse(printTemplate);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
         setPrintTemplate(null);
         return;
@@ -52,12 +57,7 @@ function CreatePrintTemplate() {
       // this.setState({ templateValidationError: true });
       // failedValidation = true;
     }
-    setPrintTemplate(printTemplateValue);
-  }
 
-  let history = useHistory();
-
-  async function createPrintTemplate(event) {
     event.preventDefault();
     const newPrintTemplate = {
       packCode: packCode,
@@ -89,7 +89,7 @@ function CreatePrintTemplate() {
               name="select"
               onChange={handlePrintSupplierChange}
               required
-              value={printSupplier}
+              // value={printSupplier}
               ref={(input) => {
                 printSupplierInput = input;
               }}
