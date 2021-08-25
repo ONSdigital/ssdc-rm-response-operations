@@ -1,25 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 
 // '{"SUPPLIER_A":{"sftpDirectory":"foo","encryptionKeyFilename": "bar"},"SUPPLIER_B":{"sftpDirectory":"foo","encryptionKeyFilename":"bar"}}'
 
 
 function CreatePrintTemplate() {
-  // let printSupplierInput = null;
-  let packCodeInput = null;
-  let printTemplateInput = null;
-
-
-  useEffect(() => {
-    // printSupplierInput.focus();
-    packCodeInput.focus();
-    printTemplateInput.focus();
-  });
-
+  const [printSupplierOptions, setPrintSupplierOptions] = useState([]);
   const [printSupplier, setPrintSupplier] = useState([]);
   const [packCode, setPackCode] = useState("");
   const [printTemplate, setPrintTemplate] = useState("");
+
+  let printSupplierInput = null;
+  let packCodeInput = null;
+  let printTemplateInput = null;
+
+  useEffect(() => {
+    async function fetchData() {
+      // const response = await fetch("/api/printsuppliers");
+      // const printSuppliers = await response.json();
+      const printSuppliers = [{
+        "SUPPLIER_A":
+            {"sftpDirectory":"foo","encryptionKeyFilename": "bar"},
+        "SUPPLIER_B":
+            {"sftpDirectory":"foo","encryptionKeyFilename":"bar"}
+      }]
+
+      // let suppliers = [];
+      // for (let supplier in printSuppliers) {
+      //   suppliers.push(supplier)
+      // }
+      // setPrintSupplierOptions(suppliers)
+
+
+      const printSupplierOptions = printSuppliers.map((supplier, index) => (
+          <option
+              key={index}
+              value={supplier}
+          >
+            {supplier}</option>
+      ));
+
+      setPrintSupplierOptions(printSupplierOptions);
+    }
+
+    fetchData();
+    // printSupplierInput.focus();
+    packCodeInput.focus();
+    printTemplateInput.focus();
+
+  }, []);
 
   function handlePrintSupplierChange(event) {
     setPrintSupplier(event.target.value);
@@ -30,7 +60,20 @@ function CreatePrintTemplate() {
   }
 
   function handleTemplateChange(event) {
-    setPrintTemplate(event.target.value);
+    let printTemplateValue = event.target.value;
+
+    try {
+      const parsedJson = JSON.parse(printTemplateValue);
+      if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
+        setPrintTemplate(null);
+      }
+    } catch (err) {
+      setPrintTemplate(null);
+      // this.setState({ templateValidationError: true });
+      // failedValidation = true;
+    }
+
+    setPrintTemplate(printTemplateValue);
   }
 
   let history = useHistory();
@@ -61,10 +104,11 @@ function CreatePrintTemplate() {
 
         <div className="field field--select">
           <label className="label venus">Select a print supplier</label>
-          <select className="input input--select" id="select" name="select">
+          <select className="input input--select" id="select" name="select" onChange={handlePrintSupplierChange}>
             <option selected disabled>Select a print supplier</option>
-            <option value="SUPPLIER_A">SUPPLIER_A</option>
-            <option value="SUPPLIER_B">SUPPLIER_B</option>
+            {/*<option value="SUPPLIER_A">SUPPLIER_A</option>*/}
+            {/*<option value="SUPPLIER_B">SUPPLIER_B</option>*/}
+            {printSupplierOptions}
           </select>
         </div>
 
