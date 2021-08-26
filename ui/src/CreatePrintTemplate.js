@@ -54,25 +54,33 @@ function CreatePrintTemplate() {
     if (!printSupplier) {
       failedValidation = true;
       setValidationFailed(true);
-      failures.push("Must select a print supplier")
-      // printSupplierInput.focus();
+      failures.push({
+          message: "Must select a print supplier",
+          location: printSupplierInput
+      })
     }
 
     try {
       const parsedJson = JSON.parse(printTemplate);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
         failedValidation = true;
-        failures.push("Print template must be array with one or more elements")
+        // failures.push("Print template must be array with one or more elements")
         setValidationFailed(true);
         // printTemplateInput.focus();
       }
     } catch (err) {
       // printTemplateInput.focus();
       failedValidation = true;
-      failures.push("Print template JSON is not valid")
+      // failures.push("Print template JSON is not valid")
       setValidationFailed(true);
     }
 
+    const failureMessages = failures.map((failure, index) => (
+        <li className="list__item u-fs-r">
+          {index + 1} <a className="js-inpagelink" href={failure['location']}>{failure['message']}</a>
+        </li>
+    ));
+    setValidationFailedMessages(failureMessages);
 
     event.preventDefault();
 
@@ -109,10 +117,7 @@ function CreatePrintTemplate() {
 
                   {/*TODO: Dynamically build the list and have it displayed in here*/}
                   <ul className="list list--bare">
-                    <li className="list__item u-fs-r">
-                  {/*    1) <a className="js-inpagelink" href="#1">Select an answer to continue.</a>*/}
-                      <a className="js-inpagelink" href="#1">Select an answer to continue.</a>
-                    </li>
+                    {validationFailedMessages}
                   </ul>
                 </div>
               </div>
