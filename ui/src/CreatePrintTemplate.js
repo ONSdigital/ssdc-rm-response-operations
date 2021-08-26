@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
-import {Link, useHistory} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
+import Announcer from "react-a11y-announcer";
 
 function CreatePrintTemplate() {
   const [printSupplierOptions, setPrintSupplierOptions] = useState([]);
-  const [printSupplier, setPrintSupplier] = useState([]);
+  const [printSupplier, setPrintSupplier] = useState();
   const [packCode, setPackCode] = useState("");
   const [printTemplate, setPrintTemplate] = useState("");
+  const [validationFailed, setValidationFailed] = useState(false);
+  const [validationFailedMessages, setValidationFailedMessages] = useState([]);
 
   let printSupplierInput = null;
   let packCodeInput = null;
@@ -13,20 +16,20 @@ function CreatePrintTemplate() {
 
   useEffect(() => {
     async function fetchData() {
+      // TODO: Replace stubbed array response with actual API call here
       // const response = await fetch("/api/printsuppliers");
       // const printSuppliers = await response.json();
       const printSuppliers = ["SUPPLIER_A", "SUPPLIER_B"]
 
-      const printSupplierOptions = printSuppliers.map((supplier, index) => (
+      const options = printSuppliers.map((supplier, index) => (
           <option key={index} value={supplier}>
             {supplier}
           </option>
       ));
-      setPrintSupplierOptions(printSupplierOptions);
+      setPrintSupplierOptions(options);
     }
 
     fetchData();
-    printSupplierInput.focus();
   }, []);
 
   function handlePrintSupplierChange(event) {
@@ -44,98 +47,136 @@ function CreatePrintTemplate() {
   let history = useHistory();
 
   async function createPrintTemplate(event) {
-    // TODO: Shift validation on parsing template here instead
+    // TODO: We're using 2 validation failed variables here because the setValidationFailed is async so may not update. Need to find a way around this
+    let failedValidation = false;
+    let failures = [];
+    setValidationFailed(false);
+
+    if (!printSupplier) {
+      failedValidation = true;
+      setValidationFailed(true);
+      failures.push("Must select a print supplier")
+      // printSupplierInput.focus();
+    }
+
     try {
       const parsedJson = JSON.parse(printTemplate);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
-        setPrintTemplate(null);
-        return;
+        failedValidation = true;
+        failures.push("Print template must be array with one or more elements")
+        setValidationFailed(true);
+        // printTemplateInput.focus();
       }
     } catch (err) {
-      setPrintTemplate(null);
-      return;
-      // this.setState({ templateValidationError: true });
-      // failedValidation = true;
+      // printTemplateInput.focus();
+      failedValidation = true;
+      failures.push("Print template JSON is not valid")
+      setValidationFailed(true);
     }
 
+
     event.preventDefault();
-    const newPrintTemplate = {
-      packCode: packCode,
-      printSupplier: printSupplier,
-      template: JSON.parse(printTemplate),
-    };
 
-    const response = await fetch("/api/printtemplates", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newPrintTemplate),
-    });
+    if (!failedValidation) {
+      const newPrintTemplate = {
+        packCode: packCode,
+        printSupplier: printSupplier,
+        template: JSON.parse(printTemplate),
+      };
 
-    if (response.ok) {
-      history.push(`/printtemplates?flashMessageUntil=${Date.now() + 5000}`);
+      const response = await fetch("/api/printtemplates", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(newPrintTemplate),
+      });
+
+      if (response.ok) {
+        history.push(`/printtemplates?flashMessageUntil=${Date.now() + 5000}`);
+      }
     }
   }
 
   return (
-    <>
-      <h2>Create a New Print Template</h2>
-      <form onSubmit={createPrintTemplate}>
+      <>
+        {validationFailed && (
+            <>
+              <Announcer text={"Error"} />
+              <div className="panel panel--error">
+                <div className="panel__header">
+                  <div className="u-fs-r--b">Error</div>
+                </div>
+                <div className="panel__body">
+                  <p className="u-fs-r">This is wrong, fix it before continuing.</p>
 
-        <div className="field field--select">
-          <label className="label venus">Select a print supplier</label>
-          <select
-              className="input input--select"
-              id="select"
-              name="select"
-              onChange={handlePrintSupplierChange}
-              required
-              // value={printSupplier}
-              ref={(input) => {
-                printSupplierInput = input;
-              }}
-          >
-            <option selected disabled>Select a print supplier</option>
-            {printSupplierOptions}
-          </select>
-        </div>
+                  {/*TODO: Dynamically build the list and have it displayed in here*/}
+                  <ul className="list list--bare">
+                    <li className="list__item u-fs-r">
+                  {/*    1) <a className="js-inpagelink" href="#1">Select an answer to continue.</a>*/}
+                      <a className="js-inpagelink" href="#1">Select an answer to continue.</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </>
+        )}
 
-        <div className="field">
-          <label className="label venus">Enter a pack code</label>
-          <input
-            className="input input--text input-type__input"
-            type="text"
-            aria-label={"Enter a pack code"}
-            aria-required="true"
-            required
-            value={packCode}
-            onChange={handlePackCodeChange}
-            // ref={(input) => {
-            //   packCodeInput = input;
-            // }}
-          />
-        </div>
+        <h2>Create a New Print Template</h2>
+        <form onSubmit={createPrintTemplate}>
+          <div className="field field--select">
+            <label className="label venus">Select a print supplier</label>
+            <select
+                className="input input--select"
+                onChange={handlePrintSupplierChange}
+                aria-label={"Select a print supplier"}
+                aria-required="true"
+                required
+                defaultValue={'DEFAULT'}
+                ref={(input) => {
+                  printSupplierInput = input;
+                }}
+            >
+              <option value={'DEFAULT'} disabled>Select a print supplier</option>
+              {printSupplierOptions}
+            </select>
+          </div>
 
-        <div className="field">
-          <label className="label venus">Enter a print template</label>
-          <input
-              className="input input--text input-type__input"
-              type="text"
-              aria-label={"Enter a print template"}
-              aria-required="true"
-              required
-              value={printTemplate}
-              onChange={handleTemplateChange}
-              // ref={(input) => {
-              //   printTemplateInput = input;
-              // }}
-          />
-        </div>
-        <p></p>
-        <button type="submit" className="btn btn--link">
-          <span className="btn__inner">Create Print Template</span>
-        </button>
-      </form>
-    </>
+          <div className="field">
+            <label className="label venus">Enter a pack code</label>
+            <input
+                className="input input--text input-type__input"
+                type="text"
+                aria-label={"Enter a pack code"}
+                aria-required="true"
+                required
+                value={packCode}
+                onChange={handlePackCodeChange}
+                // ref={(input) => {
+                //   packCodeInput = input;
+                // }}
+            />
+          </div>
+
+          <div className="field">
+            <label className="label venus">Enter a print template</label>
+            <input
+                className="input input--text input-type__input"
+                type="text"
+                aria-label={"Enter a print template"}
+                aria-required="true"
+                required
+                value={printTemplate}
+                onChange={handleTemplateChange}
+                ref={(input) => {
+                  printTemplateInput = input;
+                }}
+            />
+          </div>
+          <p></p>
+          <button type="submit" className="btn btn--link">
+            <span className="btn__inner">Create Print Template</span>
+          </button>
+        </form>
+      </>
   );
 }
 
