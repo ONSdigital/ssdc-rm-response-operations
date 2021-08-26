@@ -16,10 +16,9 @@ function CreatePrintTemplate() {
 
   useEffect(() => {
     async function fetchData() {
-      // TODO: Replace stubbed array response with actual API call here
-      // const response = await fetch("/api/printsuppliers");
-      // const printSuppliers = await response.json();
-      const printSuppliers = ["SUPPLIER_A", "SUPPLIER_B"]
+      const response = await fetch("/api/printsuppliers");
+      const printSuppliers = await response.json();
+      // const printSuppliers = ["SUPPLIER_A", "SUPPLIER_B"]
 
       const options = printSuppliers.map((supplier, index) => (
           <option key={index} value={supplier}>
