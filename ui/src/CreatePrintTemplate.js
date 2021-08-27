@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 
@@ -10,13 +10,24 @@ function CreatePrintTemplate() {
   const [validationFailed, setValidationFailed] = useState(false);
   const [validationFailedMessages, setValidationFailedMessages] = useState([]);
 
-  const inputAnchors = {
-    printSupplierInput: "#printSupplierInput",
-    packCodeInput: "#packCodeInput",
-    printTemplateInput: "#printTemplateInput",
-  }
+  // for href anchor links
+  // const inputAnchorLinks = {
+  //   printSupplierInput: "#printSupplierInput",
+  //   packCodeInput: "#packCodeInput",
+  //   printTemplateInput: "#printTemplateInput",
+  // }
 
-  let printSupplierInput = null;
+  // const inputAnchorLinks = {
+  //   printSupplierInput: "printSupplierInput",
+  //   packCodeInput: "packCodeInput",
+  //   printTemplateInput: "printTemplateInput",
+  // }
+
+
+  // let printSupplierInput = null;
+  const printSupplierInput = useRef(null);
+  const printPackCodeInput = useRef(null);
+  const printTemplateInput = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -32,19 +43,29 @@ function CreatePrintTemplate() {
     }
 
     fetchData();
-    printSupplierInput.focus();
+    printSupplierInput.current.focus();
   }, []);
 
-  function handlePrintSupplierChange(event) {
+  function handlePrintSupplierInputChange(event) {
     setPrintSupplier(event.target.value);
   }
 
-  function handlePackCodeChange(event) {
+  function handlePrintSupplierInputError(event) {
+    event.preventDefault();
+    printSupplierInput.current.focus();
+  }
+
+  function handlePrintPackCodeInputChange(event) {
     setPackCode(event.target.value);
   }
 
   function handleTemplateChange(event) {
     setPrintTemplate(event.target.value);
+  }
+
+  function handlePrintTemplateInputError(event) {
+    event.preventDefault();
+    printTemplateInput.current.focus();
   }
 
   let history = useHistory();
@@ -59,8 +80,8 @@ function CreatePrintTemplate() {
     if (!printSupplier) {
       failedValidation = true;
       failures.push({
-        message: "Must select a print supplier",
-        anchorTo: inputAnchors.printSupplierInput
+        errorMessage: "Must select a print supplier",
+        errorHandler: handlePrintSupplierInputError
       })
     }
 
@@ -69,15 +90,15 @@ function CreatePrintTemplate() {
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
         failedValidation = true;
         failures.push({
-          message: "Print template must be JSON array with one or more elements",
-          anchorTo: inputAnchors.printTemplateInput
+          errorMessage: "Print template must be JSON array with one or more elements",
+          errorHandler: handlePrintTemplateInputError
         })
       }
     } catch (err) {
       failedValidation = true;
       failures.push({
-        message: "Print template is not valid JSON",
-        anchorTo: inputAnchors.printTemplateInput
+        errorMessage: "Print template is not valid JSON",
+        errorHandler: handlePrintTemplateInputError
       })
     }
 
@@ -86,24 +107,8 @@ function CreatePrintTemplate() {
       const failureMessages = failures.map((failure, index) => (
           <li className="list__item u-fs-r">
             <Announcer text={failure.message}/>
-            {index + 1} <a className="js-inpagelink" href={failure.anchorTo}>{failure.message}</a>
-            {/*{index + 1} {failure.message}*/}
-
-            {/*{index + 1} <a className="js-inpagelink" href="#printSupplierInput">{failure.message}</a>*/}
-            {/*<Link to={`/viewSurvey?surveyId=${survey.id}`}>{survey.name}</Link>*/}
-            {/*<Link to="printSupplierInput">test</Link>*/}
-
-            {/*<Link*/}
-            {/*    className="js-inpagelink"*/}
-            {/*    to={{*/}
-            {/*      pathname: "/createprinttemplate",*/}
-            {/*      // search: "?sort=name",*/}
-            {/*      hash: "printSupplierInput",*/}
-            {/*      // state: { fromDashboard: true }*/}
-            {/*    }}*/}
-            {/*>Test</Link>*/}
-
-            {/*<Link to={{hash: printSupplierInput }} </Link>*/}
+            {/*{index + 1} <a className="js-inpagelink" href={`#${failure.anchorTo}`}>{failure.message}</a>*/}
+            {index + 1} <a className="js-inpagelink" href="" onClick={failure.errorHandler}>{failure.errorMessage}</a>
           </li>
       ));
       setValidationFailedMessages(failureMessages);
@@ -170,14 +175,15 @@ function CreatePrintTemplate() {
             <select
                 id="printSupplierInput"
                 className="input input--select"
-                onChange={handlePrintSupplierChange}
+                onChange={handlePrintSupplierInputChange}
                 aria-label={"Select a print supplier"}
                 aria-required="true"
                 required
                 defaultValue={"DEFAULT"}
-                ref={(input) => {
-                  printSupplierInput = input;
-                }}
+                ref={printSupplierInput}
+                // ref={(input) => {
+                //   printSupplierInput = input;
+                // }}
             >
               <option value={"DEFAULT"} disabled>Select a print supplier</option>
               {printSupplierOptions}
@@ -194,7 +200,8 @@ function CreatePrintTemplate() {
                 aria-required="true"
                 required
                 value={packCode}
-                onChange={handlePackCodeChange}
+                onChange={handlePrintPackCodeInputChange}
+                ref={printPackCodeInput}
                 // ref={(input) => {
                 //   packCodeInput = input;
                 // }}
@@ -212,6 +219,7 @@ function CreatePrintTemplate() {
                 required
                 value={printTemplate}
                 onChange={handleTemplateChange}
+                ref={printTemplateInput}
                 // ref={(input) => {
                 //   printTemplateInput = input;
                 // }}
