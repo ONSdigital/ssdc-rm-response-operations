@@ -7,8 +7,8 @@ function CreatePrintTemplate() {
   const [printSupplier, setPrintSupplier] = useState();
   const [packCode, setPackCode] = useState("");
   const [printTemplate, setPrintTemplate] = useState("");
-  const [validationFailed, setValidationFailed] = useState(false);
   const [validationFailedMessages, setValidationFailedMessages] = useState([]);
+  const [serverError, setServerError] = useState(false);
 
   const printSupplierInput = useRef(null);
   const printPackCodeInput = useRef(null);
@@ -26,6 +26,7 @@ function CreatePrintTemplate() {
       ));
       setPrintSupplierOptions(options);
     }
+
     fetchData();
     printSupplierInput.current.focus();
   }, []);
@@ -54,12 +55,10 @@ function CreatePrintTemplate() {
       serverResponse: "Error response from server - Unable to create print template"
     }
 
-    setValidationFailed(false);
-    let failedValidation = false;
+    setValidationFailedMessages([]);
     let errors = [];
 
     if (!printSupplier) {
-      failedValidation = true;
       errors.push({
         message: printTemplateErrorMessages.supplierSelection,
         anchorTo: printSupplierInput.current.id
@@ -69,38 +68,35 @@ function CreatePrintTemplate() {
     try {
       const parsedJson = JSON.parse(printTemplate);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
-        failedValidation = true;
         errors.push({
           message: printTemplateErrorMessages.templateArrayFormat,
           anchorTo: printTemplateInput.current.id
         })
       }
     } catch (err) {
-      failedValidation = true;
       errors.push({
         message: printTemplateErrorMessages.templateInvalidJson,
         anchorTo: printTemplateInput.current.id
       })
     }
 
-    if (failedValidation) {
-      setValidationFailed(true);
+    if (errors.length) {
       const failureMessages = errors.map((failure, index) => (
           <li className="list__item u-fs-r">
             <Announcer text={failure.message}/>
             {index + 1})&nbsp;
             <a
-              className="js-inpagelink"
-              // MUST use href for in-page links for accessibility
-              href={`#${failure.anchorTo}`}>
-            {failure.message}
+                className="js-inpagelink"
+                // MUST use href for in-page links for accessibility
+                href={`#${failure.anchorTo}`}>
+              {failure.message}
             </a>
           </li>
       ));
       setValidationFailedMessages(failureMessages);
     }
 
-    if (!failedValidation) {
+    if (!errors.length) {
       const newPrintTemplate = {
         packCode: packCode,
         printSupplier: printSupplier,
@@ -116,43 +112,60 @@ function CreatePrintTemplate() {
       if (response.ok) {
         history.push(`/printtemplates?flashMessageUntil=${Date.now() + 5000}`);
       } else {
-        setValidationFailed(true);
-        const serverErrorMessage = [
-          <li className="list__item u-fs-r">
-            <Announcer text={printTemplateErrorMessages.serverResponse}/>
-            <strong>
-              {printTemplateErrorMessages.serverResponse}
-            </strong>
-          </li>
-        ];
-        setValidationFailedMessages(serverErrorMessage);
+        setServerError(true);
       }
     }
   }
 
+  function ErrorSection() {
+    return (
+          <div className="panel panel--error">
+            <div className="panel__header">
+              <Announcer text={"Error"}/>
+              <div className="u-fs-r--b">Error</div>
+            </div>
+            <div className="panel__body">
+              <Announcer text={"Error"}/>
+              <Announcer
+                  text={`Error${validationFailedMessages.length > 1 ? "s" : ""} found. Please fix before continuing.`}/>
+              <p className="u-fs-r">
+                Error{validationFailedMessages.length > 1 ? "s" : ""} found. Please fix before continuing.
+              </p>
+              <ul className="list list--bare">
+                {validationFailedMessages}
+              </ul>
+            </div>
+          </div>
+    )
+  }
+
+  function ServerErrorSection() {
+    return (
+          <div className="panel panel--error">
+            <div className="panel__header">
+              <Announcer text={"Error"}/>
+              <div className="u-fs-r--b">Error</div>
+            </div>
+            <div className="panel__body">
+              <Announcer text={"Error"}/>
+              <Announcer
+                  text={"Error response from server - Unable to create print template"}/>
+              <p className="u-fs-r">
+                Error response from server - unable to create print template
+              </p>
+              <ul className="list list--bare">
+                {validationFailedMessages}
+              </ul>
+            </div>
+          </div>
+    )
+  }
+
   return (
       <>
-        {validationFailed && (
-            <>
-              <div className="panel panel--error">
-                <div className="panel__header">
-                  <Announcer text={"Error"}/>
-                  <div className="u-fs-r--b">Error</div>
-                </div>
-                <div className="panel__body">
-                  <Announcer text={"Error"}/>
-                  <Announcer
-                      text={`Error${validationFailedMessages.length > 1 ? "s" : ""} found. Please fix before continuing.`}/>
-                  <p className="u-fs-r">
-                    Error{validationFailedMessages.length > 1 ? "s" : ""} found. Please fix before continuing.
-                  </p>
-                  <ul className="list list--bare">
-                    {validationFailedMessages}
-                  </ul>
-                </div>
-              </div>
-            </>
-        )}
+        {serverError && <ServerErrorSection/>}
+        {validationFailedMessages.length > 0 && <ErrorSection/>}
+
         <h2>Create a New Print Template</h2>
         <form onSubmit={createPrintTemplate}>
           <div className="field field--select">
