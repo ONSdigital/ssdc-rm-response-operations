@@ -105,8 +105,8 @@ function CreatePrintTemplate() {
     if (failedValidation) {
       setValidationFailed(true);
       const failureMessages = failures.map((failure, index) => (
-          <li className="list__item u-fs-r">
-            <Announcer text={failure.message}/>
+          <li className="list__item u-fs-r" key={index}>
+            {/*<Announcer text={failure.message}/>*/}
             {/*{index + 1} <a className="js-inpagelink" href={`#${failure.anchorTo}`}>{failure.message}</a>*/}
             {index + 1} <a className="js-inpagelink" href="" onClick={failure.errorHandler}>{failure.errorMessage}</a>
           </li>
@@ -135,7 +135,7 @@ function CreatePrintTemplate() {
         const serverErrorInfoMessage = "Error response from server - Unable to create print template";
         setValidationFailedMessages([
           <li className="list__item u-fs-r">
-            <Announcer text={serverErrorInfoMessage}/>
+            {/*<Announcer text={serverErrorInfoMessage}/>*/}
             <strong>
               {serverErrorInfoMessage}
             </strong>
@@ -151,13 +151,13 @@ function CreatePrintTemplate() {
             <>
               <div className="panel panel--error">
                 <div className="panel__header">
-                  <Announcer text={"Error"}/>
+                  {/*<Announcer text={"Error"}/>*/}
                   <div className="u-fs-r--b">Error</div>
                 </div>
                 <div className="panel__body">
-                  <Announcer text={"Error"}/>
-                  <Announcer
-                      text={`Error${validationFailedMessages.length > 1 ? "s" : ""} found. Please fix before continuing.`}/>
+                  {/*<Announcer text={"Error"}/>*/}
+                  {/*<Announcer*/}
+                  {/*    text={`Error${validationFailedMessages.length > 1 ? "s" : ""} found. Please fix before continuing.`}/>*/}
                   <p className="u-fs-r">
                     Error{validationFailedMessages.length > 1 ? "s" : ""} found. Please fix before continuing.
                   </p>
