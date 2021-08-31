@@ -17,13 +17,37 @@ function CreatePrintTemplate() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("/api/printsuppliers");
-      const printSuppliers = await response.json();
+      // TODO: Uncomment API call!
+      // const response = await fetch("/api/printsuppliers");
+      // const printSuppliers = await response.json();
 
+      const printSuppliers = ['SUPPLIER_A', 'SUPPLIER_B']
+
+      // TODO: Add <Announcer> for each supplier?
       const options = printSuppliers.map((supplier, index) => (
-          <option key={index} value={supplier}>
-            {supplier}
-          </option>
+          <>
+            <p className="radios__item">
+          <span className="radio">
+            <input
+                id={supplier}
+                key={index}
+                type="radio"
+                className="radio__input js-radio"
+                value={supplier}
+                name="supplier"
+                required
+                aria-required="true"
+            />
+            <label
+                htmlFor={supplier}
+                id={`${supplier}-label`}
+                className="radio__label">
+              {supplier}
+            </label>
+          </span>
+            </p>
+            <br/>
+          </>
       ));
       setPrintSupplierOptions(options);
     }
@@ -101,7 +125,7 @@ function CreatePrintTemplate() {
       const failureMessages = validationFailures.map((failure, index) => (
           <li className="list__item u-fs-r">
             <Announcer text={failure.message}/>
-            {index + 1})&nbsp;
+            {index + 1}. &nbsp;
             <a
                 className="js-inpagelink"
                 // MUST use href in-page links for accessibility
@@ -145,25 +169,66 @@ function CreatePrintTemplate() {
   return (
       <>
         {validationFailureMessages.length > 0 && <ErrorDisplay/>}
-
         <h2>Create a Print Template</h2>
         <form onSubmit={validateAndCreatePrintTemplate}>
-          <div className="field field--select">
-            <label className="label venus">Select print supplier</label>
-            <select
+
+          <div className="question u-mt-no">
+            <fieldset
                 id="printSupplierInput"
-                ref={printSupplierInput}
-                className="input input--select"
-                onChange={handlePrintSupplierChange}
-                aria-label={"Select print supplier"}
                 aria-required="true"
-                required
-                value={printSupplier}
+                aria-label={"Select print supplier"}
+                className="fieldset"
+                ref={printSupplierInput}
+                onChange={handlePrintSupplierChange}
             >
-              <option value="" selected disabled>Select print supplier</option>
-              {printSupplierOptions}
-            </select>
+              <legend className="fieldset__legend">
+                <label className="label venus">Select print supplier</label>
+              </legend>
+              <div className="input-items">
+                <div className="radios__items">
+                  {printSupplierOptions}
+                </div>
+              </div>
+            </fieldset>
           </div>
+          <p></p>
+
+
+          {/*<div className="field field--select">*/}
+          {/*  <label className="label venus">Select print supplier</label>*/}
+          {/*  <select*/}
+          {/*      id="printSupplierInput"*/}
+          {/*      ref={printSupplierInput}*/}
+          {/*      className="input input--select"*/}
+          {/*      onChange={handlePrintSupplierChange}*/}
+          {/*      aria-label={"Select print supplier"}*/}
+          {/*      aria-required="true"*/}
+          {/*      required*/}
+          {/*      value={printSupplier}*/}
+          {/*  >*/}
+          {/*    /!*{TODO: Announcer needed here for default option?}*!/*/}
+          {/*    <option value="" selected disabled>Select print supplier</option>*/}
+          {/*    {printSupplierOptions}*/}
+          {/*  </select>*/}
+          {/*</div>*/}
+
+
+          {/*<div className="field field--select">*/}
+          {/*  <label className="label venus">Select print supplier</label>*/}
+          {/*  <select*/}
+          {/*      id="printSupplierInput"*/}
+          {/*      ref={printSupplierInput}*/}
+          {/*      className="input input--select"*/}
+          {/*      onChange={handlePrintSupplierChange}*/}
+          {/*      aria-label={"Select print supplier"}*/}
+          {/*      aria-required="true"*/}
+          {/*      required*/}
+          {/*      defaultValue="DEFAULT"*/}
+          {/*  >*/}
+          {/*    <option value="DEFAULT" disabled>Select print supplier</option>*/}
+          {/*    {printSupplierOptions}*/}
+          {/*  </select>*/}
+          {/*</div>*/}
 
           <div className="field">
             <label className="label venus">Enter pack code</label>
