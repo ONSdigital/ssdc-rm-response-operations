@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { BrowserRouter as Router } from "react-router-dom";
-import Home from "./Home";
+import CreatePrintTemplate from "./CreatePrintTemplate";
 
 let container = null;
 beforeEach(() => {
@@ -19,21 +19,29 @@ afterEach(() => {
   container = null;
 });
 
-it("renders home page", async () => {
+it("renders create print template", async () => {
+  const fakePrintSupplier = [
+    "SUPPLIER_A"
+  ];
+  jest.spyOn(global, "fetch").mockImplementation(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(fakePrintSupplier),
+      })
+  );
+
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
     render(
       <Router>
-        <Home
-            authorisedActivities={["LIST_SURVEYS", "LIST_PRINT_TEMPLATES"]} />
+        <CreatePrintTemplate />
       </Router>,
       container
     );
   });
 
-  const surveysLinkElement = screen.getByText(/Surveys/i);
-  expect(surveysLinkElement).toBeInTheDocument();
+  const createPrintTemplateButtonElement = screen.getByText(/Create Print Template/i);
+  expect(createPrintTemplateButtonElement).toBeInTheDocument();
 
-  const printTemplatesLinkElement = screen.getByText(/Print Templates/i);
-  expect(printTemplatesLinkElement).toBeInTheDocument();
+  const printSupplier = screen.getByText(/SUPPLIER_A/i);
+  expect(printSupplier).toBeInTheDocument();
 });
