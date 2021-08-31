@@ -3,16 +3,17 @@ import {useHistory} from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 
 function CreatePrintTemplate() {
-  const [printSupplierOptions, setPrintSupplierOptions] = useState([]);
-  const [printSupplier, setPrintSupplier] = useState();
+  const [printSupplier, setPrintSupplier] = useState("");
   const [packCode, setPackCode] = useState("");
   const [printTemplate, setPrintTemplate] = useState("");
-  const [validationFailedMessages, setValidationFailedMessages] = useState([]);
-  const [serverError, setServerError] = useState(false);
+  const [printSupplierOptions, setPrintSupplierOptions] = useState([]);
+  const [validationFailureMessages, setValidationFailureMessages] = useState([]);
 
   const printSupplierInput = useRef(null);
   const printPackCodeInput = useRef(null);
   const printTemplateInput = useRef(null);
+
+  let history = useHistory();
 
   useEffect(() => {
     async function fetchData() {
@@ -43,175 +44,154 @@ function CreatePrintTemplate() {
     setPrintTemplate(event.target.value);
   }
 
-  let history = useHistory();
-
-  async function createPrintTemplate(event) {
-    event.preventDefault();
-
-    const printTemplateErrorMessages = {
-      supplierSelection: "Must select a print supplier",
+  function validatePrintTemplate() {
+    const inputFailureMessages = {
       templateArrayFormat: "Print template must be JSON array with one or more elements",
       templateInvalidJson: "Print template is not valid JSON",
-      serverResponse: "Error response from server - Unable to create print template"
     }
 
-    setValidationFailedMessages([]);
+    setValidationFailureMessages([]);
+
     let errors = [];
-
-    if (!printSupplier) {
-      errors.push({
-        message: printTemplateErrorMessages.supplierSelection,
-        anchorTo: printSupplierInput.current.id
-      })
-    }
 
     try {
       const parsedJson = JSON.parse(printTemplate);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
         errors.push({
-          message: printTemplateErrorMessages.templateArrayFormat,
+          message: inputFailureMessages.templateArrayFormat,
           anchorTo: printTemplateInput.current.id
         })
       }
     } catch (err) {
       errors.push({
-        message: printTemplateErrorMessages.templateInvalidJson,
+        message: inputFailureMessages.templateInvalidJson,
         anchorTo: printTemplateInput.current.id
       })
     }
 
-    if (errors.length) {
-      const failureMessages = errors.map((failure, index) => (
+    return errors;
+  }
+
+  async function createPrintTemplate() {
+    const newPrintTemplate = {
+      packCode: packCode,
+      printSupplier: printSupplier,
+      template: JSON.parse(printTemplate),
+    };
+
+    const response = await fetch("/api/printtemplates", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(newPrintTemplate),
+    });
+
+    if (response.ok) {
+      history.push(`/printtemplates?flashMessageUntil=${Date.now() + 5000}`);
+    }
+  }
+
+  async function validateAndCreatePrintTemplate(event) {
+    event.preventDefault();
+
+    let validationFailures = validatePrintTemplate();
+
+    const failedValidation = validationFailures.length;
+    if (failedValidation) {
+
+      const failureMessages = validationFailures.map((failure, index) => (
           <li className="list__item u-fs-r">
             <Announcer text={failure.message}/>
             {index + 1})&nbsp;
             <a
                 className="js-inpagelink"
-                // MUST use href for in-page links for accessibility
+                // MUST use href in-page links for accessibility
                 href={`#${failure.anchorTo}`}>
               {failure.message}
             </a>
           </li>
       ));
-      setValidationFailedMessages(failureMessages);
+
+      setValidationFailureMessages(failureMessages);
     }
 
-    if (!errors.length) {
-      const newPrintTemplate = {
-        packCode: packCode,
-        printSupplier: printSupplier,
-        template: JSON.parse(printTemplate),
-      };
-
-      const response = await fetch("/api/printtemplates", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(newPrintTemplate),
-      });
-
-      if (response.ok) {
-        history.push(`/printtemplates?flashMessageUntil=${Date.now() + 5000}`);
-      } else {
-        setServerError(true);
-      }
+    if (!failedValidation) {
+      await createPrintTemplate();
     }
   }
 
-  function ErrorSection() {
-    return (
-          <div className="panel panel--error">
-            <div className="panel__header">
-              <Announcer text={"Error"}/>
-              <div className="u-fs-r--b">Error</div>
-            </div>
-            <div className="panel__body">
-              <Announcer text={"Error"}/>
-              <Announcer
-                  text={`Error${validationFailedMessages.length > 1 ? "s" : ""} found. Please fix before continuing.`}/>
-              <p className="u-fs-r">
-                Error{validationFailedMessages.length > 1 ? "s" : ""} found. Please fix before continuing.
-              </p>
-              <ul className="list list--bare">
-                {validationFailedMessages}
-              </ul>
-            </div>
-          </div>
-    )
-  }
+  function ErrorDisplay() {
+    const validationErrorInfoText =
+        `Error${validationFailureMessages.length > 1 ? "s" : ""} found. Please fix before continuing.`
 
-  function ServerErrorSection() {
     return (
-          <div className="panel panel--error">
-            <div className="panel__header">
-              <Announcer text={"Error"}/>
-              <div className="u-fs-r--b">Error</div>
-            </div>
-            <div className="panel__body">
-              <Announcer text={"Error"}/>
-              <Announcer
-                  text={"Error response from server - Unable to create print template"}/>
-              <p className="u-fs-r">
-                Error response from server - unable to create print template
-              </p>
-              <ul className="list list--bare">
-                {validationFailedMessages}
-              </ul>
-            </div>
+        <div className="panel panel--error">
+          <div className="panel__header">
+            <Announcer text={"Error"}/>
+            <div className="u-fs-r--b">Error</div>
           </div>
+          <div className="panel__body">
+            <Announcer text={validationErrorInfoText}/>
+            <p className="u-fs-r">
+              {validationErrorInfoText}
+            </p>
+            <ul className="list list--bare">
+              {validationFailureMessages}
+            </ul>
+          </div>
+        </div>
     )
   }
 
   return (
       <>
-        {serverError && <ServerErrorSection/>}
-        {validationFailedMessages.length > 0 && <ErrorSection/>}
+        {validationFailureMessages.length > 0 && <ErrorDisplay/>}
 
-        <h2>Create a New Print Template</h2>
-        <form onSubmit={createPrintTemplate}>
+        <h2>Create a Print Template</h2>
+        <form onSubmit={validateAndCreatePrintTemplate}>
           <div className="field field--select">
-            <label className="label venus">Select a print supplier</label>
+            <label className="label venus">Select print supplier</label>
             <select
                 id="printSupplierInput"
+                ref={printSupplierInput}
                 className="input input--select"
                 onChange={handlePrintSupplierChange}
-                aria-label={"Select a print supplier"}
+                aria-label={"Select print supplier"}
                 aria-required="true"
                 required
-                defaultValue={"DEFAULT"}
-                ref={printSupplierInput}
+                value={printSupplier}
             >
-              <option value={"DEFAULT"} disabled>Select a print supplier</option>
+              <option value="" disabled>Select print supplier</option>
               {printSupplierOptions}
             </select>
           </div>
 
           <div className="field">
-            <label className="label venus">Enter a pack code</label>
+            <label className="label venus">Enter pack code</label>
             <input
                 id="packCodeInput"
                 ref={printPackCodeInput}
                 className="input input--text input-type__input"
+                onChange={handlePackCodeChange}
                 type="text"
-                aria-label={"Enter a pack code"}
+                aria-label={"Enter pack code"}
                 aria-required="true"
                 required
                 value={packCode}
-                onChange={handlePackCodeChange}
             />
           </div>
 
           <div className="field">
-            <label className="label venus">Enter a print template</label>
+            <label className="label venus">Enter print template</label>
             <input
                 id="printTemplateInput"
                 ref={printTemplateInput}
                 className="input input--text input-type__input"
+                onChange={handleTemplateChange}
                 type="text"
-                aria-label={"Enter a print template"}
+                aria-label={"Enter print template"}
                 aria-required="true"
                 required
                 value={printTemplate}
-                onChange={handleTemplateChange}
             />
           </div>
           <p></p>
