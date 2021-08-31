@@ -160,7 +160,7 @@ function CreatePrintTemplate() {
                 required
                 value={printSupplier}
             >
-              <option value="" disabled>Select print supplier</option>
+              <option value="" selected disabled>Select print supplier</option>
               {printSupplierOptions}
             </select>
           </div>
