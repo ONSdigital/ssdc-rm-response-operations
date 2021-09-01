@@ -160,7 +160,7 @@ function CreatePrintTemplate() {
     }
   }
 
-  function TopLevelErrorSummary() {
+  function ErrorSummary() {
     const failureMessageCount = errorSummary.length;
     let validationErrorInfoText;
     if (failureMessageCount === 1) {
@@ -242,7 +242,7 @@ function CreatePrintTemplate() {
 
   return (
     <>
-      {errorSummary.length > 0 && <TopLevelErrorSummary />}
+      {errorSummary.length > 0 && <ErrorSummary />}
 
       <h2>Create a Print Template</h2>
       <form onSubmit={validateFormAndCreatePrintTemplate}>
