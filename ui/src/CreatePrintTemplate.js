@@ -23,8 +23,8 @@ function CreatePrintTemplate() {
       const printSuppliers = await response.json();
 
       const options = printSuppliers.map((supplier, index) => (
-          <div>
-            <p key={index} className="radios__item">
+          <div key={index}>
+            <p className="radios__item">
           <span className="radio">
             <input
                 id={supplier}
@@ -62,14 +62,17 @@ function CreatePrintTemplate() {
 
   function handlePrintSupplierChange(event) {
     setPrintSupplier(event.target.value);
+    setHasErrors(false);
   }
 
   function handlePackCodeChange(event) {
     setPackCode(event.target.value);
+    setHasErrors(false);
   }
 
   function handleTemplateChange(event) {
     setPrintTemplate(event.target.value);
+    setHasErrors(false);
   }
 
   function validatePrintTemplate() {
