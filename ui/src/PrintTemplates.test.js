@@ -24,7 +24,7 @@ it("renders print template data", async () => {
     {
       packCode: "Test Pack Code",
       printSupplier: "Test Print Supplier",
-      template: ["__uac__"]
+      template: ["__uac__"],
     },
   ];
   jest.spyOn(global, "fetch").mockImplementation(() =>
@@ -49,7 +49,7 @@ it("renders print template data", async () => {
   const printSupplierElement = screen.getByText(/Test Print Supplier/i);
   expect(printSupplierElement).toBeInTheDocument();
 
-  const printTemplateElement = screen.getByText("[\"__uac__\"]");
+  const printTemplateElement = screen.getByText('["__uac__"]');
   expect(printTemplateElement).toBeInTheDocument();
 
   // remove the mock to ensure tests are completely isolated

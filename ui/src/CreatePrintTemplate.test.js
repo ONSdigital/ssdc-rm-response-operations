@@ -20,13 +20,11 @@ afterEach(() => {
 });
 
 it("renders create print template", async () => {
-  const fakePrintSupplier = [
-    "SUPPLIER_A"
-  ];
+  const fakePrintSupplier = ["SUPPLIER_A"];
   jest.spyOn(global, "fetch").mockImplementation(() =>
-      Promise.resolve({
-        json: () => Promise.resolve(fakePrintSupplier),
-      })
+    Promise.resolve({
+      json: () => Promise.resolve(fakePrintSupplier),
+    })
   );
 
   // Use the asynchronous version of act to apply resolved promises
@@ -39,7 +37,9 @@ it("renders create print template", async () => {
     );
   });
 
-  const createPrintTemplateButtonElement = screen.getByText(/Create Print Template/i);
+  const createPrintTemplateButtonElement = screen.getByText(
+    /Create Print Template/i
+  );
   expect(createPrintTemplateButtonElement).toBeInTheDocument();
 
   const printSupplier = screen.getByText(/SUPPLIER_A/i);

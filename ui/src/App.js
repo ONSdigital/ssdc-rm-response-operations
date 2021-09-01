@@ -87,8 +87,8 @@ function QueryRouting(props) {
       <Route path="/printtemplates">
         <DocumentTitle title="View Print Templates">
           <PrintTemplates
-              authorisedActivities={props.authorisedActivities}
-              flashMessageUntil={query.get("flashMessageUntil")}
+            authorisedActivities={props.authorisedActivities}
+            flashMessageUntil={query.get("flashMessageUntil")}
           />
         </DocumentTitle>
       </Route>

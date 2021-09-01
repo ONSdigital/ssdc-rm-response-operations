@@ -24,8 +24,7 @@ it("renders home page", async () => {
   await act(async () => {
     render(
       <Router>
-        <Home
-            authorisedActivities={["LIST_SURVEYS", "LIST_PRINT_TEMPLATES"]} />
+        <Home authorisedActivities={["LIST_SURVEYS", "LIST_PRINT_TEMPLATES"]} />
       </Router>,
       container
     );

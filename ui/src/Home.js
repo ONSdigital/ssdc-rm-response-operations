@@ -10,9 +10,9 @@ function Home(props) {
         </p>
       )}
       {props.authorisedActivities.includes("LIST_PRINT_TEMPLATES") && (
-      <p>
-        <Link to="/printtemplates">Print Templates</Link>
-      </p>
+        <p>
+          <Link to="/printtemplates">Print Templates</Link>
+        </p>
       )}
     </>
   );

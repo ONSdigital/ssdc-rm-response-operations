@@ -11,12 +11,8 @@ function PrintTemplates(props) {
       const printTemplates = await response.json();
       const tableRows = await printTemplates.map((printTemplate, index) => (
         <tr className="table__row" key={index}>
-          <td className="table__cell">
-            {printTemplate.packCode}
-          </td>
-          <td className="table__cell">
-            {printTemplate.printSupplier}
-          </td>
+          <td className="table__cell">{printTemplate.packCode}</td>
+          <td className="table__cell">{printTemplate.printSupplier}</td>
           <td className="table__cell">
             {JSON.stringify(printTemplate.template)}
           </td>
