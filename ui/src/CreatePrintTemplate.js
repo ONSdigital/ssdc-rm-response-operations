@@ -12,6 +12,7 @@ function CreatePrintTemplate() {
   const printSupplierInput = useRef(null);
   const printPackCodeInput = useRef(null);
   const printTemplateInput = useRef(null);
+  const errorSummaryTitle = useRef(null);
 
   let history = useHistory();
 
@@ -25,18 +26,16 @@ function CreatePrintTemplate() {
 
       // TODO: Add <Announcer> for each supplier?
       const options = printSuppliers.map((supplier, index) => (
-          <>
-            <p className="radios__item">
+          <div>
+            <p key={index} className="radios__item">
           <span className="radio">
             <input
                 id={supplier}
-                key={index}
                 type="radio"
                 className="radio__input js-radio"
                 value={supplier}
                 name="supplier"
                 required
-                aria-required="true"
             />
             <label
                 htmlFor={supplier}
@@ -47,7 +46,7 @@ function CreatePrintTemplate() {
           </span>
             </p>
             <br/>
-          </>
+          </div>
       ));
       setPrintSupplierOptions(options);
     }
@@ -55,6 +54,14 @@ function CreatePrintTemplate() {
     fetchData();
     printSupplierInput.current.focus();
   }, []);
+
+
+  // useEffect(() => {
+  //   if (validationFailureMessages.length) {
+  //     document.title = "Error"
+  //     errorSummaryTitle.current.focus();
+  //   }
+  // },[validationFailureMessages.length]);
 
   function handlePrintSupplierChange(event) {
     setPrintSupplier(event.target.value);
@@ -123,11 +130,10 @@ function CreatePrintTemplate() {
     if (failedValidation) {
 
       const failureMessages = validationFailures.map((failure, index) => (
-          <li className="list__item u-fs-r">
+          <li key={index} className="list__item">
             <Announcer text={failure.message}/>
-            {index + 1}. &nbsp;
             <a
-                className="js-inpagelink"
+                className="list__link js-inpagelink"
                 // MUST use href in-page links for accessibility
                 href={`#${failure.anchorTo}`}>
               {failure.message}
@@ -144,23 +150,33 @@ function CreatePrintTemplate() {
   }
 
   function ErrorDisplay() {
-    const validationErrorInfoText =
-        `Error${validationFailureMessages.length > 1 ? "s" : ""} found. Please fix before continuing.`
+    const failureMessageCount = validationFailureMessages.length
+    let validationErrorInfoText;
+    if (failureMessageCount === 1) {
+      validationErrorInfoText = "There is 1 problem with this page"
+    } else {
+      validationErrorInfoText = `There are ${failureMessageCount} problems with this page`
+    }
 
     return (
-        <div className="panel panel--error">
+        <div
+            id="errorSummaryTitle"
+            ref={errorSummaryTitle}
+            aria-labelledby="error-summary-title"
+            role="alert"
+            tabIndex="-1"
+            className="panel panel--error"
+        >
+          <Announcer text={"Error"}/>
           <div className="panel__header">
-            <Announcer text={"Error"}/>
-            <div className="u-fs-r--b">Error</div>
+            <h2 data-qa="error-header" className="panel__title u-fs-r--b">
+              {validationErrorInfoText}
+            </h2>
           </div>
           <div className="panel__body">
-            <Announcer text={validationErrorInfoText}/>
-            <p className="u-fs-r">
-              {validationErrorInfoText}
-            </p>
-            <ul className="list list--bare">
+            <ol className="list">
               {validationFailureMessages}
-            </ul>
+            </ol>
           </div>
         </div>
     )
@@ -192,43 +208,6 @@ function CreatePrintTemplate() {
             </fieldset>
           </div>
           <p></p>
-
-
-          {/*<div className="field field--select">*/}
-          {/*  <label className="label venus">Select print supplier</label>*/}
-          {/*  <select*/}
-          {/*      id="printSupplierInput"*/}
-          {/*      ref={printSupplierInput}*/}
-          {/*      className="input input--select"*/}
-          {/*      onChange={handlePrintSupplierChange}*/}
-          {/*      aria-label={"Select print supplier"}*/}
-          {/*      aria-required="true"*/}
-          {/*      required*/}
-          {/*      value={printSupplier}*/}
-          {/*  >*/}
-          {/*    /!*{TODO: Announcer needed here for default option?}*!/*/}
-          {/*    <option value="" selected disabled>Select print supplier</option>*/}
-          {/*    {printSupplierOptions}*/}
-          {/*  </select>*/}
-          {/*</div>*/}
-
-
-          {/*<div className="field field--select">*/}
-          {/*  <label className="label venus">Select print supplier</label>*/}
-          {/*  <select*/}
-          {/*      id="printSupplierInput"*/}
-          {/*      ref={printSupplierInput}*/}
-          {/*      className="input input--select"*/}
-          {/*      onChange={handlePrintSupplierChange}*/}
-          {/*      aria-label={"Select print supplier"}*/}
-          {/*      aria-required="true"*/}
-          {/*      required*/}
-          {/*      defaultValue="DEFAULT"*/}
-          {/*  >*/}
-          {/*    <option value="DEFAULT" disabled>Select print supplier</option>*/}
-          {/*    {printSupplierOptions}*/}
-          {/*  </select>*/}
-          {/*</div>*/}
 
           <div className="field">
             <label className="label venus">Enter pack code</label>
