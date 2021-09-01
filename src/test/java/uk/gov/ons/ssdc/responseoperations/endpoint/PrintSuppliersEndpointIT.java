@@ -24,11 +24,9 @@ import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 @ActiveProfiles("test")
 public class PrintSuppliersEndpointIT {
 
-  @Autowired
-  private UserPermissionHelper userPermissionHelper;
+  @Autowired private UserPermissionHelper userPermissionHelper;
 
-  @LocalServerPort
-  private int port;
+  @LocalServerPort private int port;
 
   @BeforeEach
   @Transactional
@@ -58,8 +56,7 @@ public class PrintSuppliersEndpointIT {
     String url = "http://localhost:" + port + "/api/printsuppliers";
     HttpClientErrorException thrown =
         assertThrows(
-            HttpClientErrorException.class,
-            () -> restTemplate.getForEntity(url, String[].class));
+            HttpClientErrorException.class, () -> restTemplate.getForEntity(url, String[].class));
 
     assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
   }
