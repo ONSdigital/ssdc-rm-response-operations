@@ -7,10 +7,10 @@ function CreatePrintTemplate() {
   const [packCode, setPackCode] = useState("");
   const [printTemplate, setPrintTemplate] = useState("");
   const [printSupplierOptions, setPrintSupplierOptions] = useState([]);
-  const [validationFailureMessages, setValidationFailureMessages] = useState(
-    []
-  );
   const [hasErrors, setHasErrors] = useState(false);
+  const [printTemplateInputErrorDetail, setPrintTemplateInputErrorDetail] =
+    useState([]);
+  const [errorSummary, setErrorSummary] = useState([]);
 
   const printSupplierInput = useRef(null);
   const printPackCodeInput = useRef(null);
@@ -77,31 +77,37 @@ function CreatePrintTemplate() {
     setHasErrors(false);
   }
 
-  function validatePrintTemplate() {
-    const inputFailureMessages = {
-      templateArrayFormat:
+  function validatePrintTemplateInput() {
+    const inputErrorMessageInfo = {
+      arrayFormatError:
         "Print template must be JSON array with one or more elements",
-      templateInvalidJson: "Print template is not valid JSON",
+      jsonFormatError: "Print template is not valid JSON",
     };
 
-    let errors = [];
-
+    let errorMessageAndLocation = [];
     try {
       const parsedJson = JSON.parse(printTemplate);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
-        errors.push({
-          message: inputFailureMessages.templateArrayFormat,
+        errorMessageAndLocation.push({
+          message: inputErrorMessageInfo.arrayFormatError,
           anchorTo: printTemplateInput.current.id,
         });
+        setPrintTemplateInputErrorDetail(
+          inputErrorMessageInfo.arrayFormatError
+        );
       }
     } catch (err) {
-      errors.push({
-        message: inputFailureMessages.templateInvalidJson,
+      errorMessageAndLocation.push({
+        message: inputErrorMessageInfo.jsonFormatError,
         anchorTo: printTemplateInput.current.id,
       });
+      setPrintTemplateInputErrorDetail(inputErrorMessageInfo.jsonFormatError);
     }
+    return errorMessageAndLocation;
+  }
 
-    return errors;
+  function validatePrintTemplateForm() {
+    return validatePrintTemplateInput();
   }
 
   async function createPrintTemplate() {
@@ -122,13 +128,14 @@ function CreatePrintTemplate() {
     }
   }
 
-  async function validateAndCreatePrintTemplate(event) {
+  async function validateFormAndCreatePrintTemplate(event) {
     event.preventDefault();
 
     setHasErrors(false);
-    setValidationFailureMessages([]);
+    setErrorSummary([]);
+    setPrintTemplateInputErrorDetail([]);
 
-    let validationFailures = validatePrintTemplate();
+    let validationFailures = validatePrintTemplateForm();
 
     const failedValidation = validationFailures.length;
     if (failedValidation) {
@@ -145,7 +152,7 @@ function CreatePrintTemplate() {
         </li>
       ));
       setHasErrors(true);
-      setValidationFailureMessages(failureMessages);
+      setErrorSummary(failureMessages);
     }
 
     if (!failedValidation) {
@@ -153,8 +160,8 @@ function CreatePrintTemplate() {
     }
   }
 
-  function ErrorSummary() {
-    const failureMessageCount = validationFailureMessages.length;
+  function TopLevelErrorSummary() {
+    const failureMessageCount = errorSummary.length;
     let validationErrorInfoText;
     if (failureMessageCount === 1) {
       validationErrorInfoText = "There is 1 problem with this page";
@@ -178,18 +185,68 @@ function CreatePrintTemplate() {
           </h2>
         </div>
         <div className="panel__body">
-          <ol className="list">{validationFailureMessages}</ol>
+          <ol className="list">{errorSummary}</ol>
         </div>
       </div>
     );
   }
 
+  const PrintTemplateError = (
+    <div
+      className="panel panel--error panel--no-title u-mb-s"
+      id="printTemplateInputError"
+    >
+      <span className="u-vh">Error: </span>
+      <div className="panel__body">
+        <p className="panel__error">
+          <strong>{printTemplateInputErrorDetail}</strong>
+        </p>
+        <div className="field">
+          <label className="label" htmlFor={printTemplateInput}>
+            Enter Print Template
+          </label>
+          <input
+            id="printTemplateInput"
+            ref={printTemplateInput}
+            className="input input--text input-type__input"
+            onChange={handleTemplateChange}
+            type="text"
+            aria-label={"Enter print template"}
+            aria-required="true"
+            required
+            value={printTemplate}
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  const PrintTemplate = (
+    <div className="question u-mt-no">
+      <label className="label" htmlFor={printTemplateInput}>
+        Enter print template
+      </label>
+      <input
+        id="printTemplateInput"
+        ref={printTemplateInput}
+        className="input input--text input-type__input"
+        onChange={handleTemplateChange}
+        type="text"
+        aria-label={"Enter print template"}
+        aria-required="true"
+        required
+        value={printTemplate}
+      />
+    </div>
+  );
+
   return (
     <>
-      {validationFailureMessages.length > 0 && <ErrorSummary />}
+      {errorSummary.length > 0 && <TopLevelErrorSummary />}
+
       <h2>Create a Print Template</h2>
-      <form onSubmit={validateAndCreatePrintTemplate}>
-        <div className="field">
+      <form onSubmit={validateFormAndCreatePrintTemplate}>
+        <div className="question u-mt-no">
           <label className="label venus">Enter pack code</label>
           <input
             id="packCodeInput"
@@ -203,22 +260,13 @@ function CreatePrintTemplate() {
             value={packCode}
           />
         </div>
-        <p></p>
-        <div className="field">
-          <label className="label venus">Enter print template</label>
-          <input
-            id="printTemplateInput"
-            ref={printTemplateInput}
-            className="input input--text input-type__input"
-            onChange={handleTemplateChange}
-            type="text"
-            aria-label={"Enter print template"}
-            aria-required="true"
-            required
-            value={printTemplate}
-          />
+        <br />
+        <div className="question u-mt-no">
+          {printTemplateInputErrorDetail.length > 0
+            ? PrintTemplateError
+            : PrintTemplate}
         </div>
-        <p></p>
+        <br />
         <div className="question u-mt-no">
           <fieldset
             id="printSupplierInput"
@@ -236,7 +284,7 @@ function CreatePrintTemplate() {
             </div>
           </fieldset>
         </div>
-        <p></p>
+        <br />
         <button type="submit" className="btn btn--link">
           <span className="btn__inner">Create Print Template</span>
         </button>
