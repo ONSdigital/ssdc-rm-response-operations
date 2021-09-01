@@ -8,6 +8,7 @@ function CreatePrintTemplate() {
   const [printTemplate, setPrintTemplate] = useState("");
   const [printSupplierOptions, setPrintSupplierOptions] = useState([]);
   const [validationFailureMessages, setValidationFailureMessages] = useState([]);
+  const [hasErrors, setHasErrors] = useState(false);
 
   const printSupplierInput = useRef(null);
   const printPackCodeInput = useRef(null);
@@ -18,13 +19,9 @@ function CreatePrintTemplate() {
 
   useEffect(() => {
     async function fetchData() {
-      // TODO: Uncomment API call!
-      // const response = await fetch("/api/printsuppliers");
-      // const printSuppliers = await response.json();
+      const response = await fetch("/api/printsuppliers");
+      const printSuppliers = await response.json();
 
-      const printSuppliers = ['SUPPLIER_A', 'SUPPLIER_B']
-
-      // TODO: Add <Announcer> for each supplier?
       const options = printSuppliers.map((supplier, index) => (
           <div>
             <p key={index} className="radios__item">
@@ -52,16 +49,16 @@ function CreatePrintTemplate() {
     }
 
     fetchData();
-    printSupplierInput.current.focus();
+    printPackCodeInput.current.focus();
   }, []);
 
 
-  // useEffect(() => {
-  //   if (validationFailureMessages.length) {
-  //     document.title = "Error"
-  //     errorSummaryTitle.current.focus();
-  //   }
-  // },[validationFailureMessages.length]);
+  useEffect(() => {
+    if (hasErrors) {
+      document.title = "Error"
+      errorSummaryTitle.current.focus();
+    }
+  },[hasErrors]);
 
   function handlePrintSupplierChange(event) {
     setPrintSupplier(event.target.value);
@@ -82,7 +79,6 @@ function CreatePrintTemplate() {
     }
 
     setValidationFailureMessages([]);
-
     let errors = [];
 
     try {
@@ -123,6 +119,7 @@ function CreatePrintTemplate() {
 
   async function validateAndCreatePrintTemplate(event) {
     event.preventDefault();
+    setHasErrors(false);
 
     let validationFailures = validatePrintTemplate();
 
@@ -140,7 +137,7 @@ function CreatePrintTemplate() {
             </a>
           </li>
       ));
-
+      setHasErrors(true);
       setValidationFailureMessages(failureMessages);
     }
 
@@ -149,7 +146,7 @@ function CreatePrintTemplate() {
     }
   }
 
-  function ErrorDisplay() {
+  function ErrorSummary() {
     const failureMessageCount = validationFailureMessages.length
     let validationErrorInfoText;
     if (failureMessageCount === 1) {
@@ -184,10 +181,40 @@ function CreatePrintTemplate() {
 
   return (
       <>
-        {validationFailureMessages.length > 0 && <ErrorDisplay/>}
+        {validationFailureMessages.length > 0 && <ErrorSummary/>}
         <h2>Create a Print Template</h2>
         <form onSubmit={validateAndCreatePrintTemplate}>
 
+          <div className="field">
+            <label className="label venus">Enter pack code</label>
+            <input
+                id="packCodeInput"
+                ref={printPackCodeInput}
+                className="input input--text input-type__input"
+                onChange={handlePackCodeChange}
+                type="text"
+                aria-label={"Enter pack code"}
+                aria-required="true"
+                required
+                value={packCode}
+            />
+          </div>
+          <p></p>
+          <div className="field">
+            <label className="label venus">Enter print template</label>
+            <input
+                id="printTemplateInput"
+                ref={printTemplateInput}
+                className="input input--text input-type__input"
+                onChange={handleTemplateChange}
+                type="text"
+                aria-label={"Enter print template"}
+                aria-required="true"
+                required
+                value={printTemplate}
+            />
+          </div>
+          <p></p>
           <div className="question u-mt-no">
             <fieldset
                 id="printSupplierInput"
@@ -206,37 +233,6 @@ function CreatePrintTemplate() {
                 </div>
               </div>
             </fieldset>
-          </div>
-          <p></p>
-
-          <div className="field">
-            <label className="label venus">Enter pack code</label>
-            <input
-                id="packCodeInput"
-                ref={printPackCodeInput}
-                className="input input--text input-type__input"
-                onChange={handlePackCodeChange}
-                type="text"
-                aria-label={"Enter pack code"}
-                aria-required="true"
-                required
-                value={packCode}
-            />
-          </div>
-
-          <div className="field">
-            <label className="label venus">Enter print template</label>
-            <input
-                id="printTemplateInput"
-                ref={printTemplateInput}
-                className="input input--text input-type__input"
-                onChange={handleTemplateChange}
-                type="text"
-                aria-label={"Enter print template"}
-                aria-required="true"
-                required
-                value={printTemplate}
-            />
           </div>
           <p></p>
           <button type="submit" className="btn btn--link">
