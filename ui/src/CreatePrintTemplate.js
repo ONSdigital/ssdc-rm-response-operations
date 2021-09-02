@@ -284,9 +284,7 @@ function CreatePrintTemplate() {
               <label className="label venus">Select print supplier</label>
             </legend>
             <div className="input-items">
-              <div className="radios__items">
-                {printSupplierOptions}
-              </div>
+              <div className="radios__items">{printSupplierOptions}</div>
             </div>
           </fieldset>
         </div>
