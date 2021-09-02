@@ -20,6 +20,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.ons.ssdc.common.model.entity.Survey;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
+import uk.gov.ons.ssdc.common.validation.ColumnValidator;
+import uk.gov.ons.ssdc.common.validation.MandatoryRule;
+import uk.gov.ons.ssdc.common.validation.Rule;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyDto;
 import uk.gov.ons.ssdc.responseoperations.model.repository.SurveyRepository;
 import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
@@ -48,7 +51,10 @@ public class SurveyEndpointIT {
     survey.setId(UUID.randomUUID());
     survey.setName("Test survey");
     survey.setSampleSeparator(',');
-    survey.setSampleValidationRules("{}");
+    survey.setSampleValidationRules(
+        new ColumnValidator[] {
+          new ColumnValidator("DUMMY_COLUMN", false, new Rule[] {new MandatoryRule()})
+        });
     surveyRepository.saveAndFlush(survey);
 
     RestTemplate restTemplate = new RestTemplate();
@@ -79,7 +85,10 @@ public class SurveyEndpointIT {
     survey.setId(UUID.randomUUID());
     survey.setName("Test survey");
     survey.setSampleSeparator(',');
-    survey.setSampleValidationRules("{}");
+    survey.setSampleValidationRules(
+        new ColumnValidator[] {
+          new ColumnValidator("DUMMY_COLUMN", false, new Rule[] {new MandatoryRule()})
+        });
     surveyRepository.saveAndFlush(survey);
 
     RestTemplate restTemplate = new RestTemplate();
