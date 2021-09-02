@@ -57,6 +57,6 @@ class PrintSuppliersEndpointTest {
     // Then
     verify(userIdentity)
         .checkGlobalUserPermission(
-            anyString(), eq(UserGroupAuthorisedActivityType.CREATE_PRINT_TEMPLATE));
+            anyString(), eq(UserGroupAuthorisedActivityType.LIST_PRINT_SUPPLIERS));
   }
 }
