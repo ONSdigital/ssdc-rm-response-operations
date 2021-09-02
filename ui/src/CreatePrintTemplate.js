@@ -266,8 +266,9 @@ function CreatePrintTemplate() {
         </div>
         <br />
         <div className="question u-mt-no">
-          {printTemplateInputErrorSummary.length === 0 && printTemplateFragment}
-          {printTemplateInputErrorSummary.length > 0 && printTemplateErrorFragment}
+          {printTemplateInputErrorSummary.length === 0
+            ? printTemplateFragment
+            : printTemplateErrorFragment}
         </div>
         <br />
         <div className="question u-mt-no">
