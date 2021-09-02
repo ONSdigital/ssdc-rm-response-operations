@@ -37,7 +37,7 @@ public class PrintSuppliersEndpointIT {
   @Test
   public void getPrintSuppliers() {
     userPermissionHelper.setUpTestUserPermission(
-        UserGroupAuthorisedActivityType.CREATE_PRINT_TEMPLATE);
+        UserGroupAuthorisedActivityType.LIST_PRINT_SUPPLIERS);
 
     String[] expectedSuppliers = {"SUPPLIER_A", "SUPPLIER_B"};
 
