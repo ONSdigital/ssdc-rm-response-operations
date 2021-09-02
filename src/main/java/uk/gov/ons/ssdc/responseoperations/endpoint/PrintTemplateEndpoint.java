@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import uk.gov.ons.ssdc.common.model.entity.PrintTemplate;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.config.PrintSupplierConfig;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.PrintTemplateDto;
-import uk.gov.ons.ssdc.responseoperations.model.entity.PrintTemplate;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.repository.PrintTemplateRepository;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 

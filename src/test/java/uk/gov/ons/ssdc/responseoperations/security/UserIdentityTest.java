@@ -15,12 +15,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-import uk.gov.ons.ssdc.responseoperations.model.entity.Survey;
-import uk.gov.ons.ssdc.responseoperations.model.entity.User;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroup;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupMember;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupPermission;
+import uk.gov.ons.ssdc.common.model.entity.Survey;
+import uk.gov.ons.ssdc.common.model.entity.User;
+import uk.gov.ons.ssdc.common.model.entity.UserGroup;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupPermission;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)

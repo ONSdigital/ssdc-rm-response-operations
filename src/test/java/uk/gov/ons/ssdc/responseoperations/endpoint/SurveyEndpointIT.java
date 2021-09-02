@@ -18,9 +18,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.ons.ssdc.common.model.entity.Survey;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyDto;
-import uk.gov.ons.ssdc.responseoperations.model.entity.Survey;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.repository.SurveyRepository;
 import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 
