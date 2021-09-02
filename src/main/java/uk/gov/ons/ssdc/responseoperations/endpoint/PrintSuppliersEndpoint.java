@@ -26,7 +26,7 @@ public class PrintSuppliersEndpoint {
   @GetMapping
   public Set<String> getPrintSuppliers(
       @Value("#{request.getAttribute('userEmail')}") String userEmail) {
-    userIdentity.checkGlobalUserPermission(userEmail, CREATE_PRINT_TEMPLATE);
+    userIdentity.checkGlobalUserPermission(userEmail, LIST_PRINT_SUPPLIERS);
     return printSupplierConfig.getPrintSuppliers();
   }
 }
