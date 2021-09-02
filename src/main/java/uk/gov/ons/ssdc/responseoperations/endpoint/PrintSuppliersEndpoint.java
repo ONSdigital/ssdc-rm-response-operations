@@ -1,6 +1,6 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
-import static uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType.CREATE_PRINT_TEMPLATE;
+import static uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType.LIST_PRINT_SUPPLIERS;
 
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
