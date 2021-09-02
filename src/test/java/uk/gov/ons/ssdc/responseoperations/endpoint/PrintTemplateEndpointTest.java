@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.ons.ssdc.responseoperations.test_utils.JsonHelper.asJsonString;
 
 import java.util.List;
+import java.util.Set;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import uk.gov.ons.ssdc.responseoperations.config.PrintSupplierConfig;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.PrintTemplateDto;
 import uk.gov.ons.ssdc.responseoperations.model.entity.PrintTemplate;
 import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
@@ -36,6 +37,8 @@ class PrintTemplateEndpointTest {
   @Mock private PrintTemplateRepository printTemplateRepository;
 
   @Mock private UserIdentity userIdentity;
+
+  @Mock private PrintSupplierConfig printSupplierConfig;
 
   @InjectMocks private PrintTemplateEndpoint underTest;
 
@@ -76,10 +79,7 @@ class PrintTemplateEndpointTest {
   @Test
   public void testCreatePrintTemplate() throws Exception {
 
-    ReflectionTestUtils.setField(
-        underTest,
-        "printSupplierConfig",
-        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
+    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode1");
@@ -108,10 +108,6 @@ class PrintTemplateEndpointTest {
 
   @Test
   public void testThatEmptyPackCodeIsRejected() throws Exception {
-    ReflectionTestUtils.setField(
-        underTest,
-        "printSupplierConfig",
-        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("");
@@ -134,10 +130,6 @@ class PrintTemplateEndpointTest {
 
   @Test
   public void testThatNoneUniquePackCodeIsRejected() throws Exception {
-    ReflectionTestUtils.setField(
-        underTest,
-        "printSupplierConfig",
-        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("PackCodeA");
@@ -167,10 +159,7 @@ class PrintTemplateEndpointTest {
   @Test
   public void testCreatePrintTemplateFailsWithInvalidPrintSupplier() throws Exception {
 
-    ReflectionTestUtils.setField(
-        underTest,
-        "printSupplierConfig",
-        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
+    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode1");
@@ -193,10 +182,6 @@ class PrintTemplateEndpointTest {
 
   @Test
   public void testEmptyTemplateThrowsError() throws Exception {
-    ReflectionTestUtils.setField(
-        underTest,
-        "printSupplierConfig",
-        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode1");
@@ -219,10 +204,6 @@ class PrintTemplateEndpointTest {
 
   @Test
   public void testEmptyColumnInTemplateThrowsError() throws Exception {
-    ReflectionTestUtils.setField(
-        underTest,
-        "printSupplierConfig",
-        "{\"SUPPLIER_A\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\": \"bar\"},\"SUPPLIER_B\":{\"sftpDirectory\":\"foo\",\"encryptionKeyFilename\":\"bar\"}}");
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode1");

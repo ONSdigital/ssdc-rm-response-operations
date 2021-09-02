@@ -1,9 +1,6 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,27 +12,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import uk.gov.ons.ssdc.responseoperations.config.PrintSupplierConfig;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.PrintTemplateDto;
 import uk.gov.ons.ssdc.responseoperations.model.entity.PrintTemplate;
 import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.repository.PrintTemplateRepository;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
-import utility.ObjectMapperFactory;
 
 @RestController
 @RequestMapping(value = "/api/printtemplates")
 public class PrintTemplateEndpoint {
-  public static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.objectMapper();
   private final PrintTemplateRepository printTemplateRepository;
   private final UserIdentity userIdentity;
-
-  @Value("${printsupplierconfig}")
-  private String printSupplierConfig;
+  private final PrintSupplierConfig printSupplierConfig;
 
   public PrintTemplateEndpoint(
-      PrintTemplateRepository printTemplateRepository, UserIdentity userIdentity) {
+      PrintTemplateRepository printTemplateRepository,
+      UserIdentity userIdentity,
+      PrintSupplierConfig printSupplierConfig) {
     this.printTemplateRepository = printTemplateRepository;
     this.userIdentity = userIdentity;
+    this.printSupplierConfig = printSupplierConfig;
   }
 
   @GetMapping
@@ -98,15 +95,7 @@ public class PrintTemplateEndpoint {
   }
 
   private void checkPrintSupplierValid(String printSupplier) {
-    Map printSupplierMap = null;
-
-    try {
-      printSupplierMap = OBJECT_MAPPER.readValue(printSupplierConfig, Map.class);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
-
-    if (!printSupplierMap.containsKey(printSupplier)) {
+    if (!printSupplierConfig.getPrintSuppliers().contains(printSupplier)) {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST, "Print supplier unknown: " + printSupplier);
     }
