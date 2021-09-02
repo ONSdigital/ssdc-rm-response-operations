@@ -8,9 +8,9 @@ function CreatePrintTemplate() {
   const [printTemplate, setPrintTemplate] = useState("");
   const [printSupplierOptions, setPrintSupplierOptions] = useState([]);
   const [hasErrors, setHasErrors] = useState(false);
-  const [printTemplateInputErrorDetail, setPrintTemplateInputErrorDetail] =
-    useState([]);
   const [errorSummary, setErrorSummary] = useState([]);
+  const [printTemplateInputErrorSummary, setPrintTemplateInputErrorSummary] =
+    useState([]);
 
   const printSupplierInput = useRef(null);
   const printPackCodeInput = useRef(null);
@@ -77,37 +77,47 @@ function CreatePrintTemplate() {
     setHasErrors(false);
   }
 
-  function validatePrintTemplateInput() {
-    const inputErrorMessageInfo = {
+  function getPrintTemplateInputErrors() {
+    const printTemplateInputErrorInfo = {
       arrayFormatError:
         "Print template must be JSON array with one or more elements",
       jsonFormatError: "Print template is not valid JSON",
     };
 
-    let errorMessageAndLocation = [];
+    let errors = [];
     try {
       const parsedJson = JSON.parse(printTemplate);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
-        errorMessageAndLocation.push({
-          message: inputErrorMessageInfo.arrayFormatError,
+        errors.push({
+          message: printTemplateInputErrorInfo.arrayFormatError,
           anchorTo: printTemplateInput.current.id,
         });
-        setPrintTemplateInputErrorDetail(
-          inputErrorMessageInfo.arrayFormatError
-        );
       }
     } catch (err) {
-      errorMessageAndLocation.push({
-        message: inputErrorMessageInfo.jsonFormatError,
+      errors.push({
+        message: printTemplateInputErrorInfo.jsonFormatError,
         anchorTo: printTemplateInput.current.id,
       });
-      setPrintTemplateInputErrorDetail(inputErrorMessageInfo.jsonFormatError);
     }
-    return errorMessageAndLocation;
+    return errors;
   }
 
   function validatePrintTemplateForm() {
-    return validatePrintTemplateInput();
+    const printTemplateInputErrors = getPrintTemplateInputErrors();
+    const errors = printTemplateInputErrors.map(
+      (printTemplateInputError, index) => (
+        <p
+          id={`printTemplateInputError${index}`}
+          key={index}
+          className="panel__error"
+        >
+          <strong>{printTemplateInputError.message}</strong>
+        </p>
+      )
+    );
+    setPrintTemplateInputErrorSummary(errors);
+
+    return printTemplateInputErrors;
   }
 
   async function createPrintTemplate() {
@@ -133,41 +143,36 @@ function CreatePrintTemplate() {
 
     setHasErrors(false);
     setErrorSummary([]);
-    setPrintTemplateInputErrorDetail([]);
+    setPrintTemplateInputErrorSummary([]);
 
-    let validationFailures = validatePrintTemplateForm();
+    let formSummaryErrors = validatePrintTemplateForm();
+    const errors = formSummaryErrors.map((formError, index) => (
+      <li key={index} className="list__item">
+        <Announcer text={formError.message} />
+        <a
+          className="list__link js-inpagelink"
+          // MUST use href in-page links for accessibility
+          href={`#${formError.anchorTo}`}
+        >
+          {formError.message}
+        </a>
+      </li>
+    ));
+    setErrorSummary(errors);
 
-    const failedValidation = validationFailures.length;
-    if (failedValidation) {
-      const failureMessages = validationFailures.map((failure, index) => (
-        <li key={index} className="list__item">
-          <Announcer text={failure.message} />
-          <a
-            className="list__link js-inpagelink"
-            // MUST use href in-page links for accessibility
-            href={`#${failure.anchorTo}`}
-          >
-            {failure.message}
-          </a>
-        </li>
-      ));
-      setHasErrors(true);
-      setErrorSummary(failureMessages);
-    }
-
-    if (!failedValidation) {
+    if (!formSummaryErrors.length) {
       await createPrintTemplate();
+    } else {
+      setHasErrors(true);
     }
   }
 
   function ErrorSummary() {
-    const failureMessageCount = errorSummary.length;
-    let validationErrorInfoText;
-    if (failureMessageCount === 1) {
-      validationErrorInfoText = "There is 1 problem with this page";
-    } else {
-      validationErrorInfoText = `There are ${failureMessageCount} problems with this page`;
-    }
+    const errorSummaryCount = errorSummary.length;
+    const validationErrorInfoText =
+      errorSummaryCount === 1
+        ? "There is 1 problem with this page"
+        : `There are ${errorSummaryCount} problems with this page`;
 
     return (
       <div
@@ -199,7 +204,7 @@ function CreatePrintTemplate() {
       <span className="u-vh">Error: </span>
       <div className="panel__body">
         <p className="panel__error">
-          <strong>{printTemplateInputErrorDetail}</strong>
+          <strong>{printTemplateInputErrorSummary}</strong>
         </p>
         <div className="field">
           <label className="label" htmlFor={printTemplateInput}>
@@ -243,7 +248,6 @@ function CreatePrintTemplate() {
   return (
     <>
       {errorSummary.length > 0 && <ErrorSummary />}
-
       <h2>Create a Print Template</h2>
       <form onSubmit={validateFormAndCreatePrintTemplate}>
         <div className="question u-mt-no">
@@ -262,7 +266,7 @@ function CreatePrintTemplate() {
         </div>
         <br />
         <div className="question u-mt-no">
-          {printTemplateInputErrorDetail.length > 0
+          {printTemplateInputErrorSummary.length > 0
             ? PrintTemplateError
             : PrintTemplate}
         </div>
@@ -280,7 +284,9 @@ function CreatePrintTemplate() {
               <label className="label venus">Select print supplier</label>
             </legend>
             <div className="input-items">
-              <div className="radios__items">{printSupplierOptions}</div>
+              <div className="radios__items">
+                {printSupplierOptions}
+              </div>
             </div>
           </fieldset>
         </div>
