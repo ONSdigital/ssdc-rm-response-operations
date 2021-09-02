@@ -196,7 +196,7 @@ function CreatePrintTemplate() {
     );
   }
 
-  const PrintTemplateError = (
+  const printTemplateErrorFragment = (
     <div
       className="panel panel--error panel--no-title u-mb-s"
       id="printTemplateInputError"
@@ -226,7 +226,7 @@ function CreatePrintTemplate() {
     </div>
   );
 
-  const PrintTemplate = (
+  const printTemplateFragment = (
     <div className="question u-mt-no">
       <label className="label" htmlFor={printTemplateInput}>
         Enter print template
@@ -266,9 +266,8 @@ function CreatePrintTemplate() {
         </div>
         <br />
         <div className="question u-mt-no">
-          {printTemplateInputErrorSummary.length > 0
-            ? PrintTemplateError
-            : PrintTemplate}
+          {printTemplateInputErrorSummary.length === 0 && printTemplateFragment}
+          {printTemplateInputErrorSummary.length > 0 && printTemplateErrorFragment}
         </div>
         <br />
         <div className="question u-mt-no">
