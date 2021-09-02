@@ -66,6 +66,7 @@ public class SurveyEndpoint {
     newSurvey.setId(UUID.randomUUID());
     newSurvey.setName(survey.getName());
     newSurvey.setSampleSeparator(',');
+    newSurvey.setSampleValidationRules("{}"); // TODO: this needs to be replaced with real rules
     surveyRepository.saveAndFlush(newSurvey);
     return new ResponseEntity(HttpStatus.CREATED);
   }

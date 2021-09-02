@@ -1,5 +1,6 @@
 package uk.gov.ons.ssdc.responseoperations.model.entity;
 
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,13 +9,13 @@ import org.hibernate.annotations.Type;
 
 @Data
 @Entity
-public class PrintTemplate {
+public class SmsTemplate {
   @Id private String packCode;
 
   @Type(type = "jsonb")
-  @Column(nullable = false, columnDefinition = "jsonb")
+  @Column(columnDefinition = "jsonb", nullable = false)
   private String[] template;
 
   @Column(nullable = false)
-  private String printSupplier;
+  private UUID notifyTemplateId;
 }
