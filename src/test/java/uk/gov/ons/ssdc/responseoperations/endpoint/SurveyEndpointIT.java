@@ -48,6 +48,7 @@ public class SurveyEndpointIT {
     survey.setId(UUID.randomUUID());
     survey.setName("Test survey");
     survey.setSampleSeparator(',');
+    survey.setSampleValidationRules("{}");
     surveyRepository.saveAndFlush(survey);
 
     RestTemplate restTemplate = new RestTemplate();
@@ -78,6 +79,7 @@ public class SurveyEndpointIT {
     survey.setId(UUID.randomUUID());
     survey.setName("Test survey");
     survey.setSampleSeparator(',');
+    survey.setSampleValidationRules("{}");
     surveyRepository.saveAndFlush(survey);
 
     RestTemplate restTemplate = new RestTemplate();
