@@ -20,8 +20,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.config.PrintSupplierConfig;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 
 @ExtendWith(MockitoExtension.class)

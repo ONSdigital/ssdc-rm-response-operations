@@ -17,9 +17,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.ons.ssdc.common.model.entity.PrintTemplate;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.PrintTemplateDto;
-import uk.gov.ons.ssdc.responseoperations.model.entity.PrintTemplate;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.repository.PrintTemplateRepository;
 import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 

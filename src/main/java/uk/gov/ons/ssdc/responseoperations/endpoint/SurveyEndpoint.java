@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import uk.gov.ons.ssdc.common.model.entity.Survey;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
+import uk.gov.ons.ssdc.common.validation.ColumnValidator;
+import uk.gov.ons.ssdc.common.validation.MandatoryRule;
+import uk.gov.ons.ssdc.common.validation.Rule;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyDto;
-import uk.gov.ons.ssdc.responseoperations.model.entity.Survey;
-import uk.gov.ons.ssdc.responseoperations.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.repository.SurveyRepository;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 
@@ -66,7 +69,13 @@ public class SurveyEndpoint {
     newSurvey.setId(UUID.randomUUID());
     newSurvey.setName(survey.getName());
     newSurvey.setSampleSeparator(',');
-    newSurvey.setSampleValidationRules("{}"); // TODO: this needs to be replaced with real rules
+
+    // TODO: This is just a placeholder. This needs to be replaced with real columns/rules
+    newSurvey.setSampleValidationRules(
+        new ColumnValidator[] {
+          new ColumnValidator("DUMMY_COLUMN", false, new Rule[] {new MandatoryRule()})
+        });
+
     surveyRepository.saveAndFlush(newSurvey);
     return new ResponseEntity(HttpStatus.CREATED);
   }
