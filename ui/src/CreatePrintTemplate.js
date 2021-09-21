@@ -22,6 +22,7 @@ function CreatePrintTemplate() {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch("/api/printsuppliers");
+
       const printSuppliers = await response.json();
 
       const options = printSuppliers.map((supplier, index) => (
@@ -136,6 +137,22 @@ function CreatePrintTemplate() {
     if (response.ok) {
       history.push(`/printtemplates?flashMessageUntil=${Date.now() + 5000}`);
     }
+
+    const errorMessageJson = await response.json();
+    let errorMessage = errorMessageJson.error;
+
+    const errors = (
+      <p
+        id={`1`}
+        key={1}
+        className="panel__error"
+      >
+        <strong>{errorMessage}</strong>
+      </p>
+    );
+
+    // setPrintTemplateInputErrorSummary(errors);
+    // setHasErrors(true);
   }
 
   async function validateFormAndCreatePrintTemplate(event) {
