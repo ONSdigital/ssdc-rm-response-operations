@@ -127,7 +127,7 @@ class PrintTemplateEndpointTest {
             result ->
                 assertThat(result.getResponse().getContentAsString())
                     .isEqualTo(
-                        "{\"packCodeErrors\":[\"PackCode cannot be empty or blank\"],\"templateErrors\":[],\"supplierErrors\":[],\"error\":true}"))
+                        "{\"packCodeErrors\":[\"PackCode cannot be empty or blank\"],\"templateErrors\":[],\"supplierErrors\":[],\"validationError\":true}"))
         .andExpect(
             result ->
                 assertThat(result.getResponse().getStatus())
@@ -161,7 +161,7 @@ class PrintTemplateEndpointTest {
             result ->
                 assertThat(result.getResponse().getContentAsString())
                     .isEqualTo(
-                        "{\"packCodeErrors\":[\"PackCode PackCodeA is already in use\"],\"templateErrors\":[],\"supplierErrors\":[],\"error\":true}"))
+                        "{\"packCodeErrors\":[\"PackCode PackCodeA is already in use\"],\"templateErrors\":[],\"supplierErrors\":[],\"validationError\":true}"))
         .andExpect(
             result ->
                 assertThat(result.getResponse().getStatus())
@@ -170,7 +170,7 @@ class PrintTemplateEndpointTest {
 
   @Test
   public void testCreatePrintTemplateFailsWithInvalidPrintSupplier() throws Exception {
-//    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
+    //    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode1");
@@ -188,7 +188,8 @@ class PrintTemplateEndpointTest {
         .andExpect(
             result ->
                 assertThat(result.getResponse().getContentAsString())
-                    .isEqualTo("{\"packCodeErrors\":[],\"templateErrors\":[],\"supplierErrors\":[\"Print supplier unknown: BAD_PRINT_SUPPLIER\"],\"error\":true}"))
+                    .isEqualTo(
+                        "{\"packCodeErrors\":[],\"templateErrors\":[],\"supplierErrors\":[\"Print supplier unknown: BAD_PRINT_SUPPLIER\"],\"validationError\":true}"))
         .andExpect(
             result ->
                 assertThat(result.getResponse().getStatus())
@@ -217,7 +218,7 @@ class PrintTemplateEndpointTest {
             result ->
                 assertThat(result.getResponse().getContentAsString())
                     .isEqualTo(
-                        "{\"packCodeErrors\":[],\"templateErrors\":[\"Template must have at least one column\"],\"supplierErrors\":[],\"error\":true}"))
+                        "{\"packCodeErrors\":[],\"templateErrors\":[\"Template must have at least one column\"],\"supplierErrors\":[],\"validationError\":true}"))
         .andExpect(
             result ->
                 assertThat(result.getResponse().getStatus())
@@ -244,7 +245,8 @@ class PrintTemplateEndpointTest {
         .andExpect(
             result ->
                 assertThat(result.getResponse().getContentAsString())
-                    .isEqualTo("{\"packCodeErrors\":[],\"templateErrors\":[\"Template cannot have empty columns\"],\"supplierErrors\":[],\"error\":true}"))
+                    .isEqualTo(
+                        "{\"packCodeErrors\":[],\"templateErrors\":[\"Template cannot have empty columns\"],\"supplierErrors\":[],\"validationError\":true}"))
         .andExpect(
             result ->
                 assertThat(result.getResponse().getStatus())

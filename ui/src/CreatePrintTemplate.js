@@ -11,6 +11,8 @@ function CreatePrintTemplate() {
   const [errorSummary, setErrorSummary] = useState([]);
   const [printTemplateInputErrorSummary, setPrintTemplateInputErrorSummary] =
     useState([]);
+  const [packCodeInputErrorSummary, setPackCodeInputErrorSummary] = useState([]);
+  const [supplierInputErrorSummary, setPrintSupplierErrorSummary] = useState([]);
 
   const printSupplierInput = useRef(null);
   const printPackCodeInput = useRef(null);
@@ -78,7 +80,7 @@ function CreatePrintTemplate() {
     setHasErrors(false);
   }
 
-  function getPrintTemplateInputErrors() {
+  function getPrintTemplateInputErrors(errorStr) {
     const printTemplateInputErrorInfo = {
       arrayFormatError:
         "Print template must be JSON array with one or more elements",
@@ -103,25 +105,75 @@ function CreatePrintTemplate() {
     return errors;
   }
 
-  function validatePrintTemplateForm() {
-    const printTemplateInputErrors = getPrintTemplateInputErrors();
-    const errors = printTemplateInputErrors.map(
-      (printTemplateInputError, index) => (
+  function buildServerSideErrorsMessagesForType(errorList, element_to_anchor_to_id) {
+    let errorMessages = [];
+
+    // Replace with loop/map type thing
+    if (errorList.length !== 0) {
+      errorMessages.push({
+        message: errorList[0],
+        anchorTo: element_to_anchor_to_id,
+      });
+    }
+
+    return errorMessages;
+  }
+
+  function makePanelErrors(errorMessages) {
+    const errorPanels = errorMessages.map(
+      (error, index) => (
         <p
-          id={`printTemplateInputError${index}`}
+          id={`error${index}`}
           key={index}
           className="panel__error"
         >
-          <strong>{printTemplateInputError.message}</strong>
+          <strong>{error.message}</strong>
         </p>
       )
     );
-    setPrintTemplateInputErrorSummary(errors);
+
+    return errorPanels;
+  }
+
+  function getServerSideValidationErrors(errorJson) {
+    let allErrorMessages = [];
+
+    const packCodeErrorMessages = buildServerSideErrorsMessagesForType(errorJson.packCodeErrors,
+      printPackCodeInput.current.id);
+
+    if (packCodeErrorMessages.length > 0) {
+      setPackCodeInputErrorSummary(makePanelErrors(packCodeErrorMessages));
+      Array.prototype.push.apply(allErrorMessages, packCodeErrorMessages);
+    }
+
+    const printTemplateErrorMessages = buildServerSideErrorsMessagesForType(errorJson.templateErrors,
+      printTemplateInput.current.id);
+
+    if (printTemplateErrorMessages.length > 0) {
+      setPrintTemplateInputErrorSummary(makePanelErrors(printTemplateErrorMessages));
+      Array.prototype.push.apply(allErrorMessages, printTemplateErrorMessages);
+    }
+
+    const supplierErrorMessages = buildServerSideErrorsMessagesForType(errorJson.supplierErrors,
+      printSupplierInput.current.id);
+
+    if (supplierErrorMessages.length > 0) {
+      setPrintSupplierErrorSummary(makePanelErrors(supplierErrorMessages));
+      Array.prototype.push.apply(allErrorMessages, supplierErrorMessages);
+    }
+
+    return allErrorMessages;
+  }
+
+  function validatePrintTemplateForm() {
+    const printTemplateInputErrors = getPrintTemplateInputErrors();
+    setPrintTemplateInputErrorSummary(makePanelErrors(printTemplateInputErrors));
 
     return printTemplateInputErrors;
   }
 
-  async function createPrintTemplate() {
+  async function createPrintTemplateThroughAPI() {
+
     const newPrintTemplate = {
       packCode: packCode,
       printSupplier: printSupplier,
@@ -136,23 +188,16 @@ function CreatePrintTemplate() {
 
     if (response.ok) {
       history.push(`/printtemplates?flashMessageUntil=${Date.now() + 5000}`);
+      return [];
     }
 
     const errorMessageJson = await response.json();
-    let errorMessage = errorMessageJson.error;
 
-    const errors = (
-      <p
-        id={`1`}
-        key={1}
-        className="panel__error"
-      >
-        <strong>{errorMessage}</strong>
-      </p>
-    );
+    if (errorMessageJson.validationError) {
+      return getServerSideValidationErrors(errorMessageJson);
+    }
 
-    // setPrintTemplateInputErrorSummary(errors);
-    // setHasErrors(true);
+    return [];
   }
 
   async function validateFormAndCreatePrintTemplate(event) {
@@ -161,8 +206,14 @@ function CreatePrintTemplate() {
     setHasErrors(false);
     setErrorSummary([]);
     setPrintTemplateInputErrorSummary([]);
+    setPackCodeInputErrorSummary([]);
 
     let formSummaryErrors = validatePrintTemplateForm();
+
+    if (formSummaryErrors.length === 0) {
+      formSummaryErrors = await createPrintTemplateThroughAPI();
+    }
+
     const errors = formSummaryErrors.map((formError, index) => (
       <li key={index} className="list__item">
         <Announcer text={formError.message} />
@@ -177,9 +228,7 @@ function CreatePrintTemplate() {
     ));
     setErrorSummary(errors);
 
-    if (!formSummaryErrors.length) {
-      await createPrintTemplate();
-    } else {
+    if (formSummaryErrors.length) {
       setHasErrors(true);
     }
   }
@@ -213,6 +262,73 @@ function CreatePrintTemplate() {
     );
   }
 
+  const packCodeInputFragment = (
+    <div>
+      <label className="label venus">Enter pack code</label>
+      <input
+        id="packCodeInput"
+        ref={printPackCodeInput}
+        className="input input--text input-type__input"
+        onChange={handlePackCodeChange}
+        type="text"
+        aria-label={"Enter pack code"}
+        aria-required="true"
+        required
+        value={packCode}
+      />
+    </div>
+  );
+
+  const packCodeInputErrorFragment = (
+    <div
+      className="panel panel--error panel--no-title u-mb-s"
+      id="packCodeInputError"
+    >
+      <span className="u-vh">Error: </span>
+      <div className="panel__body">
+        <p className="panel__error">
+          <strong>{packCodeInputErrorSummary}</strong>
+        </p>
+        <div className="field">
+          <label className="label" htmlFor={printPackCodeInput}>
+            Enter packcode
+          </label>
+          <input
+            id="packCodeInput"
+            ref={printPackCodeInput}
+            className="input input--text input-type__input"
+            onChange={handlePackCodeChange}
+            type="text"
+            aria-label={"Enter pack code"}
+            aria-required="true"
+            required
+            value={packCode}
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  const printTemplateFragment = (
+
+    <div className="question u-mt-no">
+      <label className="label" htmlFor={printTemplateInput}>
+        Enter print template
+      </label>
+      <input
+        id="printTemplateInput"
+        ref={printTemplateInput}
+        className="input input--text input-type__input"
+        onChange={handleTemplateChange}
+        type="text"
+        aria-label={"Enter print template"}
+        aria-required="true"
+        required
+        value={printTemplate}
+      />
+    </div>
+  );
+
   const printTemplateErrorFragment = (
     <div
       className="panel panel--error panel--no-title u-mb-s"
@@ -243,22 +359,54 @@ function CreatePrintTemplate() {
     </div>
   );
 
-  const printTemplateFragment = (
+  const supplierInputFragment = (
     <div className="question u-mt-no">
-      <label className="label" htmlFor={printTemplateInput}>
-        Enter print template
-      </label>
-      <input
-        id="printTemplateInput"
-        ref={printTemplateInput}
-        className="input input--text input-type__input"
-        onChange={handleTemplateChange}
-        type="text"
-        aria-label={"Enter print template"}
+      <fieldset
+        id="printSupplierInput"
         aria-required="true"
-        required
-        value={printTemplate}
-      />
+        aria-label={"Select print supplier"}
+        className="fieldset"
+        ref={printSupplierInput}
+        onChange={handlePrintSupplierChange}
+      >
+        <legend className="fieldset__legend">
+          <label className="label venus">Select print supplier</label>
+        </legend>
+        <div className="input-items">
+          <div className="radios__items">{printSupplierOptions}</div>
+        </div>
+      </fieldset>
+    </div>
+  );
+
+  const supplierInputErrorFragment = (
+    <div
+      className="panel panel--error panel--no-title u-mb-s"
+      id="SupplierInputError"
+    >
+      <span className="u-vh">Error: </span>
+      <div className="panel__body">
+        <p className="panel__error">
+          <strong>{supplierInputErrorSummary}</strong>
+        </p>
+        <div className="field">
+          <label className="label" htmlFor={printSupplierInput}>
+            Select print supplier
+          </label>
+          <fieldset
+            id="printSupplierInput"
+            aria-required="true"
+            aria-label={"Select print supplier"}
+            className="fieldset"
+            ref={printSupplierInput}
+            onChange={handlePrintSupplierChange}
+          >
+            <div className="input-items">
+              <div className="radios__items">{printSupplierOptions}</div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
     </div>
   );
 
@@ -268,18 +416,9 @@ function CreatePrintTemplate() {
       <h2>Create a Print Template</h2>
       <form onSubmit={validateFormAndCreatePrintTemplate}>
         <div className="question u-mt-no">
-          <label className="label venus">Enter pack code</label>
-          <input
-            id="packCodeInput"
-            ref={printPackCodeInput}
-            className="input input--text input-type__input"
-            onChange={handlePackCodeChange}
-            type="text"
-            aria-label={"Enter pack code"}
-            aria-required="true"
-            required
-            value={packCode}
-          />
+          {packCodeInputErrorSummary.length === 0
+            ? packCodeInputFragment
+            : packCodeInputErrorFragment}
         </div>
         <br />
         <div className="question u-mt-no">
@@ -289,21 +428,9 @@ function CreatePrintTemplate() {
         </div>
         <br />
         <div className="question u-mt-no">
-          <fieldset
-            id="printSupplierInput"
-            aria-required="true"
-            aria-label={"Select print supplier"}
-            className="fieldset"
-            ref={printSupplierInput}
-            onChange={handlePrintSupplierChange}
-          >
-            <legend className="fieldset__legend">
-              <label className="label venus">Select print supplier</label>
-            </legend>
-            <div className="input-items">
-              <div className="radios__items">{printSupplierOptions}</div>
-            </div>
-          </fieldset>
+          {supplierInputErrorSummary.length === 0
+            ? supplierInputFragment
+            : supplierInputErrorFragment}
         </div>
         <br />
         <button type="submit" className="btn btn--link">
