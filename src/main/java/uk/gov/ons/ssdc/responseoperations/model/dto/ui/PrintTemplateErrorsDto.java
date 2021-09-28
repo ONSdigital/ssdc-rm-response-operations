@@ -1,5 +1,6 @@
 package uk.gov.ons.ssdc.responseoperations.model.dto.ui;
 
+import java.util.Optional;
 import lombok.Data;
 
 @Data
@@ -9,26 +10,23 @@ public class PrintTemplateErrorsDto {
   private String supplierErrors;
   private boolean validationError = false;
 
-  public void setPackCodeErrors(String packCodeErrors) {
-    this.packCodeErrors = packCodeErrors;
-
-    if (packCodeErrors != null) {
+  public void setPackCodeErrors(Optional<String> packCodeErrors) {
+    if (packCodeErrors.isPresent()) {
+      this.packCodeErrors = packCodeErrors.get();
       this.validationError = true;
     }
   }
 
-  public void setTemplateErrors(String templateErrors) {
-    this.templateErrors = templateErrors;
-
-    if (templateErrors != null) {
+  public void setTemplateErrors(Optional<String> templateErrors) {
+    if (templateErrors.isPresent()) {
+      this.templateErrors = templateErrors.get();
       this.validationError = true;
     }
   }
 
-  public void setSupplierErrors(String supplierErrors) {
-    this.supplierErrors = supplierErrors;
-
-    if (supplierErrors != null) {
+  public void setSupplierErrors(Optional<String> supplierErrors) {
+    if (supplierErrors.isPresent()) {
+      this.supplierErrors = supplierErrors.get();
       this.validationError = true;
     }
   }

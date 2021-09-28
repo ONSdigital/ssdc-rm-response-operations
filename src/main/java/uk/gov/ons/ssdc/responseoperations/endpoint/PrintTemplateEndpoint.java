@@ -1,6 +1,7 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,39 +80,39 @@ public class PrintTemplateEndpoint {
     return printTemplateErrorsDto;
   }
 
-  private String checkPackCodeValid(String packCode) {
+  private Optional<String> checkPackCodeValid(String packCode) {
     if (StringUtils.isBlank(packCode)) {
-      return "PackCode cannot be empty or blank";
+      return Optional.of("PackCode cannot be empty or blank");
     }
 
     if (printTemplateRepository.findAll().stream()
         .anyMatch(printTemplate -> printTemplate.getPackCode().equals(packCode))) {
-      return "PackCode " + packCode + " is already in use";
+      return Optional.of("PackCode " + packCode + " is already in use");
     }
 
-    return null;
+    return Optional.empty();
   }
 
-  private String checkTemplateIsValid(String[] template) {
+  private Optional<String> checkTemplateIsValid(String[] template) {
     if (template == null || template.length == 0) {
-      return "Template must have at least one column";
+      return Optional.of("Template must have at least one column");
     }
 
     for (String column : template) {
       if (StringUtils.isBlank(column)) {
-        return "Template cannot have empty columns";
+        return Optional.of("Template cannot have empty columns");
       }
     }
 
-    return null;
+    return Optional.empty();
   }
 
-  private String checkPrintSupplierValid(String printSupplier) {
+  private Optional<String> checkPrintSupplierValid(String printSupplier) {
     if (!printSupplierConfig.getPrintSuppliers().contains(printSupplier)) {
-      return "Print supplier unknown: " + printSupplier;
+      return Optional.of("Print supplier unknown: " + printSupplier);
     }
 
-    return null;
+    return Optional.empty();
   }
 
   private PrintTemplateDto mapPrintTemplates(PrintTemplate printTemplate) {
