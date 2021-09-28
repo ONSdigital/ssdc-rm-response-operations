@@ -111,7 +111,7 @@ public class PrintTemplateEndpoint {
       return "Print supplier unknown: " + printSupplier;
     }
 
-    return "";
+    return null;
   }
 
   private PrintTemplateDto mapPrintTemplates(PrintTemplate printTemplate) {

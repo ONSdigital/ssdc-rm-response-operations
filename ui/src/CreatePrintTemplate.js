@@ -105,13 +105,12 @@ function CreatePrintTemplate() {
     return errors;
   }
 
-  function buildServerSideErrorsMessagesForType(errorList, element_to_anchor_to_id) {
+  function buildServerSideErrorsMessagesForType(error, element_to_anchor_to_id) {
     let errorMessages = [];
 
-    // Replace with loop/map type thing
-    if (errorList.length !== 0) {
+    if (error !== null) {
       errorMessages.push({
-        message: errorList[0],
+        message: error,
         anchorTo: element_to_anchor_to_id,
       });
     }
