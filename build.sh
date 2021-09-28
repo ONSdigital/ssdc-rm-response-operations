@@ -9,6 +9,4 @@ cd ..
 cp -r ui/build/* src/main/resources/static
 rm -r ui/build/* || true
 
-# Put back to just: mvn clean install
-#mvn clean install
-mvn clean install -Dmaven.test.skip=true
+mvn clean install
