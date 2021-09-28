@@ -11,8 +11,12 @@ function CreatePrintTemplate() {
   const [errorSummary, setErrorSummary] = useState([]);
   const [printTemplateInputErrorSummary, setPrintTemplateInputErrorSummary] =
     useState([]);
-  const [packCodeInputErrorSummary, setPackCodeInputErrorSummary] = useState([]);
-  const [supplierInputErrorSummary, setPrintSupplierErrorSummary] = useState([]);
+  const [packCodeInputErrorSummary, setPackCodeInputErrorSummary] = useState(
+    []
+  );
+  const [supplierInputErrorSummary, setPrintSupplierErrorSummary] = useState(
+    []
+  );
 
   const printSupplierInput = useRef(null);
   const printPackCodeInput = useRef(null);
@@ -105,7 +109,10 @@ function CreatePrintTemplate() {
     return errors;
   }
 
-  function buildServerSideErrorsMessagesForType(error, element_to_anchor_to_id) {
+  function buildServerSideErrorsMessagesForType(
+    error,
+    element_to_anchor_to_id
+  ) {
     let errorMessages = [];
 
     if (error !== null) {
@@ -119,17 +126,11 @@ function CreatePrintTemplate() {
   }
 
   function makePanelErrors(errorMessages) {
-    const errorPanels = errorMessages.map(
-      (error, index) => (
-        <p
-          id={`error${index}`}
-          key={index}
-          className="panel__error"
-        >
-          <strong>{error.message}</strong>
-        </p>
-      )
-    );
+    const errorPanels = errorMessages.map((error, index) => (
+      <p id={`error${index}`} key={index} className="panel__error">
+        <strong>{error.message}</strong>
+      </p>
+    ));
 
     return errorPanels;
   }
@@ -137,24 +138,32 @@ function CreatePrintTemplate() {
   function getServerSideValidationErrors(errorJson) {
     let allErrorMessages = [];
 
-    const packCodeErrorMessages = buildServerSideErrorsMessagesForType(errorJson.packCodeErrors,
-      printPackCodeInput.current.id);
+    const packCodeErrorMessages = buildServerSideErrorsMessagesForType(
+      errorJson.packCodeErrors,
+      printPackCodeInput.current.id
+    );
 
     if (packCodeErrorMessages.length > 0) {
       setPackCodeInputErrorSummary(makePanelErrors(packCodeErrorMessages));
       Array.prototype.push.apply(allErrorMessages, packCodeErrorMessages);
     }
 
-    const printTemplateErrorMessages = buildServerSideErrorsMessagesForType(errorJson.templateErrors,
-      printTemplateInput.current.id);
+    const printTemplateErrorMessages = buildServerSideErrorsMessagesForType(
+      errorJson.templateErrors,
+      printTemplateInput.current.id
+    );
 
     if (printTemplateErrorMessages.length > 0) {
-      setPrintTemplateInputErrorSummary(makePanelErrors(printTemplateErrorMessages));
+      setPrintTemplateInputErrorSummary(
+        makePanelErrors(printTemplateErrorMessages)
+      );
       Array.prototype.push.apply(allErrorMessages, printTemplateErrorMessages);
     }
 
-    const supplierErrorMessages = buildServerSideErrorsMessagesForType(errorJson.supplierErrors,
-      printSupplierInput.current.id);
+    const supplierErrorMessages = buildServerSideErrorsMessagesForType(
+      errorJson.supplierErrors,
+      printSupplierInput.current.id
+    );
 
     if (supplierErrorMessages.length > 0) {
       setPrintSupplierErrorSummary(makePanelErrors(supplierErrorMessages));
@@ -166,13 +175,14 @@ function CreatePrintTemplate() {
 
   function validatePrintTemplateForm() {
     const printTemplateInputErrors = getPrintTemplateInputErrors();
-    setPrintTemplateInputErrorSummary(makePanelErrors(printTemplateInputErrors));
+    setPrintTemplateInputErrorSummary(
+      makePanelErrors(printTemplateInputErrors)
+    );
 
     return printTemplateInputErrors;
   }
 
   async function createPrintTemplateThroughAPI() {
-
     const newPrintTemplate = {
       packCode: packCode,
       printSupplier: printSupplier,
@@ -309,7 +319,6 @@ function CreatePrintTemplate() {
   );
 
   const printTemplateFragment = (
-
     <div className="question u-mt-no">
       <label className="label" htmlFor={printTemplateInput}>
         Enter print template
