@@ -21,6 +21,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -78,7 +79,6 @@ class PrintTemplateEndpointTest {
 
   @Test
   public void testCreatePrintTemplate() throws Exception {
-
     when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
@@ -108,6 +108,7 @@ class PrintTemplateEndpointTest {
 
   @Test
   public void testThatEmptyPackCodeIsRejected() throws Exception {
+    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("");
@@ -124,12 +125,18 @@ class PrintTemplateEndpointTest {
         .andExpect(handler().methodName("createPrintTemplate"))
         .andExpect(
             result ->
-                assertThat("400 BAD_REQUEST \"PackCode cannot be empty or blank\"")
-                    .isEqualTo(result.getResolvedException().getMessage()));
+                assertThat(result.getResponse().getContentAsString())
+                    .isEqualTo(
+                        "{\"packCodeErrors\":\"PackCode cannot be empty or blank\",\"templateErrors\":null,\"supplierErrors\":null,\"validationError\":true}"))
+        .andExpect(
+            result ->
+                assertThat(result.getResponse().getStatus())
+                    .isEqualTo(HttpStatus.BAD_REQUEST.value()));
   }
 
   @Test
   public void testThatNoneUniquePackCodeIsRejected() throws Exception {
+    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("PackCodeA");
@@ -152,19 +159,23 @@ class PrintTemplateEndpointTest {
         .andExpect(handler().methodName("createPrintTemplate"))
         .andExpect(
             result ->
-                assertThat("400 BAD_REQUEST \"PackCode PackCodeA is already in use\"")
-                    .isEqualTo(result.getResolvedException().getMessage()));
+                assertThat(result.getResponse().getContentAsString())
+                    .isEqualTo(
+                        "{\"packCodeErrors\":\"PackCode PackCodeA is already in use\",\"templateErrors\":null,\"supplierErrors\":null,\"validationError\":true}"))
+        .andExpect(
+            result ->
+                assertThat(result.getResponse().getStatus())
+                    .isEqualTo(HttpStatus.BAD_REQUEST.value()));
   }
 
   @Test
   public void testCreatePrintTemplateFailsWithInvalidPrintSupplier() throws Exception {
-
-    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
+    //    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode1");
     printTemplateDto.setTemplate(new String[] {"a", "b", "c"});
-    printTemplateDto.setPrintSupplier("BAD_PRINT_SUPPLIERR");
+    printTemplateDto.setPrintSupplier("BAD_PRINT_SUPPLIER");
 
     mockMvc
         .perform(
@@ -176,12 +187,18 @@ class PrintTemplateEndpointTest {
         .andExpect(handler().methodName("createPrintTemplate"))
         .andExpect(
             result ->
-                assertThat("400 BAD_REQUEST \"Print supplier unknown: BAD_PRINT_SUPPLIERR\"")
-                    .isEqualTo(result.getResolvedException().getMessage()));
+                assertThat(result.getResponse().getContentAsString())
+                    .isEqualTo(
+                        "{\"packCodeErrors\":null,\"templateErrors\":null,\"supplierErrors\":\"Print supplier unknown: BAD_PRINT_SUPPLIER\",\"validationError\":true}"))
+        .andExpect(
+            result ->
+                assertThat(result.getResponse().getStatus())
+                    .isEqualTo(HttpStatus.BAD_REQUEST.value()));
   }
 
   @Test
   public void testEmptyTemplateThrowsError() throws Exception {
+    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode1");
@@ -196,14 +213,21 @@ class PrintTemplateEndpointTest {
         .andExpect(status().is4xxClientError())
         .andExpect(handler().handlerType(PrintTemplateEndpoint.class))
         .andExpect(handler().methodName("createPrintTemplate"))
+        .andExpect(handler().methodName("createPrintTemplate"))
         .andExpect(
             result ->
-                assertThat("400 BAD_REQUEST \"Template must have at least one column\"")
-                    .isEqualTo(result.getResolvedException().getMessage()));
+                assertThat(result.getResponse().getContentAsString())
+                    .isEqualTo(
+                        "{\"packCodeErrors\":null,\"templateErrors\":\"Template must have at least one column\",\"supplierErrors\":null,\"validationError\":true}"))
+        .andExpect(
+            result ->
+                assertThat(result.getResponse().getStatus())
+                    .isEqualTo(HttpStatus.BAD_REQUEST.value()));
   }
 
   @Test
   public void testEmptyColumnInTemplateThrowsError() throws Exception {
+    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
 
     PrintTemplateDto printTemplateDto = new PrintTemplateDto();
     printTemplateDto.setPackCode("packCode1");
@@ -220,7 +244,12 @@ class PrintTemplateEndpointTest {
         .andExpect(handler().methodName("createPrintTemplate"))
         .andExpect(
             result ->
-                assertThat("400 BAD_REQUEST \"Template cannot have empty columns\"")
-                    .isEqualTo(result.getResolvedException().getMessage()));
+                assertThat(result.getResponse().getContentAsString())
+                    .isEqualTo(
+                        "{\"packCodeErrors\":null,\"templateErrors\":\"Template cannot have empty columns\",\"supplierErrors\":null,\"validationError\":true}"))
+        .andExpect(
+            result ->
+                assertThat(result.getResponse().getStatus())
+                    .isEqualTo(HttpStatus.BAD_REQUEST.value()));
   }
 }
