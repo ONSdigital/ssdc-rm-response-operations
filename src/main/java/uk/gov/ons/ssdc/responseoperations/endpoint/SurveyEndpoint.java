@@ -76,6 +76,9 @@ public class SurveyEndpoint {
           new ColumnValidator("DUMMY_COLUMN", false, new Rule[] {new MandatoryRule()})
         });
 
+    // TODO: This is just a placeholder. This needs to be replaced with real URL
+    newSurvey.setSampleDefinitionUrl("http://dummy");
+
     surveyRepository.saveAndFlush(newSurvey);
     return new ResponseEntity(HttpStatus.CREATED);
   }
