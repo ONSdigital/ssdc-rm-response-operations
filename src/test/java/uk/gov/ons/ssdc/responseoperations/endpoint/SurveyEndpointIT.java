@@ -55,6 +55,7 @@ public class SurveyEndpointIT {
         new ColumnValidator[] {
           new ColumnValidator("DUMMY_COLUMN", false, new Rule[] {new MandatoryRule()})
         });
+    survey.setSampleDefinitionUrl("http://dummy");
     surveyRepository.saveAndFlush(survey);
 
     RestTemplate restTemplate = new RestTemplate();
@@ -89,6 +90,7 @@ public class SurveyEndpointIT {
         new ColumnValidator[] {
           new ColumnValidator("DUMMY_COLUMN", false, new Rule[] {new MandatoryRule()})
         });
+    survey.setSampleDefinitionUrl("http://dummy");
     surveyRepository.saveAndFlush(survey);
 
     RestTemplate restTemplate = new RestTemplate();
