@@ -15,4 +15,4 @@ services:
 networks:
   default:
     external:
-      name: network_response-operations-it_default
+      name: ssdcrmdockerdev_default
