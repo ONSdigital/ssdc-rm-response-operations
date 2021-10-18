@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Announcer from "react-a11y-announcer";
+import { Helmet } from "react-helmet";
 
 function ViewSurvey(props) {
   const [survey, setSurvey] = useState();
@@ -14,6 +15,9 @@ function ViewSurvey(props) {
 
   return (
     <>
+      <Helmet>
+        <title>View Survey</title>
+      </Helmet>
       <h2>View Survey</h2>
       <Announcer text={"View Survey"} />
       {survey && (

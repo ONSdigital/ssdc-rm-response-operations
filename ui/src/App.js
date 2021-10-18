@@ -5,7 +5,6 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import DocumentTitle from "react-document-title";
 import Home from "./Home";
 import CreateSurvey from "./CreateSurvey";
 import Surveys from "./Surveys";
@@ -13,6 +12,7 @@ import ViewSurvey from "./ViewSurvey";
 import PrintTemplates from "./PrintTemplates";
 import NotFound from "./NotFound";
 import CreatePrintTemplate from "./CreatePrintTemplate";
+import { Helmet } from "react-helmet";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -33,22 +33,23 @@ function App() {
   }, []);
 
   return (
-    <DocumentTitle title="Response Operations">
-      <div className="container container--wide page__container">
-        <div className="page__container container container--wide">
-          <main id="main-content" className="page__main">
-            {authorisedActivities.length === 0 && !loading && (
-              <p>User not authorised</p>
-            )}
-            {authorisedActivities.length > 0 && (
-              <Router>
-                <QueryRouting authorisedActivities={authorisedActivities} />
-              </Router>
-            )}
-          </main>
-        </div>
+    <div className="container container--wide page__container">
+      <Helmet>
+        <title>Response Operations</title>
+      </Helmet>
+      <div className="page__container container container--wide">
+        <main id="main-content" className="page__main">
+          {authorisedActivities.length === 0 && !loading && (
+            <p>User not authorised</p>
+          )}
+          {authorisedActivities.length > 0 && (
+            <Router>
+              <QueryRouting authorisedActivities={authorisedActivities} />
+            </Router>
+          )}
+        </main>
       </div>
-    </DocumentTitle>
+    </div>
   );
 }
 
@@ -62,45 +63,31 @@ function QueryRouting(props) {
   return (
     <Switch>
       <Route exact path="/">
-        <DocumentTitle title="Home">
-          <Home authorisedActivities={props.authorisedActivities} />
-        </DocumentTitle>
+        <Home authorisedActivities={props.authorisedActivities} />
       </Route>
       <Route path="/surveys">
-        <DocumentTitle title="Surveys">
-          <Surveys
-            authorisedActivities={props.authorisedActivities}
-            flashMessageUntil={query.get("flashMessageUntil")}
-          />
-        </DocumentTitle>
+        <Surveys
+          authorisedActivities={props.authorisedActivities}
+          flashMessageUntil={query.get("flashMessageUntil")}
+        />
       </Route>
       <Route path="/createsurvey">
-        <DocumentTitle title="Create Survey">
-          <CreateSurvey />
-        </DocumentTitle>
+        <CreateSurvey />
       </Route>
       <Route path="/viewsurvey">
-        <DocumentTitle title="View Survey">
-          <ViewSurvey surveyId={query.get("surveyId")} />
-        </DocumentTitle>
+        <ViewSurvey surveyId={query.get("surveyId")} />
       </Route>
       <Route path="/printtemplates">
-        <DocumentTitle title="View Print Templates">
-          <PrintTemplates
-            authorisedActivities={props.authorisedActivities}
-            flashMessageUntil={query.get("flashMessageUntil")}
-          />
-        </DocumentTitle>
+        <PrintTemplates
+          authorisedActivities={props.authorisedActivities}
+          flashMessageUntil={query.get("flashMessageUntil")}
+        />
       </Route>
       <Route path="/createprinttemplate">
-        <DocumentTitle title="Create Print Template">
-          <CreatePrintTemplate />
-        </DocumentTitle>
+        <CreatePrintTemplate />
       </Route>
       <Route path="*">
-        <DocumentTitle title="Page Not Found">
-          <NotFound />
-        </DocumentTitle>
+        <NotFound />
       </Route>
     </Switch>
   );

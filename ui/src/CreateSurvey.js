@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 function CreateSurvey() {
   let surveyNameInput = null;
@@ -35,6 +36,9 @@ function CreateSurvey() {
 
   return (
     <>
+      <Helmet>
+        <title>Create Survey</title>
+      </Helmet>
       <h2>Create a New Survey</h2>
       <form onSubmit={createSurvey}>
         <div className="field">
