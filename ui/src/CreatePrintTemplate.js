@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
+import { Helmet } from "react-helmet";
 
 function CreatePrintTemplate() {
   const [printSupplier, setPrintSupplier] = useState("");
@@ -420,6 +421,9 @@ function CreatePrintTemplate() {
 
   return (
     <>
+      <Helmet>
+        <title>Create Print Template</title>
+      </Helmet>
       {errorSummary.length > 0 && <ErrorSummary />}
       <h2>Create a Print Template</h2>
       <form onSubmit={validateFormAndCreatePrintTemplate}>

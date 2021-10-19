@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
+import { Helmet } from "react-helmet";
 
 function PrintTemplates(props) {
   const [tableRows, setTableRows] = useState([]);
@@ -25,6 +26,9 @@ function PrintTemplates(props) {
 
   return (
     <>
+      <Helmet>
+        <title>View Print Templates</title>
+      </Helmet>
       {!props.flashMessageUntil && <Announcer text={"Print Templates"} />}
       {props.flashMessageUntil > Date.now() && (
         <>
