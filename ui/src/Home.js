@@ -13,9 +13,9 @@ function Home(props) {
           <Link to="/surveys">Surveys</Link>
         </p>
       )}
-      {props.authorisedActivities.includes("LIST_PRINT_TEMPLATES") && (
+      {props.authorisedActivities.includes("LIST_EXPORT_FILE_TEMPLATES") && (
         <p>
-          <Link to="/printtemplates">Print Templates</Link>
+          <Link to="/exportfiletemplates">Export File Templates</Link>
         </p>
       )}
     </>

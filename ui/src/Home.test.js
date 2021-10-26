@@ -33,6 +33,6 @@ it("renders home page", async () => {
   const surveysLinkElement = screen.getByText(/Surveys/i);
   expect(surveysLinkElement).toBeInTheDocument();
 
-  const printTemplatesLinkElement = screen.getByText(/Print Templates/i);
-  expect(printTemplatesLinkElement).toBeInTheDocument();
+  const exportFileTemplatesLinkElement = screen.getByText(/Print Templates/i);
+  expect(exportFileTemplatesLinkElement).toBeInTheDocument();
 });

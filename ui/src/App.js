@@ -9,9 +9,9 @@ import Home from "./Home";
 import CreateSurvey from "./CreateSurvey";
 import Surveys from "./Surveys";
 import ViewSurvey from "./ViewSurvey";
-import PrintTemplates from "./PrintTemplates";
+import ExportFileTemplates from "./ExportFileTemplates";
 import NotFound from "./NotFound";
-import CreatePrintTemplate from "./CreatePrintTemplate";
+import CreateExportFileTemplate from "./CreateExportFileTemplate";
 import { Helmet } from "react-helmet";
 
 function App() {
@@ -77,14 +77,14 @@ function QueryRouting(props) {
       <Route path="/viewsurvey">
         <ViewSurvey surveyId={query.get("surveyId")} />
       </Route>
-      <Route path="/printtemplates">
-        <PrintTemplates
+      <Route path="/exportfiletemplates">
+        <ExportFileTemplates
           authorisedActivities={props.authorisedActivities}
           flashMessageUntil={query.get("flashMessageUntil")}
         />
       </Route>
-      <Route path="/createprinttemplate">
-        <CreatePrintTemplate />
+      <Route path="/createexportfiletemplate">
+        <CreateExportFileTemplate />
       </Route>
       <Route path="*">
         <NotFound />

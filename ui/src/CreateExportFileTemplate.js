@@ -3,11 +3,11 @@ import { useHistory } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
 
-function CreatePrintTemplate() {
-  const [printSupplier, setPrintSupplier] = useState("");
+function CreateExportFileTemplate() {
+  const [exportFileDestination, setexportFileDestination] = useState("");
   const [packCode, setPackCode] = useState("");
   const [printTemplate, setPrintTemplate] = useState("");
-  const [printSupplierOptions, setPrintSupplierOptions] = useState([]);
+  const [exportFileDestinationOptions, setexportFileDestinationOptions] = useState([]);
   const [hasErrors, setHasErrors] = useState(false);
   const [errorSummary, setErrorSummary] = useState([]);
   const [printTemplateInputErrorSummary, setPrintTemplateInputErrorSummary] =
@@ -15,11 +15,11 @@ function CreatePrintTemplate() {
   const [packCodeInputErrorSummary, setPackCodeInputErrorSummary] = useState(
     []
   );
-  const [supplierInputErrorSummary, setPrintSupplierErrorSummary] = useState(
+  const [supplierInputErrorSummary, setexportFileDestinationErrorSummary] = useState(
     []
   );
 
-  const printSupplierInput = useRef(null);
+  const exportFileDestinationInput = useRef(null);
   const printPackCodeInput = useRef(null);
   const printTemplateInput = useRef(null);
   const errorSummaryTitle = useRef(null);
@@ -28,11 +28,11 @@ function CreatePrintTemplate() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("/api/printsuppliers");
+      const response = await fetch("/api/exportfiledestinations");
 
-      const printSuppliers = await response.json();
+      const exportFileDestinations = await response.json();
 
-      const options = printSuppliers.map((supplier, index) => (
+      const options = exportFileDestinations.map((supplier, index) => (
         <div key={index}>
           <p className="radios__item">
             <span className="radio">
@@ -56,7 +56,7 @@ function CreatePrintTemplate() {
           <br />
         </div>
       ));
-      setPrintSupplierOptions(options);
+      setexportFileDestinationOptions(options);
     }
 
     fetchData();
@@ -70,8 +70,8 @@ function CreatePrintTemplate() {
     }
   }, [hasErrors]);
 
-  function handlePrintSupplierChange(event) {
-    setPrintSupplier(event.target.value);
+  function handleexportFileDestinationChange(event) {
+    setexportFileDestination(event.target.value);
     setHasErrors(false);
   }
 
@@ -85,7 +85,7 @@ function CreatePrintTemplate() {
     setHasErrors(false);
   }
 
-  function getPrintTemplateInputErrors(errorStr) {
+  function getExportFileTemplateInputErrors(errorStr) {
     const printTemplateInputErrorInfo = {
       arrayFormatError:
         "Print template must be JSON array with one or more elements",
@@ -162,20 +162,20 @@ function CreatePrintTemplate() {
     }
 
     const supplierErrorMessages = buildServerSideErrorsMessagesForType(
-      errorJson.supplierErrors,
-      printSupplierInput.current.id
+      errorJson.destinationErrors,
+      exportFileDestinationInput.current.id
     );
 
     if (supplierErrorMessages.length > 0) {
-      setPrintSupplierErrorSummary(makePanelErrors(supplierErrorMessages));
+      setexportFileDestinationErrorSummary(makePanelErrors(supplierErrorMessages));
       Array.prototype.push.apply(allErrorMessages, supplierErrorMessages);
     }
 
     return allErrorMessages;
   }
 
-  function validatePrintTemplateForm() {
-    const printTemplateInputErrors = getPrintTemplateInputErrors();
+  function validateExportFileTemplateForm() {
+    const printTemplateInputErrors = getExportFileTemplateInputErrors();
     setPrintTemplateInputErrorSummary(
       makePanelErrors(printTemplateInputErrors)
     );
@@ -183,21 +183,21 @@ function CreatePrintTemplate() {
     return printTemplateInputErrors;
   }
 
-  async function createPrintTemplateThroughAPI() {
+  async function createExportFileTemplateThroughAPI() {
     const newPrintTemplate = {
       packCode: packCode,
-      printSupplier: printSupplier,
+      exportFileDestination: exportFileDestination,
       template: JSON.parse(printTemplate),
     };
 
-    const response = await fetch("/api/printtemplates", {
+    const response = await fetch("/api/exportfiletemplates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPrintTemplate),
     });
 
     if (response.ok) {
-      history.push(`/printtemplates?flashMessageUntil=${Date.now() + 5000}`);
+      history.push(`/exportfiletemplates?flashMessageUntil=${Date.now() + 5000}`);
       return [];
     }
 
@@ -210,7 +210,7 @@ function CreatePrintTemplate() {
     return [];
   }
 
-  async function validateFormAndCreatePrintTemplate(event) {
+  async function validateFormAndCreateExportFileTemplate(event) {
     event.preventDefault();
 
     setHasErrors(false);
@@ -218,10 +218,10 @@ function CreatePrintTemplate() {
     setPrintTemplateInputErrorSummary([]);
     setPackCodeInputErrorSummary([]);
 
-    let formSummaryErrors = validatePrintTemplateForm();
+    let formSummaryErrors = validateExportFileTemplateForm();
 
     if (formSummaryErrors.length === 0) {
-      formSummaryErrors = await createPrintTemplateThroughAPI();
+      formSummaryErrors = await createExportFileTemplateThroughAPI();
     }
 
     const errors = formSummaryErrors.map((formError, index) => (
@@ -319,10 +319,10 @@ function CreatePrintTemplate() {
     </div>
   );
 
-  const printTemplateFragment = (
+  const exportFileTemplateFragment = (
     <div className="question u-mt-no">
       <label className="label" htmlFor={printTemplateInput}>
-        Enter print template
+        Enter export file template
       </label>
       <input
         id="printTemplateInput"
@@ -330,7 +330,7 @@ function CreatePrintTemplate() {
         className="input input--text input-type__input"
         onChange={handleTemplateChange}
         type="text"
-        aria-label={"Enter print template"}
+        aria-label={"Enter export file template"}
         aria-required="true"
         required
         value={printTemplate}
@@ -371,18 +371,18 @@ function CreatePrintTemplate() {
   const supplierInputFragment = (
     <div className="question u-mt-no">
       <fieldset
-        id="printSupplierInput"
+        id="exportFileDestinationInput"
         aria-required="true"
         aria-label={"Select print supplier"}
         className="fieldset"
-        ref={printSupplierInput}
-        onChange={handlePrintSupplierChange}
+        ref={exportFileDestinationInput}
+        onChange={handleexportFileDestinationChange}
       >
         <legend className="fieldset__legend">
-          <label className="label venus">Select print supplier</label>
+          <label className="label venus">Select export file destination</label>
         </legend>
         <div className="input-items">
-          <div className="radios__items">{printSupplierOptions}</div>
+          <div className="radios__items">{exportFileDestinationOptions}</div>
         </div>
       </fieldset>
     </div>
@@ -399,19 +399,19 @@ function CreatePrintTemplate() {
           <strong>{supplierInputErrorSummary}</strong>
         </p>
         <div className="field">
-          <label className="label" htmlFor={printSupplierInput}>
-            Select print supplier
+          <label className="label" htmlFor={exportFileDestinationInput}>
+            Select export file destination
           </label>
           <fieldset
-            id="printSupplierInput"
+            id="exportFileDestinationInput"
             aria-required="true"
             aria-label={"Select print supplier"}
             className="fieldset"
-            ref={printSupplierInput}
-            onChange={handlePrintSupplierChange}
+            ref={exportFileDestinationInput}
+            onChange={handleexportFileDestinationChange}
           >
             <div className="input-items">
-              <div className="radios__items">{printSupplierOptions}</div>
+              <div className="radios__items">{exportFileDestinationOptions}</div>
             </div>
           </fieldset>
         </div>
@@ -422,11 +422,11 @@ function CreatePrintTemplate() {
   return (
     <>
       <Helmet>
-        <title>Create Print Template</title>
+        <title>Create Export File Template</title>
       </Helmet>
       {errorSummary.length > 0 && <ErrorSummary />}
-      <h2>Create a Print Template</h2>
-      <form onSubmit={validateFormAndCreatePrintTemplate}>
+      <h2>Create a Export File Template</h2>
+      <form onSubmit={validateFormAndCreateExportFileTemplate}>
         <div className="question u-mt-no">
           {packCodeInputErrorSummary.length === 0
             ? packCodeInputFragment
@@ -435,7 +435,7 @@ function CreatePrintTemplate() {
         <br />
         <div className="question u-mt-no">
           {printTemplateInputErrorSummary.length === 0
-            ? printTemplateFragment
+            ? exportFileTemplateFragment
             : printTemplateErrorFragment}
         </div>
         <br />
@@ -446,11 +446,11 @@ function CreatePrintTemplate() {
         </div>
         <br />
         <button type="submit" className="btn btn--link">
-          <span className="btn__inner">Create Print Template</span>
+          <span className="btn__inner">Create Export File Template</span>
         </button>
       </form>
     </>
   );
 }
 
-export default CreatePrintTemplate;
+export default CreateExportFileTemplate;

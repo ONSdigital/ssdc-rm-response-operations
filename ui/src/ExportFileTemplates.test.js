@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { BrowserRouter as Router } from "react-router-dom";
-import PrintTemplates from "./PrintTemplates";
+import ExportFileTemplates from "./ExportFileTemplates";
 
 let container = null;
 beforeEach(() => {
@@ -19,17 +19,17 @@ afterEach(() => {
   container = null;
 });
 
-it("renders print template data", async () => {
-  const fakePrintTemplates = [
+it("renders export file template data", async () => {
+  const fakeExportFileTemplates = [
     {
       packCode: "Test Pack Code",
-      printSupplier: "Test Print Supplier",
+      exportFileDestination: "Test Export File Destination",
       template: ["__uac__"],
     },
   ];
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
-      json: () => Promise.resolve(fakePrintTemplates),
+      json: () => Promise.resolve(fakeExportFileTemplates),
     })
   );
 
@@ -37,7 +37,7 @@ it("renders print template data", async () => {
   await act(async () => {
     render(
       <Router>
-        <PrintTemplates authorisedActivities={[]} />
+        <ExportFileTemplates authorisedActivities={[]} />
       </Router>,
       container
     );
@@ -46,8 +46,8 @@ it("renders print template data", async () => {
   const packCodeElement = screen.getByText(/Test Pack Code/i);
   expect(packCodeElement).toBeInTheDocument();
 
-  const printSupplierElement = screen.getByText(/Test Print Supplier/i);
-  expect(printSupplierElement).toBeInTheDocument();
+  const exportFileDestinationElement = screen.getByText(/Test Print Supplier/i);
+  expect(exportFileDestinationElement).toBeInTheDocument();
 
   const printTemplateElement = screen.getByText('["__uac__"]');
   expect(printTemplateElement).toBeInTheDocument();

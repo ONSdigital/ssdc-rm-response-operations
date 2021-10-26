@@ -3,17 +3,17 @@ import { Link } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
 
-function PrintTemplates(props) {
+function ExportFileTemplates(props) {
   const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("/api/printtemplates");
-      const printTemplates = await response.json();
-      const tableRows = await printTemplates.map((printTemplate, index) => (
+      const response = await fetch("/api/exportfiletemplates");
+      const exportFileTemplates = await response.json();
+      const tableRows = await exportFileTemplates.map((printTemplate, index) => (
         <tr className="table__row" key={index}>
           <td className="table__cell">{printTemplate.packCode}</td>
-          <td className="table__cell">{printTemplate.printSupplier}</td>
+          <td className="table__cell">{printTemplate.exportFileDestination}</td>
           <td className="table__cell">
             {JSON.stringify(printTemplate.template)}
           </td>
@@ -27,12 +27,12 @@ function PrintTemplates(props) {
   return (
     <>
       <Helmet>
-        <title>View Print Templates</title>
+        <title>View Export File Templates</title>
       </Helmet>
-      {!props.flashMessageUntil && <Announcer text={"Print Templates"} />}
+      {!props.flashMessageUntil && <Announcer text={"Export File Templates"} />}
       {props.flashMessageUntil > Date.now() && (
         <>
-          <Announcer text={"New print template has been created"} />
+          <Announcer text={"New export file Template has been created"} />
           <div className="panel panel--success">
             <div className="panel__header">
               <p
@@ -40,16 +40,16 @@ function PrintTemplates(props) {
                 data-qa="success-header"
                 className="panel__title u-fs-r--b"
               >
-                <strong>New print template has been created</strong>
+                <strong>New export file template has been created</strong>
               </p>
             </div>
           </div>
         </>
       )}
-      <h2>Print Templates</h2>
-      {props.authorisedActivities.includes("CREATE_PRINT_TEMPLATE") && (
+      <h2>Export File Templates</h2>
+      {props.authorisedActivities.includes("CREATE_EXPORT_FILE_TEMPLATE") && (
         <p>
-          <Link to="/createprinttemplate">Create New Print Template</Link>
+          <Link to="/createexportfiletemplate">Create New Export File Template</Link>
         </p>
       )}
       <table className="table table--row-hover">
@@ -59,7 +59,7 @@ function PrintTemplates(props) {
               Pack Code
             </th>
             <th scope="col" className="table__header">
-              Print Supplier
+              Export File Destination
             </th>
             <th scope="col" className="table__header">
               Template
@@ -72,4 +72,4 @@ function PrintTemplates(props) {
   );
 }
 
-export default PrintTemplates;
+export default ExportFileTemplates;

@@ -22,7 +22,7 @@ import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class PrintSuppliersEndpointIT {
+public class ExportFileDestinationEndpointIT {
 
   @Autowired private UserPermissionHelper userPermissionHelper;
 
@@ -35,25 +35,25 @@ public class PrintSuppliersEndpointIT {
   }
 
   @Test
-  public void getPrintSuppliers() {
+  public void getExportFileDestinations() {
     userPermissionHelper.setUpTestUserPermission(
-        UserGroupAuthorisedActivityType.LIST_PRINT_SUPPLIERS);
+        UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_DESTINATIONS);
 
     String[] expectedSuppliers = {"SUPPLIER_A", "SUPPLIER_B"};
 
     RestTemplate restTemplate = new RestTemplate();
-    String url = "http://localhost:" + port + "/api/printsuppliers";
-    ResponseEntity<String[]> printSuppliersResponse =
+    String url = "http://localhost:" + port + "/api/exportfiledestinations";
+    ResponseEntity<String[]> exportFileDestinationsResponse =
         restTemplate.getForEntity(url, String[].class);
 
-    String[] actualPrintSuppliers = printSuppliersResponse.getBody();
-    assertThat(actualPrintSuppliers).containsExactlyInAnyOrder(expectedSuppliers);
+    String[] actualexportFileDestinations = exportFileDestinationsResponse.getBody();
+    assertThat(actualexportFileDestinations).containsExactlyInAnyOrder(expectedSuppliers);
   }
 
   @Test
-  public void getPrintSuppliersForbidden() {
+  public void getexportFileDestinationsForbidden() {
     RestTemplate restTemplate = new RestTemplate();
-    String url = "http://localhost:" + port + "/api/printsuppliers";
+    String url = "http://localhost:" + port + "/api/exportfiledestinations";
     HttpClientErrorException thrown =
         assertThrows(
             HttpClientErrorException.class, () -> restTemplate.getForEntity(url, String[].class));

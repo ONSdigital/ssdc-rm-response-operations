@@ -4,10 +4,10 @@ import java.util.Optional;
 import lombok.Data;
 
 @Data
-public class PrintTemplateErrorsDto {
+public class ExportFileTemplateErrorsDto {
   private String packCodeErrors;
   private String templateErrors;
-  private String supplierErrors;
+  private String destinationErrors;
   private boolean validationError = false;
 
   public void setPackCodeErrors(Optional<String> packCodeErrors) {
@@ -24,9 +24,9 @@ public class PrintTemplateErrorsDto {
     }
   }
 
-  public void setSupplierErrors(Optional<String> supplierErrors) {
-    if (supplierErrors.isPresent()) {
-      this.supplierErrors = supplierErrors.get();
+  public void setDestinationErrors(Optional<String> destinationErrors) {
+    if (destinationErrors.isPresent()) {
+      this.destinationErrors = destinationErrors.get();
       this.validationError = true;
     }
   }

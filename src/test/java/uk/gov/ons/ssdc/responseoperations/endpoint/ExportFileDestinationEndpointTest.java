@@ -21,17 +21,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
-import uk.gov.ons.ssdc.responseoperations.config.PrintSupplierConfig;
+import uk.gov.ons.ssdc.responseoperations.config.ExportFileDestinationConfig;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 
 @ExtendWith(MockitoExtension.class)
-class PrintSuppliersEndpointTest {
+class ExportFileDestinationEndpointTest {
 
   @Mock private UserIdentity userIdentity;
 
-  @Mock private PrintSupplierConfig printSupplierConfig;
+  @Mock private ExportFileDestinationConfig exportFileDestinationConfig;
 
-  @InjectMocks private PrintSuppliersEndpoint underTest;
+  @InjectMocks private ExportFileDestinationEndpoint underTest;
 
   private MockMvc mockMvc;
 
@@ -41,22 +41,22 @@ class PrintSuppliersEndpointTest {
   }
 
   @Test
-  public void testGetPrintSuppliers() throws Exception {
+  public void testGetexportFileDestinations() throws Exception {
 
     // Given
-    when(printSupplierConfig.getPrintSuppliers()).thenReturn(Set.of("SUPPLIER_A"));
+    when(exportFileDestinationConfig.getExportFileDestinations()).thenReturn(Set.of("SUPPLIER_A"));
 
     // When
     mockMvc
-        .perform(get("/api/printsuppliers").accept(MediaType.APPLICATION_JSON))
+        .perform(get("/api/exportfiledestinations").accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(handler().handlerType(PrintSuppliersEndpoint.class))
-        .andExpect(handler().methodName("getPrintSuppliers"))
+        .andExpect(handler().handlerType(ExportFileDestinationEndpoint.class))
+        .andExpect(handler().methodName("getExportFileDestinations"))
         .andExpect(jsonPath("$[0]", is("SUPPLIER_A")));
 
     // Then
     verify(userIdentity)
         .checkGlobalUserPermission(
-            anyString(), eq(UserGroupAuthorisedActivityType.LIST_PRINT_SUPPLIERS));
+            anyString(), eq(UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_DESTINATIONS));
   }
 }

@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { BrowserRouter as Router } from "react-router-dom";
-import CreatePrintTemplate from "./CreatePrintTemplate";
+import CreateExportFileTemplate from "./CreateExportFileTemplate";
 
 let container = null;
 beforeEach(() => {
@@ -19,11 +19,11 @@ afterEach(() => {
   container = null;
 });
 
-it("renders create print template", async () => {
-  const fakePrintSupplier = ["SUPPLIER_A"];
+it("renders create export file template", async () => {
+  const fakeexportFileDestination = ["SUPPLIER_A"];
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
-      json: () => Promise.resolve(fakePrintSupplier),
+      json: () => Promise.resolve(fakeexportFileDestination),
     })
   );
 
@@ -31,17 +31,17 @@ it("renders create print template", async () => {
   await act(async () => {
     render(
       <Router>
-        <CreatePrintTemplate />
+        <CreateExportFileTemplate />
       </Router>,
       container
     );
   });
 
   const createPrintTemplateButtonElement = screen.getByText(
-    /Create Print Template/i
+    /Create Export File Template/i
   );
   expect(createPrintTemplateButtonElement).toBeInTheDocument();
 
-  const printSupplier = screen.getByText(/SUPPLIER_A/i);
-  expect(printSupplier).toBeInTheDocument();
+  const exportFileDestination = screen.getByText(/SUPPLIER_A/i);
+  expect(exportFileDestination).toBeInTheDocument();
 });
