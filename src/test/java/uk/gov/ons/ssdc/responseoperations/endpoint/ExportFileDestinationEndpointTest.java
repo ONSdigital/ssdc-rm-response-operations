@@ -41,7 +41,7 @@ class ExportFileDestinationEndpointTest {
   }
 
   @Test
-  public void testGetexportFileDestinations() throws Exception {
+  public void testGetExportFileDestinations() throws Exception {
 
     // Given
     when(exportFileDestinationConfig.getExportFileDestinations()).thenReturn(Set.of("SUPPLIER_A"));

@@ -37,10 +37,10 @@ it("renders create export file template", async () => {
     );
   });
 
-  const createPrintTemplateButtonElement = screen.getByText(
+  const createExportFileTemplateButtonElement = screen.getByText(
     /Create Export File Template/i
   );
-  expect(createPrintTemplateButtonElement).toBeInTheDocument();
+  expect(createExportFileTemplateButtonElement).toBeInTheDocument();
 
   const exportFileDestination = screen.getByText(/SUPPLIER_A/i);
   expect(exportFileDestination).toBeInTheDocument();

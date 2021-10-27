@@ -43,7 +43,9 @@ public class ExportFileTemplateEndpoint {
         userEmail, UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_TEMPLATES);
 
     List<ExportFileTemplate> exportFileTemplates = exportFileTemplateRepository.findAll();
-    return exportFileTemplates.stream().map(this::mapExportFileTemplates).collect(Collectors.toList());
+    return exportFileTemplates.stream()
+        .map(this::mapExportFileTemplates)
+        .collect(Collectors.toList());
   }
 
   @PostMapping
@@ -60,12 +62,12 @@ public class ExportFileTemplateEndpoint {
       return new ResponseEntity<>(exportFileTemplateErrorsDto, HttpStatus.BAD_REQUEST);
     }
 
-    ExportFileTemplate printTemplate = new ExportFileTemplate();
-    printTemplate.setPackCode(exportFileTemplateDto.getPackCode());
-    printTemplate.setTemplate(exportFileTemplateDto.getTemplate());
-    printTemplate.setExportFileDestination(exportFileTemplateDto.getExportFileDestination());
+    ExportFileTemplate exportFileTemplate = new ExportFileTemplate();
+    exportFileTemplate.setPackCode(exportFileTemplateDto.getPackCode());
+    exportFileTemplate.setTemplate(exportFileTemplateDto.getTemplate());
+    exportFileTemplate.setExportFileDestination(exportFileTemplateDto.getExportFileDestination());
 
-    exportFileTemplateRepository.saveAndFlush(printTemplate);
+    exportFileTemplateRepository.saveAndFlush(exportFileTemplate);
 
     return new ResponseEntity(HttpStatus.CREATED);
   }
@@ -90,7 +92,7 @@ public class ExportFileTemplateEndpoint {
     }
 
     if (exportFileTemplateRepository.findAll().stream()
-        .anyMatch(printTemplate -> printTemplate.getPackCode().equals(packCode))) {
+        .anyMatch(exportFileTemplate -> exportFileTemplate.getPackCode().equals(packCode))) {
       return Optional.of("PackCode " + packCode + " is already in use");
     }
 
@@ -119,11 +121,11 @@ public class ExportFileTemplateEndpoint {
     return Optional.empty();
   }
 
-  private ExportFileTemplateDto mapExportFileTemplates(ExportFileTemplate printTemplate) {
+  private ExportFileTemplateDto mapExportFileTemplates(ExportFileTemplate exportFileTemplate) {
     ExportFileTemplateDto dto = new ExportFileTemplateDto();
-    dto.setPackCode(printTemplate.getPackCode());
-    dto.setTemplate(printTemplate.getTemplate());
-    dto.setExportFileDestination(printTemplate.getExportFileDestination());
+    dto.setPackCode(exportFileTemplate.getPackCode());
+    dto.setTemplate(exportFileTemplate.getTemplate());
+    dto.setExportFileDestination(exportFileTemplate.getExportFileDestination());
 
     return dto;
   }

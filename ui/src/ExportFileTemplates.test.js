@@ -46,11 +46,11 @@ it("renders export file template data", async () => {
   const packCodeElement = screen.getByText(/Test Pack Code/i);
   expect(packCodeElement).toBeInTheDocument();
 
-  const exportFileDestinationElement = screen.getByText(/Test Print Supplier/i);
+  const exportFileDestinationElement = screen.getByText(/Test Export File Destination/i);
   expect(exportFileDestinationElement).toBeInTheDocument();
 
-  const printTemplateElement = screen.getByText('["__uac__"]');
-  expect(printTemplateElement).toBeInTheDocument();
+  const exportFileTemplateElement = screen.getByText('["__uac__"]');
+  expect(exportFileTemplateElement).toBeInTheDocument();
 
   // remove the mock to ensure tests are completely isolated
   global.fetch.mockRestore();

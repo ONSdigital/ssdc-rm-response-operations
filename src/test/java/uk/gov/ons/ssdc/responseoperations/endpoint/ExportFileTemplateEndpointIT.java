@@ -40,16 +40,16 @@ public class ExportFileTemplateEndpointIT {
   }
 
   @Test
-  public void getexportFileTemplates() {
+  public void getExportFileTemplates() {
     userPermissionHelper.setUpTestUserPermission(
         UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_TEMPLATES);
 
-    ExportFileTemplate printTemplate = new ExportFileTemplate();
-    printTemplate.setPackCode("packCode1");
-    printTemplate.setTemplate(new String[] {"a", "b", "c"});
-    printTemplate.setExportFileDestination("printyMcPrinter");
+    ExportFileTemplate exportFileTemplate = new ExportFileTemplate();
+    exportFileTemplate.setPackCode("packCode1");
+    exportFileTemplate.setTemplate(new String[] {"a", "b", "c"});
+    exportFileTemplate.setExportFileDestination("printyMcPrinter");
 
-    exportFileTemplateRepository.saveAndFlush(printTemplate);
+    exportFileTemplateRepository.saveAndFlush(exportFileTemplate);
 
     RestTemplate restTemplate = new RestTemplate();
     String url = "http://localhost:" + port + "/api/exportfiletemplates";
@@ -62,7 +62,7 @@ public class ExportFileTemplateEndpointIT {
   }
 
   @Test
-  public void getexportFileTemplatesForbidden() {
+  public void getExportFileTemplatesForbidden() {
     RestTemplate restTemplate = new RestTemplate();
     String url = "http://localhost:" + port + "/api/exportfiletemplates";
     HttpClientErrorException thrown =
@@ -74,7 +74,7 @@ public class ExportFileTemplateEndpointIT {
   }
 
   @Test
-  public void createPrintTemplate() {
+  public void createExportFileTemplate() {
     userPermissionHelper.setUpTestUserPermission(
         UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE);
 
@@ -96,7 +96,7 @@ public class ExportFileTemplateEndpointIT {
   }
 
   @Test
-  public void createPrintTemplateForbidden() {
+  public void createExportFileTemplateForbidden() {
     ExportFileTemplateDto exportFileTemplateDto = new ExportFileTemplateDto();
     exportFileTemplateDto.setPackCode("packCode2");
     exportFileTemplateDto.setTemplate(new String[] {"a", "b", "c"});

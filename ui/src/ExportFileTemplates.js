@@ -10,12 +10,12 @@ function ExportFileTemplates(props) {
     async function fetchData() {
       const response = await fetch("/api/exportfiletemplates");
       const exportFileTemplates = await response.json();
-      const tableRows = await exportFileTemplates.map((printTemplate, index) => (
+      const tableRows = await exportFileTemplates.map((exportFileTemplate, index) => (
         <tr className="table__row" key={index}>
-          <td className="table__cell">{printTemplate.packCode}</td>
-          <td className="table__cell">{printTemplate.exportFileDestination}</td>
+          <td className="table__cell">{exportFileTemplate.packCode}</td>
+          <td className="table__cell">{exportFileTemplate.exportFileDestination}</td>
           <td className="table__cell">
-            {JSON.stringify(printTemplate.template)}
+            {JSON.stringify(exportFileTemplate.template)}
           </td>
         </tr>
       ));

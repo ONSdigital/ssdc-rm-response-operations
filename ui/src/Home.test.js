@@ -24,7 +24,7 @@ it("renders home page", async () => {
   await act(async () => {
     render(
       <Router>
-        <Home authorisedActivities={["LIST_SURVEYS", "LIST_PRINT_TEMPLATES"]} />
+        <Home authorisedActivities={["LIST_SURVEYS", "LIST_EXPORT_FILE_TEMPLATES"]} />
       </Router>,
       container
     );
@@ -33,6 +33,6 @@ it("renders home page", async () => {
   const surveysLinkElement = screen.getByText(/Surveys/i);
   expect(surveysLinkElement).toBeInTheDocument();
 
-  const exportFileTemplatesLinkElement = screen.getByText(/Print Templates/i);
+  const exportFileTemplatesLinkElement = screen.getByText(/Export File Templates/i);
   expect(exportFileTemplatesLinkElement).toBeInTheDocument();
 });

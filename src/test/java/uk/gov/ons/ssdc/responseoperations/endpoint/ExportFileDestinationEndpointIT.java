@@ -51,7 +51,7 @@ public class ExportFileDestinationEndpointIT {
   }
 
   @Test
-  public void getexportFileDestinationsForbidden() {
+  public void getExportFileDestinationsForbidden() {
     RestTemplate restTemplate = new RestTemplate();
     String url = "http://localhost:" + port + "/api/exportfiledestinations";
     HttpClientErrorException thrown =

@@ -51,15 +51,15 @@ class ExportFileTemplateEndpointTest {
   }
 
   @Test
-  public void testGetPrintfileTemplates() throws Exception {
+  public void testGetExportfileTemplates() throws Exception {
 
     // Given
-    ExportFileTemplate printTemplate = new ExportFileTemplate();
-    printTemplate.setPackCode("packCode1");
-    printTemplate.setTemplate(new String[] {"a", "b", "c"});
-    printTemplate.setExportFileDestination("printyMcPrinter");
+    ExportFileTemplate exportFileTemplate = new ExportFileTemplate();
+    exportFileTemplate.setPackCode("packCode1");
+    exportFileTemplate.setTemplate(new String[] {"a", "b", "c"});
+    exportFileTemplate.setExportFileDestination("printyMcPrinter");
 
-    when(exportFileTemplateRepository.findAll()).thenReturn(List.of(printTemplate));
+    when(exportFileTemplateRepository.findAll()).thenReturn(List.of(exportFileTemplate));
 
     // When
     mockMvc
@@ -67,10 +67,11 @@ class ExportFileTemplateEndpointTest {
         .andExpect(status().isOk())
         .andExpect(handler().handlerType(ExportFileTemplateEndpoint.class))
         .andExpect(handler().methodName("getExportFileTemplates"))
-        .andExpect(jsonPath("$[0].packCode", is(printTemplate.getPackCode())))
+        .andExpect(jsonPath("$[0].packCode", is(exportFileTemplate.getPackCode())))
         .andExpect(jsonPath("$[0].template").value(Matchers.containsInAnyOrder("a", "b", "c")))
         .andExpect(
-            jsonPath("$[0].exportFileDestination", is(printTemplate.getExportFileDestination())));
+            jsonPath(
+                "$[0].exportFileDestination", is(exportFileTemplate.getExportFileDestination())));
 
     // Then
     verify(userIdentity)
@@ -79,7 +80,7 @@ class ExportFileTemplateEndpointTest {
   }
 
   @Test
-  public void testCreatePrintTemplate() throws Exception {
+  public void testCreateExportFileTemplate() throws Exception {
     when(exportFileDestinationConfig.getExportFileDestinations()).thenReturn(Set.of("SUPPLIER_A"));
 
     ExportFileTemplateDto exportFileTemplateDto = new ExportFileTemplateDto();
@@ -96,14 +97,14 @@ class ExportFileTemplateEndpointTest {
         .andExpect(handler().handlerType(ExportFileTemplateEndpoint.class))
         .andExpect(handler().methodName("createExportFileTemplate"));
 
-    ArgumentCaptor<ExportFileTemplate> printTemplateArgumentCaptor =
+    ArgumentCaptor<ExportFileTemplate> exportFileTemplateArgumentCaptor =
         ArgumentCaptor.forClass(ExportFileTemplate.class);
-    verify(exportFileTemplateRepository).saveAndFlush(printTemplateArgumentCaptor.capture());
-    assertThat(printTemplateArgumentCaptor.getValue().getPackCode())
+    verify(exportFileTemplateRepository).saveAndFlush(exportFileTemplateArgumentCaptor.capture());
+    assertThat(exportFileTemplateArgumentCaptor.getValue().getPackCode())
         .isEqualTo(exportFileTemplateDto.getPackCode());
-    assertThat(printTemplateArgumentCaptor.getValue().getTemplate())
+    assertThat(exportFileTemplateArgumentCaptor.getValue().getTemplate())
         .isEqualTo(exportFileTemplateDto.getTemplate());
-    assertThat(printTemplateArgumentCaptor.getValue().getExportFileDestination())
+    assertThat(exportFileTemplateArgumentCaptor.getValue().getExportFileDestination())
         .isEqualTo(exportFileTemplateDto.getExportFileDestination());
   }
 
@@ -144,11 +145,11 @@ class ExportFileTemplateEndpointTest {
     exportFileTemplateDto.setTemplate(new String[] {"a", "b", "c"});
     exportFileTemplateDto.setExportFileDestination("SUPPLIER_A");
 
-    ExportFileTemplate printTemplate = new ExportFileTemplate();
-    printTemplate.setPackCode("PackCodeA");
-    printTemplate.setTemplate(new String[] {"a", "b", "c"});
-    printTemplate.setExportFileDestination("printyMcPrinter");
-    when(exportFileTemplateRepository.findAll()).thenReturn(List.of(printTemplate));
+    ExportFileTemplate exportFileTemplate = new ExportFileTemplate();
+    exportFileTemplate.setPackCode("PackCodeA");
+    exportFileTemplate.setTemplate(new String[] {"a", "b", "c"});
+    exportFileTemplate.setExportFileDestination("printyMcPrinter");
+    when(exportFileTemplateRepository.findAll()).thenReturn(List.of(exportFileTemplate));
 
     mockMvc
         .perform(
@@ -170,9 +171,9 @@ class ExportFileTemplateEndpointTest {
   }
 
   @Test
-  public void testCreatePrintTemplateFailsWithInvalidexportFileDestination() throws Exception {
+  public void testCreateExportFileTemplateFailsWithInvalidExportFileDestination() throws Exception {
     //
-    // when(exportFileDestinationConfig.getexportFileDestinations()).thenReturn(Set.of("SUPPLIER_A"));
+    // when(exportFileDestinationConfig.getExportFileDestinations()).thenReturn(Set.of("SUPPLIER_A"));
 
     ExportFileTemplateDto exportFileTemplateDto = new ExportFileTemplateDto();
     exportFileTemplateDto.setPackCode("packCode1");

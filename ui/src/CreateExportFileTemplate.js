@@ -6,11 +6,11 @@ import { Helmet } from "react-helmet";
 function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
   const [packCode, setPackCode] = useState("");
-  const [printTemplate, setPrintTemplate] = useState("");
+  const [exportFileTemplate, setExportFileTemplate] = useState("");
   const [exportFileDestinationOptions, setexportFileDestinationOptions] = useState([]);
   const [hasErrors, setHasErrors] = useState(false);
   const [errorSummary, setErrorSummary] = useState([]);
-  const [printTemplateInputErrorSummary, setPrintTemplateInputErrorSummary] =
+  const [exportFileTemplateInputErrorSummary, setExportFileTemplateInputErrorSummary] =
     useState([]);
   const [packCodeInputErrorSummary, setPackCodeInputErrorSummary] = useState(
     []
@@ -21,7 +21,7 @@ function CreateExportFileTemplate() {
 
   const exportFileDestinationInput = useRef(null);
   const printPackCodeInput = useRef(null);
-  const printTemplateInput = useRef(null);
+  const exportFileTemplateInput = useRef(null);
   const errorSummaryTitle = useRef(null);
 
   let history = useHistory();
@@ -70,7 +70,7 @@ function CreateExportFileTemplate() {
     }
   }, [hasErrors]);
 
-  function handleexportFileDestinationChange(event) {
+  function handleExportFileDestinationChange(event) {
     setexportFileDestination(event.target.value);
     setHasErrors(false);
   }
@@ -81,30 +81,30 @@ function CreateExportFileTemplate() {
   }
 
   function handleTemplateChange(event) {
-    setPrintTemplate(event.target.value);
+    setExportFileTemplate(event.target.value);
     setHasErrors(false);
   }
 
   function getExportFileTemplateInputErrors(errorStr) {
-    const printTemplateInputErrorInfo = {
+    const exportFileTemplateInputErrorInfo = {
       arrayFormatError:
-        "Print template must be JSON array with one or more elements",
-      jsonFormatError: "Print template is not valid JSON",
+        "Export file template must be JSON array with one or more elements",
+      jsonFormatError: "Export file template is not valid JSON",
     };
 
     let errors = [];
     try {
-      const parsedJson = JSON.parse(printTemplate);
+      const parsedJson = JSON.parse(exportFileTemplate);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
         errors.push({
-          message: printTemplateInputErrorInfo.arrayFormatError,
-          anchorTo: printTemplateInput.current.id,
+          message: exportFileTemplateInputErrorInfo.arrayFormatError,
+          anchorTo: exportFileTemplateInput.current.id,
         });
       }
     } catch (err) {
       errors.push({
-        message: printTemplateInputErrorInfo.jsonFormatError,
-        anchorTo: printTemplateInput.current.id,
+        message: exportFileTemplateInputErrorInfo.jsonFormatError,
+        anchorTo: exportFileTemplateInput.current.id,
       });
     }
     return errors;
@@ -149,16 +149,16 @@ function CreateExportFileTemplate() {
       Array.prototype.push.apply(allErrorMessages, packCodeErrorMessages);
     }
 
-    const printTemplateErrorMessages = buildServerSideErrorsMessagesForType(
+    const exportFileTemplateErrorMessages = buildServerSideErrorsMessagesForType(
       errorJson.templateErrors,
-      printTemplateInput.current.id
+      exportFileTemplateInput.current.id
     );
 
-    if (printTemplateErrorMessages.length > 0) {
-      setPrintTemplateInputErrorSummary(
-        makePanelErrors(printTemplateErrorMessages)
+    if (exportFileTemplateErrorMessages.length > 0) {
+      setExportFileTemplateInputErrorSummary(
+        makePanelErrors(exportFileTemplateErrorMessages)
       );
-      Array.prototype.push.apply(allErrorMessages, printTemplateErrorMessages);
+      Array.prototype.push.apply(allErrorMessages, exportFileTemplateErrorMessages);
     }
 
     const supplierErrorMessages = buildServerSideErrorsMessagesForType(
@@ -175,25 +175,25 @@ function CreateExportFileTemplate() {
   }
 
   function validateExportFileTemplateForm() {
-    const printTemplateInputErrors = getExportFileTemplateInputErrors();
-    setPrintTemplateInputErrorSummary(
-      makePanelErrors(printTemplateInputErrors)
+    const exportFileTemplateInputErrors = getExportFileTemplateInputErrors();
+    setExportFileTemplateInputErrorSummary(
+      makePanelErrors(exportFileTemplateInputErrors)
     );
 
-    return printTemplateInputErrors;
+    return exportFileTemplateInputErrors;
   }
 
   async function createExportFileTemplateThroughAPI() {
-    const newPrintTemplate = {
+    const newExportFileTemplate = {
       packCode: packCode,
       exportFileDestination: exportFileDestination,
-      template: JSON.parse(printTemplate),
+      template: JSON.parse(exportFileTemplate),
     };
 
     const response = await fetch("/api/exportfiletemplates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newPrintTemplate),
+      body: JSON.stringify(newExportFileTemplate),
     });
 
     if (response.ok) {
@@ -215,7 +215,7 @@ function CreateExportFileTemplate() {
 
     setHasErrors(false);
     setErrorSummary([]);
-    setPrintTemplateInputErrorSummary([]);
+    setExportFileTemplateInputErrorSummary([]);
     setPackCodeInputErrorSummary([]);
 
     let formSummaryErrors = validateExportFileTemplateForm();
@@ -321,47 +321,47 @@ function CreateExportFileTemplate() {
 
   const exportFileTemplateFragment = (
     <div className="question u-mt-no">
-      <label className="label" htmlFor={printTemplateInput}>
+      <label className="label" htmlFor={exportFileTemplateInput}>
         Enter export file template
       </label>
       <input
-        id="printTemplateInput"
-        ref={printTemplateInput}
+        id="exportFileTemplateInput"
+        ref={exportFileTemplateInput}
         className="input input--text input-type__input"
         onChange={handleTemplateChange}
         type="text"
         aria-label={"Enter export file template"}
         aria-required="true"
         required
-        value={printTemplate}
+        value={exportFileTemplate}
       />
     </div>
   );
 
-  const printTemplateErrorFragment = (
+  const exportFileTemplateErrorFragment = (
     <div
       className="panel panel--error panel--no-title u-mb-s"
-      id="printTemplateInputError"
+      id="exportFileTemplateInputError"
     >
       <span className="u-vh">Error: </span>
       <div className="panel__body">
         <p className="panel__error">
-          <strong>{printTemplateInputErrorSummary}</strong>
+          <strong>{exportFileTemplateInputErrorSummary}</strong>
         </p>
         <div className="field">
-          <label className="label" htmlFor={printTemplateInput}>
-            Enter Print Template
+          <label className="label" htmlFor={exportFileTemplateInput}>
+            Enter Export File Template
           </label>
           <input
-            id="printTemplateInput"
-            ref={printTemplateInput}
+            id="exportFileTemplateInput"
+            ref={exportFileTemplateInput}
             className="input input--text input-type__input"
             onChange={handleTemplateChange}
             type="text"
-            aria-label={"Enter print template"}
+            aria-label={"Enter export file template"}
             aria-required="true"
             required
-            value={printTemplate}
+            value={exportFileTemplate}
           />
         </div>
       </div>
@@ -373,10 +373,10 @@ function CreateExportFileTemplate() {
       <fieldset
         id="exportFileDestinationInput"
         aria-required="true"
-        aria-label={"Select print supplier"}
+        aria-label={"Select export file destination"}
         className="fieldset"
         ref={exportFileDestinationInput}
-        onChange={handleexportFileDestinationChange}
+        onChange={handleExportFileDestinationChange}
       >
         <legend className="fieldset__legend">
           <label className="label venus">Select export file destination</label>
@@ -405,10 +405,10 @@ function CreateExportFileTemplate() {
           <fieldset
             id="exportFileDestinationInput"
             aria-required="true"
-            aria-label={"Select print supplier"}
+            aria-label={"Select export file destination"}
             className="fieldset"
             ref={exportFileDestinationInput}
-            onChange={handleexportFileDestinationChange}
+            onChange={handleExportFileDestinationChange}
           >
             <div className="input-items">
               <div className="radios__items">{exportFileDestinationOptions}</div>
@@ -434,9 +434,9 @@ function CreateExportFileTemplate() {
         </div>
         <br />
         <div className="question u-mt-no">
-          {printTemplateInputErrorSummary.length === 0
+          {exportFileTemplateInputErrorSummary.length === 0
             ? exportFileTemplateFragment
-            : printTemplateErrorFragment}
+            : exportFileTemplateErrorFragment}
         </div>
         <br />
         <div className="question u-mt-no">
