@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
+import { Helmet } from "react-helmet";
 
 function Surveys(props) {
   const [tableRows, setTableRows] = useState([]);
@@ -23,6 +24,9 @@ function Surveys(props) {
 
   return (
     <>
+      <Helmet>
+        <title>Surveys</title>
+      </Helmet>
       {!props.flashMessageUntil && <Announcer text={"Surveys"} />}
       {props.flashMessageUntil > Date.now() && (
         <>
