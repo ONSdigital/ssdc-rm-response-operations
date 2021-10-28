@@ -7,17 +7,19 @@ function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
   const [packCode, setPackCode] = useState("");
   const [exportFileTemplate, setExportFileTemplate] = useState("");
-  const [exportFileDestinationOptions, setexportFileDestinationOptions] = useState([]);
+  const [exportFileDestinationOptions, setexportFileDestinationOptions] =
+    useState([]);
   const [hasErrors, setHasErrors] = useState(false);
   const [errorSummary, setErrorSummary] = useState([]);
-  const [exportFileTemplateInputErrorSummary, setExportFileTemplateInputErrorSummary] =
-    useState([]);
+  const [
+    exportFileTemplateInputErrorSummary,
+    setExportFileTemplateInputErrorSummary,
+  ] = useState([]);
   const [packCodeInputErrorSummary, setPackCodeInputErrorSummary] = useState(
     []
   );
-  const [supplierInputErrorSummary, setexportFileDestinationErrorSummary] = useState(
-    []
-  );
+  const [supplierInputErrorSummary, setexportFileDestinationErrorSummary] =
+    useState([]);
 
   const exportFileDestinationInput = useRef(null);
   const printPackCodeInput = useRef(null);
@@ -149,16 +151,20 @@ function CreateExportFileTemplate() {
       Array.prototype.push.apply(allErrorMessages, packCodeErrorMessages);
     }
 
-    const exportFileTemplateErrorMessages = buildServerSideErrorsMessagesForType(
-      errorJson.templateErrors,
-      exportFileTemplateInput.current.id
-    );
+    const exportFileTemplateErrorMessages =
+      buildServerSideErrorsMessagesForType(
+        errorJson.templateErrors,
+        exportFileTemplateInput.current.id
+      );
 
     if (exportFileTemplateErrorMessages.length > 0) {
       setExportFileTemplateInputErrorSummary(
         makePanelErrors(exportFileTemplateErrorMessages)
       );
-      Array.prototype.push.apply(allErrorMessages, exportFileTemplateErrorMessages);
+      Array.prototype.push.apply(
+        allErrorMessages,
+        exportFileTemplateErrorMessages
+      );
     }
 
     const supplierErrorMessages = buildServerSideErrorsMessagesForType(
@@ -167,7 +173,9 @@ function CreateExportFileTemplate() {
     );
 
     if (supplierErrorMessages.length > 0) {
-      setexportFileDestinationErrorSummary(makePanelErrors(supplierErrorMessages));
+      setexportFileDestinationErrorSummary(
+        makePanelErrors(supplierErrorMessages)
+      );
       Array.prototype.push.apply(allErrorMessages, supplierErrorMessages);
     }
 
@@ -197,7 +205,9 @@ function CreateExportFileTemplate() {
     });
 
     if (response.ok) {
-      history.push(`/exportfiletemplates?flashMessageUntil=${Date.now() + 5000}`);
+      history.push(
+        `/exportfiletemplates?flashMessageUntil=${Date.now() + 5000}`
+      );
       return [];
     }
 
@@ -411,7 +421,9 @@ function CreateExportFileTemplate() {
             onChange={handleExportFileDestinationChange}
           >
             <div className="input-items">
-              <div className="radios__items">{exportFileDestinationOptions}</div>
+              <div className="radios__items">
+                {exportFileDestinationOptions}
+              </div>
             </div>
           </fieldset>
         </div>

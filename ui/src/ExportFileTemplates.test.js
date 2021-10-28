@@ -46,7 +46,9 @@ it("renders export file template data", async () => {
   const packCodeElement = screen.getByText(/Test Pack Code/i);
   expect(packCodeElement).toBeInTheDocument();
 
-  const exportFileDestinationElement = screen.getByText(/Test Export File Destination/i);
+  const exportFileDestinationElement = screen.getByText(
+    /Test Export File Destination/i
+  );
   expect(exportFileDestinationElement).toBeInTheDocument();
 
   const exportFileTemplateElement = screen.getByText('["__uac__"]');

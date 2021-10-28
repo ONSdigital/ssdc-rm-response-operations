@@ -10,15 +10,19 @@ function ExportFileTemplates(props) {
     async function fetchData() {
       const response = await fetch("/api/exportfiletemplates");
       const exportFileTemplates = await response.json();
-      const tableRows = await exportFileTemplates.map((exportFileTemplate, index) => (
-        <tr className="table__row" key={index}>
-          <td className="table__cell">{exportFileTemplate.packCode}</td>
-          <td className="table__cell">{exportFileTemplate.exportFileDestination}</td>
-          <td className="table__cell">
-            {JSON.stringify(exportFileTemplate.template)}
-          </td>
-        </tr>
-      ));
+      const tableRows = await exportFileTemplates.map(
+        (exportFileTemplate, index) => (
+          <tr className="table__row" key={index}>
+            <td className="table__cell">{exportFileTemplate.packCode}</td>
+            <td className="table__cell">
+              {exportFileTemplate.exportFileDestination}
+            </td>
+            <td className="table__cell">
+              {JSON.stringify(exportFileTemplate.template)}
+            </td>
+          </tr>
+        )
+      );
       setTableRows(tableRows);
     }
     fetchData();
@@ -49,7 +53,9 @@ function ExportFileTemplates(props) {
       <h2>Export File Templates</h2>
       {props.authorisedActivities.includes("CREATE_EXPORT_FILE_TEMPLATE") && (
         <p>
-          <Link to="/createexportfiletemplate">Create New Export File Template</Link>
+          <Link to="/createexportfiletemplate">
+            Create New Export File Template
+          </Link>
         </p>
       )}
       <table className="table table--row-hover">
