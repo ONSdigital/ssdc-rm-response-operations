@@ -13,23 +13,23 @@ import org.springframework.context.annotation.Configuration;
 import utility.ObjectMapperFactory;
 
 @Configuration
-public class PrintSupplierConfig {
+public class ExportFileDestinationConfig {
   private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.objectMapper();
 
-  private Set<String> printSuppliers = null;
+  private Set<String> exportFileDestinations = null;
 
-  @Value("${printsupplierconfigfile}")
+  @Value("${exportfiledestinationconfigfile}")
   private String configFile;
 
-  public Set<String> getPrintSuppliers() {
-    if (printSuppliers != null) {
-      return printSuppliers;
+  public Set<String> getExportFileDestinations() {
+    if (exportFileDestinations != null) {
+      return exportFileDestinations;
     }
 
     try (InputStream configFileStream = new FileInputStream(configFile)) {
       Map map = OBJECT_MAPPER.readValue(configFileStream, Map.class);
-      printSuppliers = map.keySet();
-      return printSuppliers;
+      exportFileDestinations = map.keySet();
+      return exportFileDestinations;
     } catch (JsonProcessingException | FileNotFoundException e) {
       throw new RuntimeException(e);
     } catch (IOException e) {

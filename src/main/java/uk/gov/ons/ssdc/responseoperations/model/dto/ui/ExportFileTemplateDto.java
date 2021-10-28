@@ -3,8 +3,8 @@ package uk.gov.ons.ssdc.responseoperations.model.dto.ui;
 import lombok.Data;
 
 @Data
-public class PrintTemplateDto {
+public class ExportFileTemplateDto {
   private String packCode;
   private String[] template;
-  private String printSupplier;
+  private String exportFileDestination;
 }

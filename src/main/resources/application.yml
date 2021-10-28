@@ -67,5 +67,5 @@ iapaudience: DUMMY
 # TODO: Remove this before releasing to prod
 dummyuseridentity: dummy@fake-email.com
 
-printsupplierconfigfile: dummy-print-supplier-config.json
+exportfiledestinationconfigfile: dummy-export-file-destination-config.json
 
