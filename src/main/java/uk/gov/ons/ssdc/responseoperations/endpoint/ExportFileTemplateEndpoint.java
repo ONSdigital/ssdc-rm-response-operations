@@ -125,8 +125,10 @@ public class ExportFileTemplateEndpoint {
   private ExportFileTemplateDto mapExportFileTemplates(ExportFileTemplate exportFileTemplate) {
     ExportFileTemplateDto dto = new ExportFileTemplateDto();
     dto.setPackCode(exportFileTemplate.getPackCode());
+    dto.setDescription(exportFileTemplate.getDescription());
     dto.setTemplate(exportFileTemplate.getTemplate());
     dto.setExportFileDestination(exportFileTemplate.getExportFileDestination());
+    dto.setMetadata(exportFileTemplate.getMetadata());
 
     return dto;
   }

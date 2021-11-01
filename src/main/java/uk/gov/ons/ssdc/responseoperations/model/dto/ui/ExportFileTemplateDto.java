@@ -8,4 +8,5 @@ public class ExportFileTemplateDto {
   private String[] template;
   private String exportFileDestination;
   private String description;
+  private Object metadata;
 }
