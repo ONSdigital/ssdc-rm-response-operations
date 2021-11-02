@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet";
 function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
   const [packCode, setPackCode] = useState("");
+  const [description, setDescription] = useState("");
   const [exportFileTemplate, setExportFileTemplate] = useState("");
   const [exportFileDestinationOptions, setexportFileDestinationOptions] =
     useState([]);
@@ -79,6 +80,11 @@ function CreateExportFileTemplate() {
 
   function handlePackCodeChange(event) {
     setPackCode(event.target.value);
+    setHasErrors(false);
+  }
+
+  function handleDescriptionChange(event) {
+    setDescription(event.target.value);
     setHasErrors(false);
   }
 
@@ -194,6 +200,7 @@ function CreateExportFileTemplate() {
   async function createExportFileTemplateThroughAPI() {
     const newExportFileTemplate = {
       packCode: packCode,
+      description: description,
       exportFileDestination: exportFileDestination,
       template: JSON.parse(exportFileTemplate),
     };
@@ -329,6 +336,22 @@ function CreateExportFileTemplate() {
     </div>
   );
 
+  const descriptionInputFragment = (
+    <div>
+      <label className="label venus">Enter descripton</label>
+      <input
+        id="descriptionInput"
+        className="input input--text input-type__input"
+        onChange={handleDescriptionChange}
+        type="text"
+        aria-label={"Enter description"}
+        aria-required="true"
+        required
+        value={description}
+      />
+    </div>
+  );
+
   const exportFileTemplateFragment = (
     <div className="question u-mt-no">
       <label className="label" htmlFor={exportFileTemplateInput}>
@@ -444,6 +467,8 @@ function CreateExportFileTemplate() {
             ? packCodeInputFragment
             : packCodeInputErrorFragment}
         </div>
+        <br />
+        <div className="question u-mt-no">{descriptionInputFragment}</div>
         <br />
         <div className="question u-mt-no">
           {exportFileTemplateInputErrorSummary.length === 0
