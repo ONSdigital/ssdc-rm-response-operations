@@ -14,6 +14,7 @@ function ExportFileTemplates(props) {
         (exportFileTemplate, index) => (
           <tr className="table__row" key={index}>
             <td className="table__cell">{exportFileTemplate.packCode}</td>
+            <td className="table__cell">{exportFileTemplate.description}</td>
             <td className="table__cell">
               {exportFileTemplate.exportFileDestination}
             </td>
@@ -63,6 +64,9 @@ function ExportFileTemplates(props) {
           <tr className="table__row">
             <th scope="col" className="table__header">
               Pack Code
+            </th>
+            <th scope="col" className="table__header">
+              Description
             </th>
             <th scope="col" className="table__header">
               Export File Destination

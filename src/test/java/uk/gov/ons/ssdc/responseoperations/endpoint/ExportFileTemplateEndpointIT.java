@@ -48,6 +48,7 @@ public class ExportFileTemplateEndpointIT {
     exportFileTemplate.setPackCode("packCode1");
     exportFileTemplate.setTemplate(new String[] {"a", "b", "c"});
     exportFileTemplate.setExportFileDestination("printyMcPrinter");
+    exportFileTemplate.setDescription("Test description");
 
     exportFileTemplateRepository.saveAndFlush(exportFileTemplate);
 
@@ -82,6 +83,7 @@ public class ExportFileTemplateEndpointIT {
     exportFileTemplateDto.setPackCode("packCode2");
     exportFileTemplateDto.setTemplate(new String[] {"a", "b", "c"});
     exportFileTemplateDto.setExportFileDestination("SUPPLIER_A");
+    exportFileTemplateDto.setDescription("Test description");
 
     RestTemplate restTemplate = new RestTemplate();
     String url = "http://localhost:" + port + "/api/exportfiletemplates";
@@ -101,6 +103,7 @@ public class ExportFileTemplateEndpointIT {
     exportFileTemplateDto.setPackCode("packCode2");
     exportFileTemplateDto.setTemplate(new String[] {"a", "b", "c"});
     exportFileTemplateDto.setExportFileDestination("SUPPLIER_A");
+    exportFileTemplateDto.setDescription("Test description");
 
     RestTemplate restTemplate = new RestTemplate();
     String url = "http://localhost:" + port + "/api/surveys";
