@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.UUID;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,129 +32,126 @@ import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class SurveyEndpointIT {
-    @Autowired
-    private SurveyRepository surveyRepository;
-    @Autowired
-    private UserPermissionHelper userPermissionHelper;
+  @Autowired private SurveyRepository surveyRepository;
+  @Autowired private UserPermissionHelper userPermissionHelper;
 
-    @LocalServerPort
-    private int port;
+  @LocalServerPort private int port;
 
-    @BeforeEach
-    @Transactional
-    public void setUp() {
-        userPermissionHelper.clearDown();
-        surveyRepository.deleteAllInBatch();
-    }
+  @BeforeEach
+  @Transactional
+  public void setUp() {
+    userPermissionHelper.clearDown();
+    surveyRepository.deleteAllInBatch();
+  }
 
-    @Test
-    public void getSurveys() {
-        userPermissionHelper.setUpTestUserPermission(UserGroupAuthorisedActivityType.LIST_SURVEYS);
+  @Test
+  public void getSurveys() {
+    userPermissionHelper.setUpTestUserPermission(UserGroupAuthorisedActivityType.LIST_SURVEYS);
 
-        Survey survey = new Survey();
-        survey.setId(UUID.randomUUID());
-        survey.setName("Test survey");
-        survey.setSampleSeparator(',');
-        survey.setSampleValidationRules(
-                new ColumnValidator[]{
-                        new ColumnValidator("DUMMY_COLUMN", false, new Rule[]{new MandatoryRule()})
-                });
-        survey.setSampleDefinitionUrl("http://dummy");
-        surveyRepository.saveAndFlush(survey);
+    Survey survey = new Survey();
+    survey.setId(UUID.randomUUID());
+    survey.setName("Test survey");
+    survey.setSampleSeparator(',');
+    survey.setSampleValidationRules(
+        new ColumnValidator[] {
+          new ColumnValidator("DUMMY_COLUMN", false, new Rule[] {new MandatoryRule()})
+        });
+    survey.setSampleDefinitionUrl("http://dummy");
+    surveyRepository.saveAndFlush(survey);
 
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:" + port + "/api/surveys";
-        ResponseEntity<SurveyDto[]> foundSurveysResponse =
-                restTemplate.getForEntity(url, SurveyDto[].class);
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "http://localhost:" + port + "/api/surveys";
+    ResponseEntity<SurveyDto[]> foundSurveysResponse =
+        restTemplate.getForEntity(url, SurveyDto[].class);
 
-        SurveyDto[] actualSurveys = foundSurveysResponse.getBody();
-        assertThat(actualSurveys.length).isEqualTo(1);
-        assertThat(actualSurveys[0].getName()).isEqualTo("Test survey");
-    }
+    SurveyDto[] actualSurveys = foundSurveysResponse.getBody();
+    assertThat(actualSurveys.length).isEqualTo(1);
+    assertThat(actualSurveys[0].getName()).isEqualTo("Test survey");
+  }
 
-    @Test
-    public void getSurveysForbidden() {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:" + port + "/api/surveys";
-        HttpClientErrorException thrown =
-                assertThrows(
-                        HttpClientErrorException.class,
-                        () -> restTemplate.getForEntity(url, SurveyDto[].class));
+  @Test
+  public void getSurveysForbidden() {
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "http://localhost:" + port + "/api/surveys";
+    HttpClientErrorException thrown =
+        assertThrows(
+            HttpClientErrorException.class,
+            () -> restTemplate.getForEntity(url, SurveyDto[].class));
 
-        assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-    }
+    assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+  }
 
-    @Test
-    public void getSurvey() {
-        Survey survey = new Survey();
-        survey.setId(UUID.randomUUID());
-        survey.setName("Test survey");
-        survey.setSampleSeparator(',');
-        survey.setSampleValidationRules(
-                new ColumnValidator[]{
-                        new ColumnValidator("DUMMY_COLUMN", false, new Rule[]{new MandatoryRule()})
-                });
-        survey.setSampleDefinitionUrl("http://dummy");
-        surveyRepository.saveAndFlush(survey);
+  @Test
+  public void getSurvey() {
+    Survey survey = new Survey();
+    survey.setId(UUID.randomUUID());
+    survey.setName("Test survey");
+    survey.setSampleSeparator(',');
+    survey.setSampleValidationRules(
+        new ColumnValidator[] {
+          new ColumnValidator("DUMMY_COLUMN", false, new Rule[] {new MandatoryRule()})
+        });
+    survey.setSampleDefinitionUrl("http://dummy");
+    surveyRepository.saveAndFlush(survey);
 
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:" + port + "/api/surveys/" + survey.getId();
-        ResponseEntity<SurveyDto> foundSurveyResponse = restTemplate.getForEntity(url, SurveyDto.class);
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "http://localhost:" + port + "/api/surveys/" + survey.getId();
+    ResponseEntity<SurveyDto> foundSurveyResponse = restTemplate.getForEntity(url, SurveyDto.class);
 
-        SurveyDto actualSurvey = foundSurveyResponse.getBody();
-        assertThat(actualSurvey.getName()).isEqualTo("Test survey");
-    }
+    SurveyDto actualSurvey = foundSurveyResponse.getBody();
+    assertThat(actualSurvey.getName()).isEqualTo("Test survey");
+  }
 
-    @Test
-    public void createSurvey() {
-        userPermissionHelper.setUpTestUserPermission(UserGroupAuthorisedActivityType.CREATE_SURVEY);
+  @Test
+  public void createSurvey() {
+    userPermissionHelper.setUpTestUserPermission(UserGroupAuthorisedActivityType.CREATE_SURVEY);
 
-        SurveyDto survey = new SurveyDto();
-        survey.setName("Test survey");
-        SurveyType testSurveyType = SurveyType.BUSINESS;
-        survey.setSurveyType(testSurveyType);
+    SurveyDto survey = new SurveyDto();
+    survey.setName("Test survey");
+    SurveyType testSurveyType = SurveyType.SOCIAL;
+    survey.setSurveyType(testSurveyType);
 
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:" + port + "/api/surveys";
-        ResponseEntity response = restTemplate.postForEntity(url, survey, SurveyDto.class);
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "http://localhost:" + port + "/api/surveys";
+    ResponseEntity response = restTemplate.postForEntity(url, survey, SurveyDto.class);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-        List<Survey> allSurveys = surveyRepository.findAll();
-        assertThat(allSurveys.size()).isEqualTo(1);
-        assertThat(allSurveys.get(0).getName()).isEqualTo("Test survey");
-        assertThat(allSurveys.get(1).getSampleValidationRules()).hasSizeGreaterThan(0);
-    }
+    List<Survey> allSurveys = surveyRepository.findAll();
+    assertThat(allSurveys.size()).isEqualTo(1);
+    assertThat(allSurveys.get(0).getName()).isEqualTo("Test survey");
+    assertThat(allSurveys.get(0).getSampleValidationRules()).hasSize(2);
+    assertThat(allSurveys.get(0).getSampleValidationRules()[1].getColumnName())
+        .isEqualTo("sampleUnitRef");
+  }
 
+  @Test
+  public void createSurveyForbidden() {
+    SurveyDto survey = new SurveyDto();
+    survey.setName("Test survey");
 
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "http://localhost:" + port + "/api/surveys";
 
-    @Test
-    public void createSurveyForbidden() {
-        SurveyDto survey = new SurveyDto();
-        survey.setName("Test survey");
+    HttpClientErrorException thrown =
+        assertThrows(
+            HttpClientErrorException.class,
+            () -> restTemplate.postForEntity(url, survey, SurveyDto.class));
 
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:" + port + "/api/surveys";
+    assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+  }
 
-        HttpClientErrorException thrown =
-                assertThrows(
-                        HttpClientErrorException.class,
-                        () -> restTemplate.postForEntity(url, survey, SurveyDto.class));
+  @Test
+  public void testGetSurveyTypes() {
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "http://localhost:" + port + "/api/surveys/surveyTypes";
+    ResponseEntity<SurveyType[]> foundSurveysResponse =
+        restTemplate.getForEntity(url, SurveyType[].class);
 
-        assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-    }
-
-    @Test
-    public void testGetSurveyTypes() {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:" + port + "/api/surveys/surveyTypes";
-        ResponseEntity<SurveyType[]> foundSurveysResponse =
-                restTemplate.getForEntity(url, SurveyType[].class);
-
-        SurveyType[] actualSurveyTypes = foundSurveysResponse.getBody();
-        assertThat(actualSurveyTypes.length).isEqualTo(3);
-        assertThat(actualSurveyTypes[0]).isEqualTo(SurveyType.SOCIAL);
-        assertThat(actualSurveyTypes[1]).isEqualTo(SurveyType.BUSINESS);
-        assertThat(actualSurveyTypes[2]).isEqualTo(SurveyType.HEALTH);
-    }
+    SurveyType[] actualSurveyTypes = foundSurveysResponse.getBody();
+    assertThat(actualSurveyTypes.length).isEqualTo(3);
+    assertThat(actualSurveyTypes[0]).isEqualTo(SurveyType.SOCIAL);
+    assertThat(actualSurveyTypes[1]).isEqualTo(SurveyType.BUSINESS);
+    assertThat(actualSurveyTypes[2]).isEqualTo(SurveyType.HEALTH);
+  }
 }
