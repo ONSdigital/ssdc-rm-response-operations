@@ -14,9 +14,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.ons.ssdc.responseoperations.test_utils.JsonHelper.asJsonString;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,94 +26,129 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ons.ssdc.common.model.entity.Survey;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
+import uk.gov.ons.ssdc.common.validation.ColumnValidator;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyDto;
+import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyType;
 import uk.gov.ons.ssdc.responseoperations.model.repository.SurveyRepository;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 
 @ExtendWith(MockitoExtension.class)
 class SurveyEndpointTest {
 
-  @Mock private SurveyRepository surveyRepository;
+    @Mock
+    private SurveyRepository surveyRepository;
 
-  @Mock private UserIdentity userIdentity;
+    @Mock
+    private UserIdentity userIdentity;
 
-  @InjectMocks private SurveyEndpoint underTest;
+    @InjectMocks
+    private SurveyEndpoint underTest;
 
-  private MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-  @BeforeEach
-  public void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(underTest).build();
-  }
+    @BeforeEach
+    public void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(underTest).build();
+    }
 
-  @Test
-  public void testGetAllSurveys() throws Exception {
+    @Test
+    public void testGetAllSurveys() throws Exception {
 
-    // Given
-    Survey survey = new Survey();
-    survey.setId(UUID.randomUUID());
-    survey.setName("Test survey");
-    when(surveyRepository.findAll()).thenReturn(List.of(survey));
+        // Given
+        Survey survey = new Survey();
+        survey.setId(UUID.randomUUID());
+        survey.setName("Test survey");
+        when(surveyRepository.findAll()).thenReturn(List.of(survey));
 
-    // When
-    mockMvc
-        .perform(get("/api/surveys").accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(handler().handlerType(SurveyEndpoint.class))
-        .andExpect(handler().methodName("getSurveys"))
-        .andExpect(jsonPath("$[0].id", is(survey.getId().toString())))
-        .andExpect(jsonPath("$[0].name", is("Test survey")));
+        // When
+        mockMvc
+                .perform(get("/api/surveys").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(handler().handlerType(SurveyEndpoint.class))
+                .andExpect(handler().methodName("getSurveys"))
+                .andExpect(jsonPath("$[0].id", is(survey.getId().toString())))
+                .andExpect(jsonPath("$[0].name", is("Test survey")));
 
-    // Then
-    verify(userIdentity)
-        .checkGlobalUserPermission(anyString(), eq(UserGroupAuthorisedActivityType.LIST_SURVEYS));
-  }
+        // Then
+        verify(userIdentity)
+                .checkGlobalUserPermission(anyString(), eq(UserGroupAuthorisedActivityType.LIST_SURVEYS));
+    }
 
-  @Test
-  public void testGetSurvey() throws Exception {
-    // Given
-    Survey survey = new Survey();
-    survey.setId(UUID.randomUUID());
-    survey.setName("Test survey");
-    when(surveyRepository.findById(any(UUID.class))).thenReturn(Optional.of(survey));
+    @Test
+    public void testGetSurvey() throws Exception {
+        // Given
+        Survey survey = new Survey();
+        survey.setId(UUID.randomUUID());
+        survey.setName("Test survey");
+        when(surveyRepository.findById(any(UUID.class))).thenReturn(Optional.of(survey));
 
-    // When
-    // Then
-    mockMvc
-        .perform(
-            get(String.format("/api/surveys/%s", survey.getId().toString()))
-                .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(handler().handlerType(SurveyEndpoint.class))
-        .andExpect(handler().methodName("getSurvey"))
-        .andExpect(jsonPath("id", is(survey.getId().toString())))
-        .andExpect(jsonPath("name", is("Test survey")));
-  }
+        // When
+        // Then
+        mockMvc
+                .perform(
+                        get(String.format("/api/surveys/%s", survey.getId().toString()))
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(handler().handlerType(SurveyEndpoint.class))
+                .andExpect(handler().methodName("getSurvey"))
+                .andExpect(jsonPath("id", is(survey.getId().toString())))
+                .andExpect(jsonPath("name", is("Test survey")));
+    }
 
-  @Test
-  public void testCreateSurvey() throws Exception {
-    // Given
-    SurveyDto survey = new SurveyDto();
-    survey.setName("Test survey");
+    @Test
+    public void testCreateSurvey() throws Exception {
+        // Given
+        SurveyDto survey = new SurveyDto();
+        survey.setName("Test survey");
+        survey.setSurveyType(SurveyType.SOCIAL);
 
-    // When
-    mockMvc
-        .perform(
-            post("/api/surveys", survey)
-                .content(asJsonString(survey))
-                .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isCreated())
-        .andExpect(handler().handlerType(SurveyEndpoint.class))
-        .andExpect(handler().methodName("createSurvey"));
+        // When
+        mockMvc
+                .perform(
+                        post("/api/surveys", survey)
+                                .content(asJsonString(survey))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(handler().handlerType(SurveyEndpoint.class))
+                .andExpect(handler().methodName("createSurvey"));
 
-    // Then
-    ArgumentCaptor<Survey> surveyArgumentCaptor = ArgumentCaptor.forClass(Survey.class);
-    verify(surveyRepository).saveAndFlush(surveyArgumentCaptor.capture());
-    assertThat(surveyArgumentCaptor.getValue().getName()).isEqualTo("Test survey");
-  }
+        // Then
+        ArgumentCaptor<Survey> surveyArgumentCaptor = ArgumentCaptor.forClass(Survey.class);
+        verify(surveyRepository).saveAndFlush(surveyArgumentCaptor.capture());
+        assertThat(surveyArgumentCaptor.getValue().getName()).isEqualTo("Test survey");
+        assertThat(surveyArgumentCaptor.getValue().getSampleValidationRules()
+    }
+
+//    private ColumnValidator[] getColumnValidatorsFromUrl(String sampleDefintionUrll) {
+//        try {
+//            URL url = new URL(sampleDefintionUrll);
+//            return  OBJECT_MAPPER.readValue(url, ColumnValidator[].class);
+//        } catch (Exception e){
+//            log.error(String.format("Failed to successfully get ColumnValidator[] from %s.  Message: %s",
+//                    sampleDefintionUrll));
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot get Sample Definition");
+//        }
+//    }
+
+    @Test
+    public void testGetSurveyTypes() throws Exception {
+        mockMvc.perform(
+                        get(String.format("/api/surveys/surveyTypes"))
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(handler().handlerType(SurveyEndpoint.class))
+                .andExpect(handler().methodName("getSurveyTypes"))
+                .andExpect(
+                        result ->
+                                assertThat(result.getResponse().getContentAsString())
+                                        .isEqualTo(
+                                                "[\"SOCIAL\",\"BUSINESS\",\"HEALTH\"]"));
+    }
 }
