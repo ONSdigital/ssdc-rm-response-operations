@@ -79,6 +79,7 @@ public class SurveyEndpoint {
     Survey newSurvey = new Survey();
     newSurvey.setId(UUID.randomUUID());
     newSurvey.setName(survey.getName());
+    newSurvey.setSampleWithHeaderRow(true);
 
     SurveyType surveyType = survey.getSurveyType();
     ColumnValidator[] columnValidators =
