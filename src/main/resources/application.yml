@@ -64,6 +64,12 @@ management:
 
 iapaudience: DUMMY
 
+sampledefinitions:
+  social: https://raw.githubusercontent.com/ONSdigital/ssdc-shared-events/main/sample/social/0.1.0/social.json
+  business: https://raw.githubusercontent.com/ONSdigital/ssdc-shared-events/main/sample/business/0.1.0-DRAFT/business.json
+  health: https://raw.githubusercontent.com/ONSdigital/ssdc-shared-events/main/sample/sis/0.1.0-DRAFT/sis.json
+
+
 # TODO: Remove this before releasing to prod
 dummyuseridentity: dummy@fake-email.com
 

@@ -3,3 +3,7 @@ spring:
     url: jdbc:postgresql://localhost:16436/postgres
 
 dummyuseridentity: test@test.com
+
+
+sampledefinitions:
+  social: file:src/test/resources/sampleDefinitionFiles/social_test.json

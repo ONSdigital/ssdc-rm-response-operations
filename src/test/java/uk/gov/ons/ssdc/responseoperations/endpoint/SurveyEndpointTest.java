@@ -29,7 +29,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.ons.ssdc.common.model.entity.Survey;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
+import uk.gov.ons.ssdc.common.validation.ColumnValidator;
+import uk.gov.ons.ssdc.responseoperations.client.SampleDefinitionClient;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyDto;
+import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyType;
 import uk.gov.ons.ssdc.responseoperations.model.repository.SurveyRepository;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 
@@ -39,6 +42,8 @@ class SurveyEndpointTest {
   @Mock private SurveyRepository surveyRepository;
 
   @Mock private UserIdentity userIdentity;
+
+  @Mock private SampleDefinitionClient sampleDefinitionClient;
 
   @InjectMocks private SurveyEndpoint underTest;
 
@@ -98,6 +103,12 @@ class SurveyEndpointTest {
     // Given
     SurveyDto survey = new SurveyDto();
     survey.setName("Test survey");
+    survey.setSurveyType(SurveyType.SOCIAL);
+
+    when(sampleDefinitionClient.getSampleDefinitionUrlForSurveyType(SurveyType.SOCIAL))
+        .thenReturn("test_url");
+    when(sampleDefinitionClient.getColumnValidatorsForSurveyType(SurveyType.SOCIAL))
+        .thenReturn(new ColumnValidator[0]);
 
     // When
     mockMvc
@@ -113,5 +124,18 @@ class SurveyEndpointTest {
     ArgumentCaptor<Survey> surveyArgumentCaptor = ArgumentCaptor.forClass(Survey.class);
     verify(surveyRepository).saveAndFlush(surveyArgumentCaptor.capture());
     assertThat(surveyArgumentCaptor.getValue().getName()).isEqualTo("Test survey");
+  }
+
+  @Test
+  public void testGetSurveyTypes() throws Exception {
+    mockMvc
+        .perform(get(String.format("/api/surveys/surveyTypes")).accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(handler().handlerType(SurveyEndpoint.class))
+        .andExpect(handler().methodName("getSurveyTypes"))
+        .andExpect(
+            result ->
+                assertThat(result.getResponse().getContentAsString())
+                    .isEqualTo("[\"SOCIAL\",\"BUSINESS\",\"HEALTH\"]"));
   }
 }

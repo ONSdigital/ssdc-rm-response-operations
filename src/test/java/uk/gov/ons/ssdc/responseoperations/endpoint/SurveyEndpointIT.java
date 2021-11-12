@@ -24,6 +24,7 @@ import uk.gov.ons.ssdc.common.validation.ColumnValidator;
 import uk.gov.ons.ssdc.common.validation.MandatoryRule;
 import uk.gov.ons.ssdc.common.validation.Rule;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyDto;
+import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyType;
 import uk.gov.ons.ssdc.responseoperations.model.repository.SurveyRepository;
 import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 
@@ -107,6 +108,8 @@ public class SurveyEndpointIT {
 
     SurveyDto survey = new SurveyDto();
     survey.setName("Test survey");
+    SurveyType testSurveyType = SurveyType.SOCIAL;
+    survey.setSurveyType(testSurveyType);
 
     RestTemplate restTemplate = new RestTemplate();
     String url = "http://localhost:" + port + "/api/surveys";
@@ -117,6 +120,9 @@ public class SurveyEndpointIT {
     List<Survey> allSurveys = surveyRepository.findAll();
     assertThat(allSurveys.size()).isEqualTo(1);
     assertThat(allSurveys.get(0).getName()).isEqualTo("Test survey");
+    assertThat(allSurveys.get(0).getSampleValidationRules()).hasSize(2);
+    assertThat(allSurveys.get(0).getSampleValidationRules()[1].getColumnName())
+        .isEqualTo("sampleUnitRef");
   }
 
   @Test
@@ -133,5 +139,19 @@ public class SurveyEndpointIT {
             () -> restTemplate.postForEntity(url, survey, SurveyDto.class));
 
     assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+  }
+
+  @Test
+  public void testGetSurveyTypes() {
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "http://localhost:" + port + "/api/surveys/surveyTypes";
+    ResponseEntity<SurveyType[]> foundSurveysResponse =
+        restTemplate.getForEntity(url, SurveyType[].class);
+
+    SurveyType[] actualSurveyTypes = foundSurveysResponse.getBody();
+    assertThat(actualSurveyTypes.length).isEqualTo(3);
+    assertThat(actualSurveyTypes[0]).isEqualTo(SurveyType.SOCIAL);
+    assertThat(actualSurveyTypes[1]).isEqualTo(SurveyType.BUSINESS);
+    assertThat(actualSurveyTypes[2]).isEqualTo(SurveyType.HEALTH);
   }
 }

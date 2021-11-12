@@ -6,4 +6,5 @@ import lombok.Data;
 public class SurveyDto {
   private String id;
   private String name;
+  private SurveyType surveyType;
 }

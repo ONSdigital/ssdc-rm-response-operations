@@ -1,5 +1,6 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,9 +18,9 @@ import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ons.ssdc.common.model.entity.Survey;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.common.validation.ColumnValidator;
-import uk.gov.ons.ssdc.common.validation.MandatoryRule;
-import uk.gov.ons.ssdc.common.validation.Rule;
+import uk.gov.ons.ssdc.responseoperations.client.SampleDefinitionClient;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyDto;
+import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyType;
 import uk.gov.ons.ssdc.responseoperations.model.repository.SurveyRepository;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 
@@ -28,10 +29,15 @@ import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 public class SurveyEndpoint {
   private final SurveyRepository surveyRepository;
   private final UserIdentity userIdentity;
+  private final SampleDefinitionClient sampleDefinitionClient;
 
-  public SurveyEndpoint(SurveyRepository surveyRepository, UserIdentity userIdentity) {
+  public SurveyEndpoint(
+      SurveyRepository surveyRepository,
+      UserIdentity userIdentity,
+      SampleDefinitionClient sampleDefinitionClient) {
     this.surveyRepository = surveyRepository;
     this.userIdentity = userIdentity;
+    this.sampleDefinitionClient = sampleDefinitionClient;
   }
 
   @GetMapping
@@ -58,6 +64,11 @@ public class SurveyEndpoint {
     return mapSurvey(optionalSurvey.get());
   }
 
+  @GetMapping(value = "/surveyTypes")
+  public String[] getSurveyTypes() {
+    return EnumSet.allOf(SurveyType.class).stream().map(Enum::toString).toArray(String[]::new);
+  }
+
   @PostMapping
   public ResponseEntity createSurvey(
       @RequestBody SurveyDto survey,
@@ -68,18 +79,18 @@ public class SurveyEndpoint {
     Survey newSurvey = new Survey();
     newSurvey.setId(UUID.randomUUID());
     newSurvey.setName(survey.getName());
+    newSurvey.setSampleWithHeaderRow(true);
+
+    SurveyType surveyType = survey.getSurveyType();
+    ColumnValidator[] columnValidators =
+        sampleDefinitionClient.getColumnValidatorsForSurveyType(surveyType);
+    newSurvey.setSampleValidationRules(columnValidators);
+
+    newSurvey.setSampleDefinitionUrl(
+        sampleDefinitionClient.getSampleDefinitionUrlForSurveyType(surveyType));
     newSurvey.setSampleSeparator(',');
-
-    // TODO: This is just a placeholder. This needs to be replaced with real columns/rules
-    newSurvey.setSampleValidationRules(
-        new ColumnValidator[] {
-          new ColumnValidator("DUMMY_COLUMN", false, new Rule[] {new MandatoryRule()})
-        });
-
-    // TODO: This is just a placeholder. This needs to be replaced with real URL
-    newSurvey.setSampleDefinitionUrl("http://dummy");
-
     surveyRepository.saveAndFlush(newSurvey);
+
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
