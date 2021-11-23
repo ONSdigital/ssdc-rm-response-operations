@@ -1,5 +1,8 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,17 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
-import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserGroupMemberDto;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
-import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
-import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/userGroupMembers")
@@ -53,7 +49,6 @@ public class UserGroupMemberEndpoint {
         .map(this::mapGroupMember)
         .collect(Collectors.toList());
   }
-
 
   @DeleteMapping("/{groupMemberId}")
   public void removeUserFromGroup(

@@ -1,5 +1,8 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,77 +18,65 @@ import uk.gov.ons.ssdc.common.model.entity.User;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAdmin;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
-import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserGroupDto;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserGroupMemberDto;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupAdminRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
 
-import java.util.List;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class UserGroupMemberEndpointIT {
-    @Autowired
-    private UserGroupMemberRepository userGroupMemberRepository;
+  @Autowired private UserGroupMemberRepository userGroupMemberRepository;
+  @Autowired private UserGroupRepository userGroupRepository;
+  @Autowired private UserRepository userRepository;
+  @Autowired private UserGroupAdminRepository userGroupAdminRepository;
 
-    @Autowired
-    private UserGroupRepository userGroupRepository;
+  @LocalServerPort private int port;
 
-    @Autowired
-    private UserRepository userRepository;
+  @BeforeEach
+  @Transactional
+  public void setUp() {
+    userGroupAdminRepository.deleteAllInBatch();
+    userGroupMemberRepository.deleteAllInBatch();
+    userGroupRepository.deleteAllInBatch();
+    userRepository.deleteAllInBatch();
+  }
 
-    @Autowired
-    private UserGroupAdminRepository userGroupAdminRepository;
+  @Test
+  public void getUsersAdminGroups() {
+    User user = new User();
+    user.setId(UUID.randomUUID());
+    user.setEmail("test@test.com");
+    userRepository.saveAndFlush(user);
 
-    @LocalServerPort
-    private int port;
+    UserGroup userGroup = new UserGroup();
+    userGroup.setId(UUID.randomUUID());
+    userGroup.setName("test group");
+    userGroupRepository.saveAndFlush(userGroup);
 
-    @BeforeEach
-    @Transactional
-    public void setUp() {
-        userGroupMemberRepository.deleteAllInBatch();
-        userGroupRepository.deleteAllInBatch();
-        userRepository.deleteAllInBatch();
-        userGroupAdminRepository.deleteAllInBatch();
-    }
+    UserGroupAdmin admin = new UserGroupAdmin();
+    admin.setId(UUID.randomUUID());
+    admin.setUser(user);
+    admin.setGroup(userGroup);
+    userGroupAdminRepository.saveAndFlush(admin);
 
-    @Test
-    public void getUsersAdminGroups() {
-        User user = new User();
-        user.setId(UUID.randomUUID());
-        user.setEmail("test@test.com");
-        userRepository.save(user);
+    UserGroupMember userGroupMember = new UserGroupMember();
+    userGroupMember.setId(UUID.randomUUID());
+    userGroupMember.setUser(user);
+    userGroupMember.setGroup(userGroup);
+    userGroupMemberRepository.saveAndFlush(userGroupMember);
 
-        UserGroup userGroup = new UserGroup();
-        userGroup.setId(UUID.randomUUID());
-        userGroup.setName("test group");
-        userGroupRepository.save(userGroup);
+    RestTemplate restTemplate = new RestTemplate();
+    String url =
+        "http://localhost:"
+            + port
+            + String.format("/api/userGroupMembers/findByGroup/%s", userGroup.getId());
+    ResponseEntity<UserGroupMemberDto[]> usersInGroupResponse =
+        restTemplate.getForEntity(url, UserGroupMemberDto[].class);
 
-        UserGroupAdmin admin = new UserGroupAdmin();
-        admin.setId(UUID.randomUUID());
-        admin.setUser(user);
-        admin.setGroup(userGroup);
-        userGroupAdminRepository.save(admin);
-
-        UserGroupMember userGroupMember = new UserGroupMember();
-        userGroupMember.setId(UUID.randomUUID());
-        userGroupMember.setUser(user);
-        userGroupMember.setGroup(userGroup);
-        userGroupMemberRepository.save(userGroupMember);
-
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:" + port + String.format("/api/userGroupMembers/findByGroup/%s", userGroup.getId());
-        ResponseEntity<UserGroupMemberDto[]> usersInGroupResponse =
-                restTemplate.getForEntity(url, UserGroupMemberDto[].class);
-
-        UserGroupMemberDto[] userGroupMemberDtos = usersInGroupResponse.getBody();
-        assertThat(userGroupMemberDtos.length).isEqualTo(1);
-    }
-
+    UserGroupMemberDto[] userGroupMemberDtos = usersInGroupResponse.getBody();
+    assertThat(userGroupMemberDtos.length).isEqualTo(1);
+  }
 }

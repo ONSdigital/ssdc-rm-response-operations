@@ -1,5 +1,6 @@
 package uk.gov.ons.ssdc.responseoperations.test_utils;
 
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ssdc.common.model.entity.User;
@@ -7,12 +8,11 @@ import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupPermission;
+import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupAdminRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupPermissionRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
-
-import java.util.UUID;
 
 @Component
 public class UserPermissionHelper {
@@ -21,8 +21,10 @@ public class UserPermissionHelper {
   @Autowired private UserGroupRepository userGroupRepository;
   @Autowired private UserGroupMemberRepository userGroupMemberRepository;
   @Autowired private UserGroupPermissionRepository userGroupPermissionRepository;
+  @Autowired private UserGroupAdminRepository userGroupAdminRepository;
 
   public void clearDown() {
+    userGroupAdminRepository.deleteAllInBatch();
     userGroupPermissionRepository.deleteAllInBatch();
     userGroupMemberRepository.deleteAllInBatch();
     userGroupRepository.deleteAllInBatch();
