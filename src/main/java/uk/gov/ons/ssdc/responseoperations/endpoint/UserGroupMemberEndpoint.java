@@ -25,18 +25,12 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/userGroupMembers")
 public class UserGroupMemberEndpoint {
   private final UserGroupMemberRepository userGroupMemberRepository;
-  private final UserIdentity userIdentity;
-  private final UserRepository userRepository;
   private final UserGroupRepository userGroupRepository;
 
   public UserGroupMemberEndpoint(
       UserGroupMemberRepository userGroupMemberRepository,
-      UserIdentity userIdentity,
-      UserRepository userRepository,
       UserGroupRepository userGroupRepository) {
     this.userGroupMemberRepository = userGroupMemberRepository;
-    this.userIdentity = userIdentity;
-    this.userRepository = userRepository;
     this.userGroupRepository = userGroupRepository;
   }
 
@@ -75,8 +69,7 @@ public class UserGroupMemberEndpoint {
 
     if (userGroupMember.getGroup().getAdmins().stream()
         .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
-      // If you're not admin of this group, you have to be super user
-      userIdentity.checkGlobalUserPermission(userEmail, UserGroupAuthorisedActivityType.SUPER_USER);
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not an admin");
     }
 
     userGroupMemberRepository.delete(userGroupMember);

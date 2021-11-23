@@ -25,6 +25,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -84,7 +85,7 @@ class UserGroupMemberEndpointTest {
     }
 
     @Test
-    public void testGroupNotRecognised() throws Exception {
+    public void testGetUsersInGroupBadUser() throws Exception {
         mockMvc
                 .perform(get("/api/userGroupMembers/findByGroup/{groupid}", UUID.randomUUID())
                         .accept(MediaType.APPLICATION_JSON))
@@ -98,7 +99,7 @@ class UserGroupMemberEndpointTest {
     }
 
     @Test
-    public void testUserNotAdmin() throws Exception {
+    public void testGetUsersInGroupNotAdmin() throws Exception {
         User user = new User();
         user.setId(UUID.randomUUID());
         user.setEmail("notThisUser@email.gov.uk");
@@ -121,5 +122,80 @@ class UserGroupMemberEndpointTest {
                         result ->
                                 assertThat(result.getResponse().getStatus())
                                         .isEqualTo(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    public void testRemoveUserFromGroup() throws Exception {
+        User user = new User();
+        user.setId(UUID.randomUUID());
+        // why this, because .requestAttr("userEmail", "test@test.com") not working
+        user.setEmail("#{request.getAttribute('userEmail')}");
+        UserGroupAdmin admin = new UserGroupAdmin();
+        admin.setUser(user);
+
+        UserGroup userGroup = new UserGroup();
+        userGroup.setId(UUID.randomUUID());
+        userGroup.setAdmins(List.of(admin));
+
+        UserGroupMember userGroupMember = new UserGroupMember();
+        userGroupMember.setId(UUID.randomUUID());
+        userGroupMember.setUser(user);
+        userGroupMember.setGroup(userGroup);
+
+        when(userGroupMemberRepository.findById(any(UUID.class))).thenReturn(Optional.of(userGroupMember));
+
+        mockMvc
+                .perform(delete("/api/userGroupMembers/{groupMemberId}", userGroupMember.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
+                .andExpect(handler().methodName("removeUserFromGroup"));
+
+    }
+
+    @Test
+    public void testNotAdminForDelete() throws Exception {
+        User user = new User();
+        user.setId(UUID.randomUUID());
+        // why this, because .requestAttr("userEmail", "test@test.com") not working
+        user.setEmail("not@admin.com");
+        UserGroupAdmin admin = new UserGroupAdmin();
+        admin.setUser(user);
+
+        UserGroup userGroup = new UserGroup();
+        userGroup.setId(UUID.randomUUID());
+        userGroup.setAdmins(List.of(admin));
+
+        UserGroupMember userGroupMember = new UserGroupMember();
+        userGroupMember.setId(UUID.randomUUID());
+        userGroupMember.setUser(user);
+        userGroupMember.setGroup(userGroup);
+
+        when(userGroupMemberRepository.findById(any(UUID.class))).thenReturn(Optional.of(userGroupMember));
+
+        mockMvc
+                .perform(delete("/api/userGroupMembers/{groupMemberId}", UUID.randomUUID())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
+                .andExpect(handler().methodName("removeUserFromGroup"))
+                .andExpect(
+                        result ->
+                                assertThat(result.getResponse().getStatus())
+                                        .isEqualTo(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    public void testGroupMemberNotFoundForDelete() throws Exception {
+        mockMvc
+                .perform(delete("/api/userGroupMembers/{groupMemberId}", UUID.randomUUID())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
+                .andExpect(handler().methodName("removeUserFromGroup"))
+                .andExpect(
+                        result ->
+                                assertThat(result.getResponse().getStatus())
+                                        .isEqualTo(HttpStatus.BAD_REQUEST.value()));
     }
 }
