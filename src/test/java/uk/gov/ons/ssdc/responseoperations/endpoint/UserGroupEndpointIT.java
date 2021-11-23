@@ -22,7 +22,6 @@ import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupAdminReposit
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
-import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

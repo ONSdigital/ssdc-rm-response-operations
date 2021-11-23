@@ -19,33 +19,20 @@ afterEach(() => {
   container = null;
 });
 
-it("renders My admin groups", async () => {
-  const fakeMyGroups = [
-    {
-      id: "fake-id",
-      name: "test-group"
-    },
-  ];
-
-  jest.spyOn(global, "fetch").mockImplementation(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(fakeMyGroups),
-    })
-  );
-
+it("renders user to delete", async () => {
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
     render(
       <Router>
-        <DeleteUserFromGroupConfirmation />
+        <DeleteUserFromGroupConfirmation userEmail="test@email.com" groupName="test-group" />
       </Router>,
       container
     );
   });
 
+  const emailNameElement = screen.getByText(/test@email.com/);
+  expect(emailNameElement).toBeInTheDocument();
+
   const groupNameElement = screen.getByText(/test-group/);
   expect(groupNameElement).toBeInTheDocument();
-
-  // remove the mock to ensure tests are completely isolated
-  global.fetch.mockRestore();
 });
