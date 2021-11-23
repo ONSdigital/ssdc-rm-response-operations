@@ -18,6 +18,11 @@ function Home(props) {
           <Link to="/exportfiletemplates">Export File Templates</Link>
         </p>
       )}
+      {(
+        <p>
+          <Link to="/mygroupsadmin">My Groups Admin</Link>
+        </p>
+      )}
     </>
   );
 }

@@ -30,6 +30,7 @@ public class ExportFileTemplateEndpointIT {
   @Autowired private ExportFileTemplateRepository exportFileTemplateRepository;
   @Autowired private UserPermissionHelper userPermissionHelper;
 
+
   @LocalServerPort private int port;
 
   @BeforeEach

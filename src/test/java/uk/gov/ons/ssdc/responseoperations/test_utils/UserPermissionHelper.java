@@ -1,6 +1,5 @@
 package uk.gov.ons.ssdc.responseoperations.test_utils;
 
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ssdc.common.model.entity.User;
@@ -12,6 +11,8 @@ import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberReposi
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupPermissionRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
+
+import java.util.UUID;
 
 @Component
 public class UserPermissionHelper {
