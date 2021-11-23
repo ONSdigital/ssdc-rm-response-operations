@@ -1,8 +1,8 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,6 +14,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,6 +26,7 @@ import uk.gov.ons.ssdc.common.model.entity.User;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAdmin;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
+import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserGroupMemberDto;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 
@@ -48,12 +50,13 @@ class UserGroupMemberEndpointTest {
     User user = new User();
     user.setId(UUID.randomUUID());
     // why this, because .requestAttr("userEmail", "test@test.com") not working
-    user.setEmail("#{request.getAttribute('userEmail')}");
+    user.setEmail("test@ons.gov.uk");
     UserGroupAdmin admin = new UserGroupAdmin();
     admin.setUser(user);
 
     UserGroup userGroup = new UserGroup();
     userGroup.setId(UUID.randomUUID());
+    userGroup.setName("test group");
     userGroup.setAdmins(List.of(admin));
 
     UserGroupMember userGroupMember = new UserGroupMember();
@@ -65,19 +68,18 @@ class UserGroupMemberEndpointTest {
     when(userGroupRepository.findById(any(UUID.class))).thenReturn(Optional.of(userGroup));
     when(userGroupMemberRepository.findByGroup(any(UserGroup.class))).thenReturn(userList);
 
-    mockMvc
-        .perform(
-            get("/api/userGroupMembers/findByGroup/{groupid}", userGroup.getId())
-                //                        .requestAttr("userEmail", "test@test.com")
-                .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
-        .andExpect(handler().methodName("findByGroup"))
-        .andExpect(jsonPath("$[0].id", is(userGroupMember.getId().toString())))
-        .andExpect(jsonPath("$[0].groupId", is(userGroup.getId().toString())))
-        .andExpect(jsonPath("$[0].groupName", is(userGroup.getName())))
-        .andExpect(jsonPath("$[0].userId", is(user.getId().toString())))
-        .andExpect(jsonPath("$[0].userEmail", is(user.getEmail())));
+    // Why not mockMvc? well because we can't map to @Value("#{request.getAttribute('userEmail')}")
+    // String userEmail)
+    List<UserGroupMemberDto> groupMembers =
+        underTest.findByGroup(userGroup.getId(), user.getEmail());
+
+    assertThat(groupMembers.size()).isEqualTo(1);
+    UserGroupMemberDto actualGroupMember = groupMembers.get(0);
+    assertThat(actualGroupMember.getId()).isEqualTo(userGroupMember.getId());
+    assertThat(actualGroupMember.getGroupId()).isEqualTo(userGroup.getId());
+    assertThat(actualGroupMember.getGroupName()).isEqualTo(userGroup.getName());
+    assertThat(actualGroupMember.getUserEmail()).isEqualTo(user.getEmail());
+    assertThat(actualGroupMember.getUserId()).isEqualTo(user.getId());
   }
 
   @Test
@@ -126,8 +128,7 @@ class UserGroupMemberEndpointTest {
   public void testRemoveUserFromGroup() throws Exception {
     User user = new User();
     user.setId(UUID.randomUUID());
-    // why this, because .requestAttr("userEmail", "test@test.com") not working
-    user.setEmail("#{request.getAttribute('userEmail')}");
+    user.setEmail("test@ons.gov.uk");
     UserGroupAdmin admin = new UserGroupAdmin();
     admin.setUser(user);
 
@@ -143,20 +144,22 @@ class UserGroupMemberEndpointTest {
     when(userGroupMemberRepository.findById(any(UUID.class)))
         .thenReturn(Optional.of(userGroupMember));
 
-    mockMvc
-        .perform(
-            delete("/api/userGroupMembers/{groupMemberId}", userGroupMember.getId())
-                .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
-        .andExpect(handler().methodName("removeUserFromGroup"));
+    // Why not mockMvc? well because we can't map to @Value("#{request.getAttribute('userEmail')}")
+    // String userEmail)
+    underTest.removeUserFromGroup(userGroupMember.getId(), user.getEmail());
+
+    ArgumentCaptor<UserGroupMember> userGroupMemberArgumentCaptor =
+        ArgumentCaptor.forClass(UserGroupMember.class);
+    verify(userGroupMemberRepository).delete(userGroupMemberArgumentCaptor.capture());
+
+    UserGroupMember actualGroupMemberRemoved = userGroupMemberArgumentCaptor.getValue();
+    assertThat(actualGroupMemberRemoved.getId()).isEqualTo(userGroupMember.getId());
   }
 
   @Test
   public void testNotAdminForDelete() throws Exception {
     User user = new User();
     user.setId(UUID.randomUUID());
-    // why this, because .requestAttr("userEmail", "test@test.com") not working
     user.setEmail("not@admin.com");
     UserGroupAdmin admin = new UserGroupAdmin();
     admin.setUser(user);

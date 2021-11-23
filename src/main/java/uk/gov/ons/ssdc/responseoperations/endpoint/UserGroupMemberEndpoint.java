@@ -33,6 +33,7 @@ public class UserGroupMemberEndpoint {
   @GetMapping("/findByGroup/{groupId}")
   public List<UserGroupMemberDto> findByGroup(
       @PathVariable(value = "groupId") UUID groupId,
+      //          @RequestAttribute("userEmail") String userEmail) {
       @Value("#{request.getAttribute('userEmail')}") String userEmail) {
     UserGroup group =
         userGroupRepository

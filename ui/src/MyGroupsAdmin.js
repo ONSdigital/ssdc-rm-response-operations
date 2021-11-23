@@ -9,6 +9,9 @@ function MyGroupsAdmin() {
   let history = useHistory();
   const [tableRows, setTableRows] = useState([]);
 
+  function openEditGroupMembersPage(group) {
+    history.push(`/groupadmin?groupId=${group.id}&groupName=${group.name}`);
+  }
 
   useEffect(() => {
     async function fetchGroupsUserAdminOf() {
@@ -19,7 +22,10 @@ function MyGroupsAdmin() {
       const tableRows = await userAdminGroupsJson.map((group, index) => (
         <tr className="table__row" key={index}>
           <td className="table__cell">
-            <Link to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}>{group.name}</Link>
+            {group.name}
+          </td>
+          <td>
+            <button onClick={() => openEditGroupMembersPage(group)} type="button">Edit Group</button>
           </td>
         </tr>
       ));
