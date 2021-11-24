@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
@@ -22,7 +23,7 @@ public class UserGroupEndpoint {
 
   @GetMapping("/thisUserAdminGroups")
   public List<UserGroupDto> getUserAdminGroups(
-      @Value("#{request.getAttribute('userEmail')}") String userEmail) {
+      @RequestAttribute("userEmail") String userEmail) {
     return userGroupAdminRepository.findByUserEmail(userEmail).stream()
         .map(UserGroupAdmin::getGroup)
         .map(this::mapDto)

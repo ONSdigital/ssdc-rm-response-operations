@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,8 +34,7 @@ public class UserGroupMemberEndpoint {
   @GetMapping("/findByGroup/{groupId}")
   public List<UserGroupMemberDto> findByGroup(
       @PathVariable(value = "groupId") UUID groupId,
-      //          @RequestAttribute("userEmail") String userEmail) {
-      @Value("#{request.getAttribute('userEmail')}") String userEmail) {
+      @RequestAttribute("userEmail") String userEmail) {
     UserGroup group =
         userGroupRepository
             .findById(groupId)
@@ -54,7 +54,7 @@ public class UserGroupMemberEndpoint {
   @DeleteMapping("/{groupMemberId}")
   public void removeUserFromGroup(
       @PathVariable(value = "groupMemberId") UUID groupMemberId,
-      @Value("#{request.getAttribute('userEmail')}") String userEmail) {
+      @RequestAttribute("userEmail") String userEmail) {
     UserGroupMember userGroupMember =
         userGroupMemberRepository
             .findById(groupMemberId)
