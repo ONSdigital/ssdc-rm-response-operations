@@ -23,7 +23,7 @@ it("renders Users in group", async () => {
   const fakeUsers = [
     {
       id: "fake-id",
-      userEmail: "test@email.com"
+      userEmail: "test@email.com",
     },
   ];
 

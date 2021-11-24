@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
 
-
 function MyGroupsAdmin() {
   let history = useHistory();
   const [tableRows, setTableRows] = useState([]);
@@ -18,7 +17,11 @@ function MyGroupsAdmin() {
       const tableRows = await userAdminGroupsJson.map((group, index) => (
         <tr className="table__row" key={index}>
           <td className="table__cell">
-            <Link to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}>{group.name}</Link>
+            <Link
+              to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}
+            >
+              {group.name}
+            </Link>
           </td>
         </tr>
       ));
@@ -47,7 +50,7 @@ function MyGroupsAdmin() {
         <tbody className="table__body">{tableRows}</tbody>
       </table>
     </>
-  )
+  );
 }
 
 export default MyGroupsAdmin;

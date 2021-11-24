@@ -16,7 +16,6 @@ function Home(props) {
     fetchGroupsUserAdminOf();
   }, []);
 
-
   return (
     <>
       <Helmet>

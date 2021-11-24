@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 
-
 function DeleteUserFromGroupConfirmation(props) {
   let history = useHistory();
   let removeAdminFromGroupInProgress = false;
@@ -12,7 +11,9 @@ function DeleteUserFromGroupConfirmation(props) {
   const [hasErrors, setHasErrors] = useState(false);
 
   function cancel() {
-    history.push(`/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`);
+    history.push(
+      `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+    );
   }
 
   async function removeUser() {
@@ -27,11 +28,16 @@ function DeleteUserFromGroupConfirmation(props) {
     });
 
     if (response.ok) {
-      history.push(`/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}&deletedUserEmail=${props.userEmail}&flashMessageUntil=${Date.now() + 5000}`);
-    }
-    else {
+      history.push(
+        `/groupadmin?groupId=${props.groupId}&groupName=${
+          props.groupName
+        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${
+          Date.now() + 5000
+        }`
+      );
+    } else {
       // we need to decide on a standard - unexpected backend error strategy/page?
-      setErrorSummary(['Failed to delete user']);
+      setErrorSummary(["Failed to delete user"]);
       setHasErrors(true);
     }
   }
@@ -44,7 +50,7 @@ function DeleteUserFromGroupConfirmation(props) {
   }, [hasErrors]);
 
   function ErrorSummary() {
-    const validationErrorInfoText = "There is 1 problem with this page"
+    const validationErrorInfoText = "There is 1 problem with this page";
 
     return (
       <div
@@ -68,14 +74,16 @@ function DeleteUserFromGroupConfirmation(props) {
     );
   }
 
-
   return (
     <>
       <Helmet>
         <title>Delete user from Group</title>
       </Helmet>
       {errorSummary.length > 0 && <ErrorSummary />}
-      <p>Are you sure you wish to remove {props.userEmail} user? from {props.groupName}</p>
+      <p>
+        Are you sure you wish to remove {props.userEmail} user? from{" "}
+        {props.groupName}
+      </p>
       <button type="button" className="btn" onClick={removeUser}>
         <span className="btn__inner">Yes</span>
       </button>
@@ -84,7 +92,7 @@ function DeleteUserFromGroupConfirmation(props) {
         <span className="btn__inner">Cancel</span>
       </button>
     </>
-  )
+  );
 }
 
 export default DeleteUserFromGroupConfirmation;

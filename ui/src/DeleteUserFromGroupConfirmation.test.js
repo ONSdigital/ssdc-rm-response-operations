@@ -24,7 +24,10 @@ it("renders user to delete", async () => {
   await act(async () => {
     render(
       <Router>
-        <DeleteUserFromGroupConfirmation userEmail="test@email.com" groupName="test-group" />
+        <DeleteUserFromGroupConfirmation
+          userEmail="test@email.com"
+          groupName="test-group"
+        />
       </Router>,
       container
     );

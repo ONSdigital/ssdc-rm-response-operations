@@ -23,7 +23,7 @@ it("renders My admin groups", async () => {
   const fakeMyGroups = [
     {
       id: "fake-id",
-      name: "test-group"
+      name: "test-group",
     },
   ];
 

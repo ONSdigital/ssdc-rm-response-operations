@@ -94,7 +94,8 @@ function QueryRouting(props) {
         <MyGroupsAdmin />
       </Route>
       <Route path="/groupadmin">
-        <GroupAdmin groupId={query.get("groupId")}
+        <GroupAdmin
+          groupId={query.get("groupId")}
           groupName={query.get("groupName")}
           flashMessageUntil={query.get("flashMessageUntil")}
           deletedUserEmail={query.get("deletedUserEmail")}
