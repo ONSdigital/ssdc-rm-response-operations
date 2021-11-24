@@ -30,8 +30,8 @@ function DeleteUserFromGroupConfirmation(props) {
       history.push(`/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}&deletedUserEmail=${props.userEmail}&flashMessageUntil=${Date.now() + 5000}`);
     }
     else {
-      // hmmm shouldn't be permission, might be backend error.  Display a nice Error thingy
-      setErrorSummary(['Failed to delete user :(']);
+      // we need to decide on a standard - unexpected backend error strategy/page?
+      setErrorSummary(['Failed to delete user']);
       setHasErrors(true);
     }
   }

@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +38,7 @@ public class ExportFileTemplateEndpoint {
 
   @GetMapping
   public List<ExportFileTemplateDto> getExportFileTemplates(
-      @Value("#{request.getAttribute('userEmail')}") String userEmail) {
+      @RequestAttribute("userEmail") String userEmail) {
     userIdentity.checkGlobalUserPermission(
         userEmail, UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_TEMPLATES);
 
@@ -51,7 +51,7 @@ public class ExportFileTemplateEndpoint {
   @PostMapping
   public ResponseEntity createExportFileTemplate(
       @RequestBody ExportFileTemplateDto exportFileTemplateDto,
-      @Value("#{request.getAttribute('userEmail')}") String userEmail) {
+      @RequestAttribute("userEmail") String userEmail) {
     userIdentity.checkGlobalUserPermission(
         userEmail, UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE);
 
