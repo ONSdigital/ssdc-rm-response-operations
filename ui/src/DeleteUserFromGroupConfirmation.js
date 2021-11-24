@@ -29,10 +29,8 @@ function DeleteUserFromGroupConfirmation(props) {
 
     if (response.ok) {
       history.push(
-        `/groupadmin?groupId=${props.groupId}&groupName=${
-          props.groupName
-        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${
-          Date.now() + 5000
+        `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName
+        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${Date.now() + 5000
         }`
       );
     } else {
@@ -87,7 +85,6 @@ function DeleteUserFromGroupConfirmation(props) {
       <button type="button" className="btn" onClick={removeUser}>
         <span className="btn__inner">Yes</span>
       </button>
-      {/* Todo How to do a cancel button? */}
       <button type="button" className="btn" onClick={cancel}>
         <span className="btn__inner">Cancel</span>
       </button>

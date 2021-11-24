@@ -18,8 +18,7 @@ function MyGroupsAdmin() {
         <tr className="table__row" key={index}>
           <td className="table__cell">
             <Link
-              to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}
-            >
+              to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}>
               {group.name}
             </Link>
           </td>
@@ -38,6 +37,7 @@ function MyGroupsAdmin() {
       </Helmet>
       <Announcer text={"View Groups that you are Admin of"} />
       <Link to="/">← Back to home</Link>
+      <h1>Group you are admin for</h1>
       <table className="table table--row-hover">
         <thead className="table__head">
           <tr className="table__row">

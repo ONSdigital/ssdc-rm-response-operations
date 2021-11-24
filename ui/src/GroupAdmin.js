@@ -25,8 +25,8 @@ function GroupAdmin(props) {
         <tr className="table__row" key={index}>
           <td className="table__cell">{groupUser.userEmail}</td>
           <td className="table__cell">
-            <button onClick={() => openRemoveUserPage(groupUser)} type="button">
-              Remove
+            <button onClick={() => openRemoveUserPage(groupUser)} type="submit" className="btn btn--link">
+              <span className="btn__inner">Remove</span>
             </button>
           </td>
         </tr>
@@ -62,12 +62,12 @@ function GroupAdmin(props) {
           </div>
         </>
       )}
-      <br />
+      <h1>Members of group: {props.groupName}</h1>
       <table className="table table--row-hover">
         <thead className="table__head">
           <tr className="table__row">
             <th scope="col" className="table__header">
-              Users in group: {props.groupName}
+              Group Member email
             </th>
           </tr>
         </thead>
