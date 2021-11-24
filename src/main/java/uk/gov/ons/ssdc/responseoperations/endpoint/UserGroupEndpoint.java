@@ -2,7 +2,6 @@ package uk.gov.ons.ssdc.responseoperations.endpoint;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +21,7 @@ public class UserGroupEndpoint {
   }
 
   @GetMapping("/thisUserAdminGroups")
-  public List<UserGroupDto> getUserAdminGroups(
-      @RequestAttribute("userEmail") String userEmail) {
+  public List<UserGroupDto> getUserAdminGroups(@RequestAttribute("userEmail") String userEmail) {
     return userGroupAdminRepository.findByUserEmail(userEmail).stream()
         .map(UserGroupAdmin::getGroup)
         .map(this::mapDto)

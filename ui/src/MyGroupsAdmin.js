@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
@@ -9,10 +9,6 @@ function MyGroupsAdmin() {
   let history = useHistory();
   const [tableRows, setTableRows] = useState([]);
 
-  function openEditGroupMembersPage(group) {
-    history.push(`/groupadmin?groupId=${group.id}&groupName=${group.name}`);
-  }
-
   useEffect(() => {
     async function fetchGroupsUserAdminOf() {
       const response = await fetch("/api/userGroups/thisUserAdminGroups");
@@ -22,10 +18,7 @@ function MyGroupsAdmin() {
       const tableRows = await userAdminGroupsJson.map((group, index) => (
         <tr className="table__row" key={index}>
           <td className="table__cell">
-            {group.name}
-          </td>
-          <td>
-            <button onClick={() => openEditGroupMembersPage(group)} type="button">Edit Group</button>
+            <Link to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}>{group.name}</Link>
           </td>
         </tr>
       ));
@@ -40,7 +33,7 @@ function MyGroupsAdmin() {
       <Helmet>
         <title>View Group</title>
       </Helmet>
-      <Announcer text={"View Groups wot your add min off"} />
+      <Announcer text={"View Groups that you are Admin of"} />
       <Link to="/">← Back to home</Link>
       <table className="table table--row-hover">
         <thead className="table__head">

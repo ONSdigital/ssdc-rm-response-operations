@@ -2,6 +2,7 @@ package uk.gov.ons.ssdc.responseoperations.endpoint;
 
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -50,11 +51,14 @@ class UserGroupEndpointTest {
     mockMvc
         .perform(
             get(String.format("/api/userGroups/thisUserAdminGroups"))
+                .requestAttr("userEmail", "nice@email.com")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(handler().handlerType(UserGroupEndpoint.class))
         .andExpect(handler().methodName("getUserAdminGroups"))
         .andExpect(jsonPath("$[0].id", is(userGroup.getId().toString())))
         .andExpect(jsonPath("$[0].name", is(userGroup.getName())));
+
+    verify(userGroupAdminRepository).findByUserEmail("nice@email.com");
   }
 }
