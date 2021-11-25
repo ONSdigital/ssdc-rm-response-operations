@@ -42,7 +42,7 @@ function GroupAdmin(props) {
       <Helmet>
         <title>View Group</title>
       </Helmet>
-      <Link to="/">← Back to home</Link>
+      <Link to="/mygroupsadmin">← Back to groups</Link>
       {!props.flashMessageUntil && (
         <Announcer text={`Users in group: ${props.groupName}`} />
       )}

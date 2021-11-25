@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
+import { Link } from "react-router-dom";
 
 function DeleteUserFromGroupConfirmation(props) {
   let history = useHistory();
@@ -77,7 +78,9 @@ function DeleteUserFromGroupConfirmation(props) {
       <Helmet>
         <title>Delete user from Group</title>
       </Helmet>
+      <Link to={`/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`}>← Back to group admin</Link>
       {errorSummary.length > 0 && <ErrorSummary />}
+      <h2>User Removal Confirmation Page</h2>
       <p>
         Are you sure you wish to remove {props.userEmail} user? from{" "}
         {props.groupName}
