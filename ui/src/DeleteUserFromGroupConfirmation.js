@@ -30,10 +30,8 @@ function DeleteUserFromGroupConfirmation(props) {
 
     if (response.ok) {
       history.push(
-        `/groupadmin?groupId=${props.groupId}&groupName=${
-          props.groupName
-        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${
-          Date.now() + 5000
+        `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName
+        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${Date.now() + 5000
         }`
       );
     } else {
@@ -80,6 +78,7 @@ function DeleteUserFromGroupConfirmation(props) {
       <Helmet>
         <title>Delete user from Group</title>
       </Helmet>
+      <Announcer text={"User Removal Confirmation Page"} />
       <Link
         to={`/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`}
       >
