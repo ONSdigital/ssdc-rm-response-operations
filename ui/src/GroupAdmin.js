@@ -27,8 +27,7 @@ function GroupAdmin(props) {
           <td className="table__cell">
             <button
               onClick={() => openRemoveUserPage(groupUser)}
-              type="submit"
-              className="btn btn--link"
+              className="btn"
             >
               <span className="btn__inner">Remove</span>
             </button>

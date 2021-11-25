@@ -32,9 +32,9 @@ function MyGroupsAdmin() {
   return (
     <>
       <Helmet>
-        <title>View Group</title>
+        <title>My Admin Groups</title>
       </Helmet>
-      <Announcer text={"View Groups that you are Admin of"} />
+      <Announcer text={"My Admin Groups"} />
       <Link to="/">← Back to home</Link>
       <h1>Groups you are admin of</h1>
       <table className="table table--row-hover">
