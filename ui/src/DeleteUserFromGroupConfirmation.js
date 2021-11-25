@@ -30,8 +30,10 @@ function DeleteUserFromGroupConfirmation(props) {
 
     if (response.ok) {
       history.push(
-        `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName
-        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${Date.now() + 5000
+        `/groupadmin?groupId=${props.groupId}&groupName=${
+          props.groupName
+        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${
+          Date.now() + 5000
         }`
       );
     } else {
@@ -46,7 +48,6 @@ function DeleteUserFromGroupConfirmation(props) {
       document.title = "Error";
       errorSummaryTitle.current.focus();
     }
-
   }, [hasErrors]);
 
   function ErrorSummary() {
@@ -88,7 +89,8 @@ function DeleteUserFromGroupConfirmation(props) {
       {errorSummary.length > 0 && <ErrorSummary />}
       <h2>User Removal Confirmation Page</h2>
       <p>
-        Do you wish to remove user {props.userEmail} from group {props.groupName}?
+        Do you wish to remove user {props.userEmail} from group{" "}
+        {props.groupName}?
       </p>
       <button type="button" className="btn" onClick={removeUser}>
         <span className="btn__inner">Yes</span>
