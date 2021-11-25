@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
 
 function MyGroupsAdmin() {
-  let history = useHistory();
   const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
@@ -18,7 +16,8 @@ function MyGroupsAdmin() {
         <tr className="table__row" key={index}>
           <td className="table__cell">
             <Link
-              to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}>
+              to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}
+            >
               {group.name}
             </Link>
           </td>
