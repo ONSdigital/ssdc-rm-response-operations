@@ -65,13 +65,14 @@ function GroupAdmin(props) {
           </div>
         </>
       )}
-      <h1>Members of group: {props.groupName}</h1>
+      <h2>Members Of Group: {props.groupName}</h2>
       <table className="table table--row-hover">
         <thead className="table__head">
           <tr className="table__row">
             <th scope="col" className="table__header">
-              Group Member email
+              Group Member Email
             </th>
+            <th scope="col" className="table__header" />
           </tr>
         </thead>
 

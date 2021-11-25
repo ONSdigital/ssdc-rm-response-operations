@@ -46,6 +46,7 @@ function DeleteUserFromGroupConfirmation(props) {
       document.title = "Error";
       errorSummaryTitle.current.focus();
     }
+
   }, [hasErrors]);
 
   function ErrorSummary() {
@@ -76,7 +77,7 @@ function DeleteUserFromGroupConfirmation(props) {
   return (
     <>
       <Helmet>
-        <title>Delete user from Group</title>
+        <title>Remove User From Group</title>
       </Helmet>
       <Announcer text={"User Removal Confirmation Page"} />
       <Link
@@ -87,13 +88,12 @@ function DeleteUserFromGroupConfirmation(props) {
       {errorSummary.length > 0 && <ErrorSummary />}
       <h2>User Removal Confirmation Page</h2>
       <p>
-        Are you sure you wish to remove {props.userEmail} user? from{" "}
-        {props.groupName}
+        Do you wish to remove user {props.userEmail} from group {props.groupName}?
       </p>
       <button type="button" className="btn" onClick={removeUser}>
         <span className="btn__inner">Yes</span>
       </button>
-      <button type="button" className="btn" onClick={cancel}>
+      <button type="button" className="btn btn--secondary" onClick={cancel}>
         <span className="btn__inner">Cancel</span>
       </button>
     </>

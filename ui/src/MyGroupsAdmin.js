@@ -36,7 +36,8 @@ function MyGroupsAdmin() {
       </Helmet>
       <Announcer text={"My Admin Groups"} />
       <Link to="/">← Back to home</Link>
-      <h1>Groups you are admin of</h1>
+      <h2>My Admin Groups</h2>
+
       <table className="table table--row-hover">
         <thead className="table__head">
           <tr className="table__row">
