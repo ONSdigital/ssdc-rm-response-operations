@@ -55,7 +55,7 @@ management:
       enabled: true
   metrics:
     tags:
-      application: Support Tool
+      application: Response Operations
       pod: ${HOSTNAME}
     export:
       stackdriver:
