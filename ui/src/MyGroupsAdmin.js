@@ -21,6 +21,9 @@ function MyGroupsAdmin() {
               {group.name}
             </Link>
           </td>
+          <td>
+            {group.description}
+          </td>
         </tr>
       ));
       setTableRows(tableRows);
@@ -43,6 +46,9 @@ function MyGroupsAdmin() {
           <tr className="table__row">
             <th scope="col" className="table__header">
               Group Name
+            </th>
+            <th scope="col" className="table__header">
+              Group Description
             </th>
           </tr>
         </thead>
