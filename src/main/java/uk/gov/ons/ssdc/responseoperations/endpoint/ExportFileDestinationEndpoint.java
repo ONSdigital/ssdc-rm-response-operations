@@ -3,8 +3,8 @@ package uk.gov.ons.ssdc.responseoperations.endpoint;
 import static uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_DESTINATIONS;
 
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.ons.ssdc.responseoperations.config.ExportFileDestinationConfig;
@@ -24,8 +24,7 @@ public class ExportFileDestinationEndpoint {
   }
 
   @GetMapping
-  public Set<String> getExportFileDestinations(
-      @Value("#{request.getAttribute('userEmail')}") String userEmail) {
+  public Set<String> getExportFileDestinations(@RequestAttribute("userEmail") String userEmail) {
     userIdentity.checkGlobalUserPermission(userEmail, LIST_EXPORT_FILE_DESTINATIONS);
     return exportFileDestinationConfig.getExportFileDestinations();
   }
