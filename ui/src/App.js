@@ -10,9 +10,13 @@ import CreateSurvey from "./CreateSurvey";
 import Surveys from "./Surveys";
 import ViewSurvey from "./ViewSurvey";
 import ExportFileTemplates from "./ExportFileTemplates";
+
 import NotFound from "./NotFound";
 import CreateExportFileTemplate from "./CreateExportFileTemplate";
 import { Helmet } from "react-helmet";
+import GroupAdmin from "./GroupAdmin";
+import DeleteUserFromGroupConfirmation from "./DeleteUserFromGroupConfirmation";
+import MyGroupsAdmin from "./MyGroupsAdmin";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -85,6 +89,25 @@ function QueryRouting(props) {
       </Route>
       <Route path="/createexportfiletemplate">
         <CreateExportFileTemplate />
+      </Route>
+      <Route path="/mygroupsadmin">
+        <MyGroupsAdmin />
+      </Route>
+      <Route path="/groupadmin">
+        <GroupAdmin
+          groupId={query.get("groupId")}
+          groupName={query.get("groupName")}
+          flashMessageUntil={query.get("flashMessageUntil")}
+          deletedUserEmail={query.get("deletedUserEmail")}
+        />
+      </Route>
+      <Route path="/deleteuserfromgroupconfirmation">
+        <DeleteUserFromGroupConfirmation
+          groupUserId={query.get("groupUserId")}
+          groupName={query.get("groupName")}
+          groupId={query.get("groupId")}
+          userEmail={query.get("userEmail")}
+        />
       </Route>
       <Route path="*">
         <NotFound />

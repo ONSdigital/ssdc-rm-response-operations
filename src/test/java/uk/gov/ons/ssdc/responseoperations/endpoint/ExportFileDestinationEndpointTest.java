@@ -1,7 +1,6 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
 import static org.hamcrest.core.Is.is;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -48,7 +47,10 @@ class ExportFileDestinationEndpointTest {
 
     // When
     mockMvc
-        .perform(get("/api/exportfiledestinations").accept(MediaType.APPLICATION_JSON))
+        .perform(
+            get("/api/exportfiledestinations")
+                .requestAttr("userEmail", "test@test.com")
+                .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(handler().handlerType(ExportFileDestinationEndpoint.class))
         .andExpect(handler().methodName("getExportFileDestinations"))
@@ -57,6 +59,6 @@ class ExportFileDestinationEndpointTest {
     // Then
     verify(userIdentity)
         .checkGlobalUserPermission(
-            anyString(), eq(UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_DESTINATIONS));
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_DESTINATIONS));
   }
 }
