@@ -21,9 +21,7 @@ function MyGroupsAdmin() {
               {group.name}
             </Link>
           </td>
-          <td className="table__cell">
-            {group.description}
-          </td>
+          <td className="table__cell">{group.description}</td>
         </tr>
       ));
       setTableRows(tableRows);
