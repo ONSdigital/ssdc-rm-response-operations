@@ -8,6 +8,7 @@ import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupPermission;
+import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupAdminRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupPermissionRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
@@ -20,8 +21,10 @@ public class UserPermissionHelper {
   @Autowired private UserGroupRepository userGroupRepository;
   @Autowired private UserGroupMemberRepository userGroupMemberRepository;
   @Autowired private UserGroupPermissionRepository userGroupPermissionRepository;
+  @Autowired private UserGroupAdminRepository userGroupAdminRepository;
 
   public void clearDown() {
+    userGroupAdminRepository.deleteAllInBatch();
     userGroupPermissionRepository.deleteAllInBatch();
     userGroupMemberRepository.deleteAllInBatch();
     userGroupRepository.deleteAllInBatch();
