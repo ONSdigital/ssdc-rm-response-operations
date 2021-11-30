@@ -1,7 +1,21 @@
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 function Home(props) {
+  const [usersAdminGroups, SetUsersAdminGroups] = useState([]);
+
+  useEffect(() => {
+    async function fetchGroupsUserAdminOf() {
+      const response = await fetch("/api/userGroups/thisUserAdminGroups");
+      const userAdminGroupsJson = await response.json();
+
+      SetUsersAdminGroups(userAdminGroupsJson);
+    }
+
+    fetchGroupsUserAdminOf();
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -16,6 +30,11 @@ function Home(props) {
       {props.authorisedActivities.includes("LIST_EXPORT_FILE_TEMPLATES") && (
         <p>
           <Link to="/exportfiletemplates">Export File Templates</Link>
+        </p>
+      )}
+      {usersAdminGroups.length > 0 && (
+        <p>
+          <Link to="/mygroupsadmin">My Groups Admin</Link>
         </p>
       )}
     </>

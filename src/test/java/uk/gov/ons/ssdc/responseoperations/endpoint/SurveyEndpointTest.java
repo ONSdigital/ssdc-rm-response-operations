@@ -3,7 +3,6 @@ package uk.gov.ons.ssdc.responseoperations.endpoint;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,7 +64,10 @@ class SurveyEndpointTest {
 
     // When
     mockMvc
-        .perform(get("/api/surveys").accept(MediaType.APPLICATION_JSON))
+        .perform(
+            get("/api/surveys")
+                .requestAttr("userEmail", "test@test.com")
+                .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(handler().handlerType(SurveyEndpoint.class))
         .andExpect(handler().methodName("getSurveys"))
@@ -74,7 +76,8 @@ class SurveyEndpointTest {
 
     // Then
     verify(userIdentity)
-        .checkGlobalUserPermission(anyString(), eq(UserGroupAuthorisedActivityType.LIST_SURVEYS));
+        .checkGlobalUserPermission(
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.LIST_SURVEYS));
   }
 
   @Test
@@ -114,6 +117,7 @@ class SurveyEndpointTest {
     mockMvc
         .perform(
             post("/api/surveys", survey)
+                .requestAttr("userEmail", "test@test.com")
                 .content(asJsonString(survey))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
@@ -124,6 +128,10 @@ class SurveyEndpointTest {
     ArgumentCaptor<Survey> surveyArgumentCaptor = ArgumentCaptor.forClass(Survey.class);
     verify(surveyRepository).saveAndFlush(surveyArgumentCaptor.capture());
     assertThat(surveyArgumentCaptor.getValue().getName()).isEqualTo("Test survey");
+
+    verify(userIdentity)
+        .checkGlobalUserPermission(
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_SURVEY));
   }
 
   @Test

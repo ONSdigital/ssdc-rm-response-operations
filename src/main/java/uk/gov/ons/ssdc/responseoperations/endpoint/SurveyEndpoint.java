@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,8 +41,7 @@ public class SurveyEndpoint {
   }
 
   @GetMapping
-  public List<SurveyDto> getSurveys(
-      @Value("#{request.getAttribute('userEmail')}") String userEmail) {
+  public List<SurveyDto> getSurveys(@RequestAttribute("userEmail") String userEmail) {
     userIdentity.checkGlobalUserPermission(userEmail, UserGroupAuthorisedActivityType.LIST_SURVEYS);
 
     List<Survey> surveys = surveyRepository.findAll();
@@ -71,8 +70,7 @@ public class SurveyEndpoint {
 
   @PostMapping
   public ResponseEntity createSurvey(
-      @RequestBody SurveyDto survey,
-      @Value("#{request.getAttribute('userEmail')}") String userEmail) {
+      @RequestBody SurveyDto survey, @RequestAttribute("userEmail") String userEmail) {
     userIdentity.checkGlobalUserPermission(
         userEmail, UserGroupAuthorisedActivityType.CREATE_SURVEY);
 

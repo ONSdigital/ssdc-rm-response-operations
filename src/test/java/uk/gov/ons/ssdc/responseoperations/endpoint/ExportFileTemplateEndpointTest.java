@@ -2,7 +2,6 @@ package uk.gov.ons.ssdc.responseoperations.endpoint;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -63,7 +62,10 @@ class ExportFileTemplateEndpointTest {
 
     // When
     mockMvc
-        .perform(get("/api/exportfiletemplates").accept(MediaType.APPLICATION_JSON))
+        .perform(
+            get("/api/exportfiletemplates")
+                .requestAttr("userEmail", "test@test.com")
+                .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(handler().handlerType(ExportFileTemplateEndpoint.class))
         .andExpect(handler().methodName("getExportFileTemplates"))
@@ -76,7 +78,7 @@ class ExportFileTemplateEndpointTest {
     // Then
     verify(userIdentity)
         .checkGlobalUserPermission(
-            anyString(), eq(UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_TEMPLATES));
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.LIST_EXPORT_FILE_TEMPLATES));
   }
 
   @Test
@@ -91,6 +93,7 @@ class ExportFileTemplateEndpointTest {
     mockMvc
         .perform(
             post("/api/exportfiletemplates", exportFileTemplateDto)
+                .requestAttr("userEmail", "test@test.com")
                 .content(asJsonString(exportFileTemplateDto))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
@@ -106,6 +109,10 @@ class ExportFileTemplateEndpointTest {
         .isEqualTo(exportFileTemplateDto.getTemplate());
     assertThat(exportFileTemplateArgumentCaptor.getValue().getExportFileDestination())
         .isEqualTo(exportFileTemplateDto.getExportFileDestination());
+
+    verify(userIdentity)
+        .checkGlobalUserPermission(
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE));
   }
 
   @Test
@@ -120,6 +127,7 @@ class ExportFileTemplateEndpointTest {
     mockMvc
         .perform(
             post("/api/exportfiletemplates", exportFileTemplateDto)
+                .requestAttr("userEmail", "test@test.com")
                 .content(asJsonString(exportFileTemplateDto))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError())
@@ -134,6 +142,10 @@ class ExportFileTemplateEndpointTest {
             result ->
                 assertThat(result.getResponse().getStatus())
                     .isEqualTo(HttpStatus.BAD_REQUEST.value()));
+
+    verify(userIdentity)
+        .checkGlobalUserPermission(
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE));
   }
 
   @Test
@@ -154,6 +166,7 @@ class ExportFileTemplateEndpointTest {
     mockMvc
         .perform(
             post("/api/exportfiletemplates", exportFileTemplateDto)
+                .requestAttr("userEmail", "test@test.com")
                 .content(asJsonString(exportFileTemplateDto))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError())
@@ -168,13 +181,14 @@ class ExportFileTemplateEndpointTest {
             result ->
                 assertThat(result.getResponse().getStatus())
                     .isEqualTo(HttpStatus.BAD_REQUEST.value()));
+
+    verify(userIdentity)
+        .checkGlobalUserPermission(
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE));
   }
 
   @Test
   public void testCreateExportFileTemplateFailsWithInvalidExportFileDestination() throws Exception {
-    //
-    // when(exportFileDestinationConfig.getExportFileDestinations()).thenReturn(Set.of("SUPPLIER_A"));
-
     ExportFileTemplateDto exportFileTemplateDto = new ExportFileTemplateDto();
     exportFileTemplateDto.setPackCode("packCode1");
     exportFileTemplateDto.setTemplate(new String[] {"a", "b", "c"});
@@ -183,6 +197,7 @@ class ExportFileTemplateEndpointTest {
     mockMvc
         .perform(
             post("/api/exportfiletemplates", exportFileTemplateDto)
+                .requestAttr("userEmail", "test@test.com")
                 .content(asJsonString(exportFileTemplateDto))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError())
@@ -197,6 +212,10 @@ class ExportFileTemplateEndpointTest {
             result ->
                 assertThat(result.getResponse().getStatus())
                     .isEqualTo(HttpStatus.BAD_REQUEST.value()));
+
+    verify(userIdentity)
+        .checkGlobalUserPermission(
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE));
   }
 
   @Test
@@ -211,6 +230,7 @@ class ExportFileTemplateEndpointTest {
     mockMvc
         .perform(
             post("/api/exportfiletemplates", exportFileTemplateDto)
+                .requestAttr("userEmail", "test@test.com")
                 .content(asJsonString(exportFileTemplateDto))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError())
@@ -225,6 +245,10 @@ class ExportFileTemplateEndpointTest {
             result ->
                 assertThat(result.getResponse().getStatus())
                     .isEqualTo(HttpStatus.BAD_REQUEST.value()));
+
+    verify(userIdentity)
+        .checkGlobalUserPermission(
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE));
   }
 
   @Test
@@ -239,6 +263,7 @@ class ExportFileTemplateEndpointTest {
     mockMvc
         .perform(
             post("/api/exportfiletemplates", exportFileTemplateDto)
+                .requestAttr("userEmail", "test@test.com")
                 .content(asJsonString(exportFileTemplateDto))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError())
@@ -253,5 +278,9 @@ class ExportFileTemplateEndpointTest {
             result ->
                 assertThat(result.getResponse().getStatus())
                     .isEqualTo(HttpStatus.BAD_REQUEST.value()));
+
+    verify(userIdentity)
+        .checkGlobalUserPermission(
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE));
   }
 }

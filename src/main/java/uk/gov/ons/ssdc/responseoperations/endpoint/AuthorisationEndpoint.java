@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +31,7 @@ public class AuthorisationEndpoint {
   @GetMapping
   public Set<UserGroupAuthorisedActivityType> getAuthorisedActivities(
       @RequestParam(required = false, value = "surveyId") Optional<UUID> surveyId,
-      @Value("#{request.getAttribute('userEmail')}") String userEmail) {
+      @RequestAttribute("userEmail") String userEmail) {
 
     // TODO: Remove this before releasing to production!
     if (userEmail.equals("dummy@fake-email.com")) {
