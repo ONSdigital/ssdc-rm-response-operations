@@ -4,6 +4,8 @@ import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
 import Button from "./DesignSytemComponents/Button";
 import TextInput from "./DesignSytemComponents/TextInput";
+import RadioBtnGroup from "./DesignSytemComponents/RadioBtnGroup";
+import RadioBtnItem from "./DesignSytemComponents/RadioBtnItem";
 
 function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
@@ -39,25 +41,9 @@ function CreateExportFileTemplate() {
 
       const options = exportFileDestinations.map((supplier, index) => (
         <div key={index}>
-          <p className="radios__item">
-            <span className="radio">
-              <input
-                id={supplier}
-                type="radio"
-                className="radio__input js-radio"
-                value={supplier}
-                name="supplier"
-                required
-              />
-              <label
-                htmlFor={supplier}
-                id={`${supplier}-label`}
-                className="radio__label"
-              >
-                {supplier}
-              </label>
-            </span>
-          </p>
+          <RadioBtnItem id={supplier} value={supplier} name="supplier">
+            {supplier}
+          </RadioBtnItem>
           <br />
         </div>
       ));
@@ -365,21 +351,9 @@ function CreateExportFileTemplate() {
 
   const supplierInputFragment = (
     <div className="question u-mt-no">
-      <fieldset
-        id="exportFileDestinationInput"
-        aria-required="true"
-        aria-label={"Select export file destination"}
-        className="fieldset"
-        ref={exportFileDestinationInput}
-        onChange={handleExportFileDestinationChange}
-      >
-        <legend className="fieldset__legend">
-          <label className="label venus">Select export file destination</label>
-        </legend>
-        <div className="input-items">
-          <div className="radios__items">{exportFileDestinationOptions}</div>
-        </div>
-      </fieldset>
+      <RadioBtnGroup legend="Select export file destination" onChange={handleExportFileDestinationChange}>
+        {exportFileDestinationOptions}
+      </RadioBtnGroup>
     </div>
   );
 
