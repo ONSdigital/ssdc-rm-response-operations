@@ -368,23 +368,9 @@ function CreateExportFileTemplate() {
           <strong>{supplierInputErrorSummary}</strong>
         </p>
         <div className="field">
-          <label className="label" htmlFor={exportFileDestinationInput}>
-            Select export file destination
-          </label>
-          <fieldset
-            id="exportFileDestinationInput"
-            aria-required="true"
-            aria-label={"Select export file destination"}
-            className="fieldset"
-            ref={exportFileDestinationInput}
-            onChange={handleExportFileDestinationChange}
-          >
-            <div className="input-items">
-              <div className="radios__items">
-                {exportFileDestinationOptions}
-              </div>
-            </div>
-          </fieldset>
+          <RadioBtnGroup legend="Select export file destination" onChange={handleExportFileDestinationChange}>
+            {exportFileDestinationOptions}
+          </RadioBtnGroup>
         </div>
       </div>
     </div>
