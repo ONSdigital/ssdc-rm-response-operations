@@ -37,12 +37,12 @@ function App() {
   }, []);
 
   return (
-    <div className="container container--wide page__container">
+    <div className="ons-container ons-container--wide ons-page__container">
       <Helmet>
         <title>Response Operations</title>
       </Helmet>
-      <div className="page__container container container--wide">
-        <main id="main-content" className="page__main">
+      <div className="ons-page__container ons-container ons-container--wide">
+        <main id="main-content" className="ons-page__main">
           {authorisedActivities.length === 0 && !loading && (
             <p>User not authorised</p>
           )}

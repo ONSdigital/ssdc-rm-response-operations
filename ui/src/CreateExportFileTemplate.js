@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
+import Button from "./DesignSytemComponents/Button";
+import TextInput from "./DesignSytemComponents/TextInput";
 
 function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
@@ -63,7 +65,9 @@ function CreateExportFileTemplate() {
     }
 
     fetchData();
-    printPackCodeInput.current.focus();
+
+    // TODO 
+    // printPackCodeInput.current.focus();
   }, []);
 
   useEffect(() => {
@@ -291,15 +295,10 @@ function CreateExportFileTemplate() {
 
   const packCodeInputFragment = (
     <div>
-      <label className="label venus">Enter pack code</label>
-      <input
+      <TextInput label="Enter pack code"
         id="packCodeInput"
         ref={printPackCodeInput}
-        className="input input--text input-type__input"
         onChange={handlePackCodeChange}
-        type="text"
-        aria-label={"Enter pack code"}
-        aria-required="true"
         required
         value={packCode}
       />
@@ -317,20 +316,7 @@ function CreateExportFileTemplate() {
           <strong>{packCodeInputErrorSummary}</strong>
         </p>
         <div className="field">
-          <label className="label" htmlFor={printPackCodeInput}>
-            Enter packcode
-          </label>
-          <input
-            id="packCodeInput"
-            ref={printPackCodeInput}
-            className="input input--text input-type__input"
-            onChange={handlePackCodeChange}
-            type="text"
-            aria-label={"Enter pack code"}
-            aria-required="true"
-            required
-            value={packCode}
-          />
+          {packCodeInputFragment}
         </div>
       </div>
     </div>
@@ -338,14 +324,9 @@ function CreateExportFileTemplate() {
 
   const descriptionInputFragment = (
     <div>
-      <label className="label venus">Enter descripton</label>
-      <input
+      <TextInput label="Enter description"
         id="descriptionInput"
-        className="input input--text input-type__input"
         onChange={handleDescriptionChange}
-        type="text"
-        aria-label={"Enter description"}
-        aria-required="true"
         required
         value={description}
       />
@@ -354,21 +335,15 @@ function CreateExportFileTemplate() {
 
   const exportFileTemplateFragment = (
     <div className="question u-mt-no">
-      <label className="label" htmlFor={exportFileTemplateInput}>
-        Enter export file template
-      </label>
-      <input
-        id="exportFileTemplateInput"
-        ref={exportFileTemplateInput}
-        className="input input--text input-type__input"
+      <TextInput label="Enter export file template"
+        id="exportFileTemplateInputXXX"
         onChange={handleTemplateChange}
-        type="text"
-        aria-label={"Enter export file template"}
-        aria-required="true"
         required
         value={exportFileTemplate}
+      // ref={exportFileTemplateInput}
       />
     </div>
+
   );
 
   const exportFileTemplateErrorFragment = (
@@ -382,20 +357,7 @@ function CreateExportFileTemplate() {
           <strong>{exportFileTemplateInputErrorSummary}</strong>
         </p>
         <div className="field">
-          <label className="label" htmlFor={exportFileTemplateInput}>
-            Enter Export File Template
-          </label>
-          <input
-            id="exportFileTemplateInput"
-            ref={exportFileTemplateInput}
-            className="input input--text input-type__input"
-            onChange={handleTemplateChange}
-            type="text"
-            aria-label={"Enter export file template"}
-            aria-required="true"
-            required
-            value={exportFileTemplate}
-          />
+          {exportFileTemplateFragment}
         </div>
       </div>
     </div>
@@ -482,9 +444,7 @@ function CreateExportFileTemplate() {
             : supplierInputErrorFragment}
         </div>
         <br />
-        <button type="submit" className="btn btn--link">
-          <span className="btn__inner">Create Export File Template</span>
-        </button>
+        <Button type="submit">Create Export File Template testing</Button>
       </form>
     </>
   );

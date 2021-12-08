@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
+import Button from "./DesignSytemComponents/Button";
 
 function DeleteUserFromGroupConfirmation(props) {
   let history = useHistory();
@@ -30,10 +31,8 @@ function DeleteUserFromGroupConfirmation(props) {
 
     if (response.ok) {
       history.push(
-        `/groupadmin?groupId=${props.groupId}&groupName=${
-          props.groupName
-        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${
-          Date.now() + 5000
+        `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName
+        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${Date.now() + 5000
         }`
       );
     } else {
@@ -92,12 +91,8 @@ function DeleteUserFromGroupConfirmation(props) {
         Do you wish to remove user {props.userEmail} from group{" "}
         {props.groupName}?
       </p>
-      <button type="button" className="btn" onClick={removeUser}>
-        <span className="btn__inner">Yes</span>
-      </button>
-      <button type="button" className="btn btn--secondary" onClick={cancel}>
-        <span className="btn__inner">Cancel</span>
-      </button>
+      <Button onClick={removeUser}>Yes</Button>
+      <Button onClick={cancel} secondary>Cancel</Button>
     </>
   );
 }

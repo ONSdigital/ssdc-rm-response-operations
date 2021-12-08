@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
+import Table from "./DesignSytemComponents/Table";
+import TableHead from "./DesignSytemComponents/TableHead";
+import TableHeaderCell from "./DesignSytemComponents/TableHeaderCell";
+import TableCell from "./DesignSytemComponents/TableCell";
+import TableBody from "./DesignSytemComponents/TableBody";
+import TableRow from "./DesignSytemComponents/TableRow";
 
 function Surveys(props) {
   const [tableRows, setTableRows] = useState([]);
@@ -11,11 +17,11 @@ function Surveys(props) {
       const response = await fetch("/api/surveys");
       const surveys = await response.json();
       const tableRows = await surveys.map((survey, index) => (
-        <tr className="table__row" key={index}>
-          <td className="table__cell">
+        <TableRow key={index}>
+          <TableCell>
             <Link to={`/viewSurvey?surveyId=${survey.id}`}>{survey.name}</Link>
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       ));
       setTableRows(tableRows);
     }
@@ -50,17 +56,17 @@ function Surveys(props) {
           <Link to="/createsurvey">Create New Survey</Link>
         </p>
       )}
-      <table className="table table--row-hover">
-        <thead className="table__head">
-          <tr className="table__row">
-            <th scope="col" className="table__header">
-              Survey Name
-            </th>
-          </tr>
-        </thead>
 
-        <tbody className="table__body">{tableRows}</tbody>
-      </table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Survey Name</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tableRows}
+        </TableBody>
+      </Table>
     </>
   );
 }

@@ -3,6 +3,13 @@ import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
+import Button from "./DesignSytemComponents/Button";
+import Table from "./DesignSytemComponents/Table";
+import TableHead from "./DesignSytemComponents/TableHead";
+import TableHeaderCell from "./DesignSytemComponents/TableHeaderCell";
+import TableCell from "./DesignSytemComponents/TableCell";
+import TableBody from "./DesignSytemComponents/TableBody";
+import TableRow from "./DesignSytemComponents/TableRow";
 
 function GroupAdmin(props) {
   let history = useHistory();
@@ -22,18 +29,13 @@ function GroupAdmin(props) {
       const allUsersInGroup = await allGroupMembersResponse.json();
 
       const usersInGroupRows = await allUsersInGroup.map((groupUser, index) => (
-        <tr className="table__row" key={index}>
-          <td className="table__cell">{groupUser.userEmail}</td>
-          <td className="table__cell">
-            <button
-              type="button"
-              className="btn btn--secondary btn--small"
-              onClick={() => openRemoveUserPage(groupUser)}
-            >
-              <span className="btn__inner">Remove</span>
-            </button>
-          </td>
-        </tr>
+        <TableRow key={index}>
+          <TableCell>{groupUser.userEmail}</TableCell>
+          <TableCell>
+            <Button secondary small onClick={() => openRemoveUserPage(groupUser)}>Remove</Button>
+          </TableCell>
+        </TableRow>
+
       ));
       setUserTableRowsRows(usersInGroupRows);
     }
@@ -67,18 +69,15 @@ function GroupAdmin(props) {
         </>
       )}
       <h2>Members Of Group: {props.groupName}</h2>
-      <table className="table table--row-hover">
-        <thead className="table__head">
-          <tr className="table__row">
-            <th scope="col" className="table__header">
-              Group Member Email
-            </th>
-            <th scope="col" className="table__header" />
-          </tr>
-        </thead>
-
-        <tbody className="table__body">{userTableRows}</tbody>
-      </table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Group Member Email</TableHeaderCell>
+            <TableHeaderCell></TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{userTableRows}</TableBody>
+      </Table>
     </>
   );
 }

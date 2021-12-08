@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
+import Table from "./DesignSytemComponents/Table";
+import TableHead from "./DesignSytemComponents/TableHead";
+import TableHeaderCell from "./DesignSytemComponents/TableHeaderCell";
+import TableCell from "./DesignSytemComponents/TableCell";
+import TableBody from "./DesignSytemComponents/TableBody";
+import TableRow from "./DesignSytemComponents/TableRow";
 
 function ExportFileTemplates(props) {
   const [tableRows, setTableRows] = useState([]);
@@ -12,16 +18,16 @@ function ExportFileTemplates(props) {
       const exportFileTemplates = await response.json();
       const tableRows = await exportFileTemplates.map(
         (exportFileTemplate, index) => (
-          <tr className="table__row" key={index}>
-            <td className="table__cell">{exportFileTemplate.packCode}</td>
-            <td className="table__cell">{exportFileTemplate.description}</td>
-            <td className="table__cell">
+          <TableRow key={index}>
+            <TableCell>{exportFileTemplate.packCode}</TableCell>
+            <TableCell>{exportFileTemplate.description}</TableCell>
+            <TableCell>
               {exportFileTemplate.exportFileDestination}
-            </td>
-            <td className="table__cell">
+            </TableCell>
+            <TableCell >
               {JSON.stringify(exportFileTemplate.template)}
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         )
       );
       setTableRows(tableRows);
@@ -59,25 +65,25 @@ function ExportFileTemplates(props) {
           </Link>
         </p>
       )}
-      <table className="table table--row-hover">
-        <thead className="table__head">
-          <tr className="table__row">
-            <th scope="col" className="table__header">
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>
               Pack Code
-            </th>
-            <th scope="col" className="table__header">
+            </TableHeaderCell>
+            <TableHeaderCell>
               Description
-            </th>
-            <th scope="col" className="table__header">
+            </TableHeaderCell>
+            <TableHeaderCell>
               Export File Destination
-            </th>
-            <th scope="col" className="table__header">
+            </TableHeaderCell>
+            <TableHeaderCell>
               Template
-            </th>
-          </tr>
-        </thead>
-        <tbody className="table__body">{tableRows}</tbody>
-      </table>
+            </TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{tableRows}</TableBody>
+      </Table>
     </>
   );
 }

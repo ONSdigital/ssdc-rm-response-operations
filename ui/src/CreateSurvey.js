@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import Button from "./DesignSytemComponents/Button";
+import TextInput from "./DesignSytemComponents/TextInput";
 
 function CreateSurvey() {
   const surveyNameInput = useRef(null);
@@ -45,7 +47,7 @@ function CreateSurvey() {
     }
 
     fetchSurveyTypes();
-    surveyNameInput.current.focus();
+    // surveyNameInput.current.focus();
   }, []);
 
   function handleSurveyNameChange(event) {
@@ -82,17 +84,25 @@ function CreateSurvey() {
       <h2>Create a New Survey</h2>
       <form onSubmit={createSurvey}>
         <div className="field">
-          <label className="label venus">Enter a survey name</label>
-          <input
-            className="input input--text input-type__input"
-            type="text"
-            aria-label={"Enter a survey name"}
-            aria-required="true"
-            required
-            value={surveyName}
+          {/*//  <label className="label venus">Enter a survey name</label> */}
+
+          <TextInput label="Enter a survey name"
+            required value={surveyName}
             onChange={handleSurveyNameChange}
-            ref={surveyNameInput}
-          />
+            ref={surveyNameInput} />
+
+          {/*//
+           {/* <input
+          //   className="input input--text input-type__input"
+          //   type="text"
+          //   aria-label={"Enter a survey name"}
+          //   aria-required="true"
+          //   required
+          //   value={surveyName}
+          //   onChange={handleSurveyNameChange}
+          //   ref={surveyNameInput}
+          // />
+        */}
         </div>
         <br />
         <div className="question u-mt-no">
@@ -114,9 +124,7 @@ function CreateSurvey() {
           </fieldset>
         </div>
         <p></p>
-        <button type="submit" className="btn btn--link">
-          <span className="btn__inner">Create Survey</span>
-        </button>
+        <Button type="submit" action>Create Survey</Button>
       </form>
     </>
   );
