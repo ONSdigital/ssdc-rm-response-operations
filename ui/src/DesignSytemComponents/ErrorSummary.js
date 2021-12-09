@@ -20,7 +20,7 @@ const ErrorSummary = (props, ref) => (
             </h2>
         </div>
         <div className="ons-panel__body">
-            <ol className="list">{props.errorSummary}</ol>
+            <ol className="ons-list">{props.errorSummary}</ol>
         </div>
     </div>
 );
