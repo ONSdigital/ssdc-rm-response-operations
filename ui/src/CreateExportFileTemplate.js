@@ -52,8 +52,7 @@ function CreateExportFileTemplate() {
 
     fetchData();
 
-    // TODO 
-    // printPackCodeInput.current.focus();
+    printPackCodeInput.current.focus();
   }, []);
 
   useEffect(() => {

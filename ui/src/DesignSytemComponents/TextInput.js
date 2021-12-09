@@ -1,28 +1,38 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-function TextInput(props) {
-    const className = "ons-input ons-input--text ons-input-type__input"
+const TextInput = (props, ref) => (
+    <div class="ons-field">
+        <label class="ons-label" for="text" htmlFor={props.id}>{props.label} </label>
+        <input type="text"
+            id={props.id}
+            class="ons-input ons-input--text ons-input-type__input"
+            required={props.required}
+            value={props.value}
+            onChange={props.onChange}
+            ref={ref}
+        />
+    </div>
+)
 
-    // TODO: REF not working for focus. https://reactjs.org/docs/forwarding-refs.html  
-    // It can work, can't be passed as a prop though.  However I didn't get it to work 1st time
-    // Ref required to focus,  and to add error panels..
-    // might be able to lob error panels in here directly with any luck,to save on code;
-    // but suspect we'll still need ref for focus
+export default forwardRef(TextInput);
 
-    return (
-        <div class="ons-field">
-            <label class="ons-label" for="text" htmlFor={props.id}>{props.label} </label>
-            <input type="text"
-                id={props.id}
-                class={className}
-                required={props.required}
-                value={props.value}
-                onChange={props.onChange}
-            />
-        </div>
-    );
+// function TextInput(props) {
+//     const className = "ons-input ons-input--text ons-input-type__input"
 
-}
+//     return (
+//         <div class="ons-field">
+//             <label class="ons-label" for="text" htmlFor={props.id}>{props.label} </label>
+//             <input type="text"
+//                 id={props.id}
+//                 class={className}
+//                 required={props.required}
+//                 value={props.value}
+//                 onChange={props.onChange}
+//             />
+//         </div>
+//     );
 
-export default TextInput;
+// }
+
+// export default TextInput;
 
