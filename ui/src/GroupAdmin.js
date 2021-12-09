@@ -32,7 +32,7 @@ function GroupAdmin(props) {
         <TableRow key={index}>
           <TableCell>{groupUser.userEmail}</TableCell>
           <TableCell>
-            <Button secondary small onClick={() => openRemoveUserPage(groupUser)}>Remove</Button>
+            <Button secondary small onClick={openRemoveUserPage(groupUser)}>Remove</Button>
           </TableCell>
         </TableRow>
 
