@@ -12,7 +12,7 @@ function ComponentErrorPanel(props) {
                 <p className="ons-panel__error">
                     <strong>{props.errorSummary}</strong>
                 </p>
-                <div className="field">
+                <div className="ons-field">
                     {props.children}
                 </div>
             </div>
