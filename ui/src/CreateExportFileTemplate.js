@@ -6,8 +6,8 @@ import Button from "./DesignSytemComponents/Button";
 import TextInput from "./DesignSytemComponents/TextInput";
 import RadioBtnGroup from "./DesignSytemComponents/RadioBtnGroup";
 import RadioBtnItem from "./DesignSytemComponents/RadioBtnItem";
-import ComponentErrorPanel from "./DesignSytemComponents/ComponentErrorPanel"
-import ErrorSummary from "./DesignSytemComponents/ErrorSummary"
+import ComponentErrorPanel from "./DesignSytemComponents/ComponentErrorPanel";
+import ErrorSummary from "./DesignSytemComponents/ErrorSummary";
 
 function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
@@ -251,10 +251,10 @@ function CreateExportFileTemplate() {
     }
   }
 
-
   const packCodeInputFragment = (
     <div>
-      <TextInput label="Enter pack code"
+      <TextInput
+        label="Enter pack code"
         id="packCodeInput"
         ref={printPackCodeInput}
         onChange={handlePackCodeChange}
@@ -265,14 +265,18 @@ function CreateExportFileTemplate() {
   );
 
   const packCodeInputErrorFragment = (
-    <ComponentErrorPanel id="packCodeInputError" errorSummary={packCodeInputErrorSummary}>
+    <ComponentErrorPanel
+      id="packCodeInputError"
+      errorSummary={packCodeInputErrorSummary}
+    >
       {packCodeInputFragment}
     </ComponentErrorPanel>
   );
 
   const descriptionInputFragment = (
     <div>
-      <TextInput label="Enter description"
+      <TextInput
+        label="Enter description"
         id="descriptionInput"
         onChange={handleDescriptionChange}
         required
@@ -282,7 +286,8 @@ function CreateExportFileTemplate() {
   );
 
   const exportFileTemplateFragment = (
-    <TextInput label="Enter export file template"
+    <TextInput
+      label="Enter export file template"
       id="exportFileTemplateInputXXX"
       onChange={handleTemplateChange}
       required
@@ -292,21 +297,29 @@ function CreateExportFileTemplate() {
   );
 
   const exportFileTemplateErrorFragment = (
-    <ComponentErrorPanel id="exportFileTemplateInputError" errorSummary={exportFileTemplateInputErrorSummary}>
+    <ComponentErrorPanel
+      id="exportFileTemplateInputError"
+      errorSummary={exportFileTemplateInputErrorSummary}
+    >
       {exportFileTemplateFragment}
     </ComponentErrorPanel>
   );
 
   const supplierInputFragment = (
-    <RadioBtnGroup ref={exportFileDestinationInput}
+    <RadioBtnGroup
+      ref={exportFileDestinationInput}
       legend="Select export file destination"
-      onChange={handleExportFileDestinationChange}>
+      onChange={handleExportFileDestinationChange}
+    >
       {exportFileDestinationOptions}
     </RadioBtnGroup>
   );
 
   const supplierInputErrorFragment = (
-    <ComponentErrorPanel id="SupplierInputError" errorSummary={supplierInputErrorSummary}>
+    <ComponentErrorPanel
+      id="SupplierInputError"
+      errorSummary={supplierInputErrorSummary}
+    >
       {supplierInputFragment}
     </ComponentErrorPanel>
   );
@@ -316,7 +329,9 @@ function CreateExportFileTemplate() {
       <Helmet>
         <title>Create Export File Template</title>
       </Helmet>
-      {errorSummary.length > 0 && <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />}
+      {errorSummary.length > 0 && (
+        <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
+      )}
       <h2>Create a Export File Template</h2>
       <form onSubmit={validateFormAndCreateExportFileTemplate}>
         <div className="ons-question ons-u-mt-no">
@@ -325,7 +340,9 @@ function CreateExportFileTemplate() {
             : packCodeInputErrorFragment}
         </div>
         <br />
-        <div className="ons-question ons-u-mt-no">{descriptionInputFragment}</div>
+        <div className="ons-question ons-u-mt-no">
+          {descriptionInputFragment}
+        </div>
         <br />
         <div className="ons-question ons-u-mt-no">
           {exportFileTemplateInputErrorSummary.length === 0

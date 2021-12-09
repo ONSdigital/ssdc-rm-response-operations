@@ -41,16 +41,13 @@ function Surveys(props) {
           <SuccessPanel>New survey has been created</SuccessPanel>
           <br />
         </>
-      )
-      }
+      )}
       <h2>Surveys</h2>
-      {
-        props.authorisedActivities.includes("CREATE_SURVEY") && (
-          <p>
-            <Link to="/createsurvey">Create New Survey</Link>
-          </p>
-        )
-      }
+      {props.authorisedActivities.includes("CREATE_SURVEY") && (
+        <p>
+          <Link to="/createsurvey">Create New Survey</Link>
+        </p>
+      )}
 
       <Table>
         <TableHead>
@@ -58,9 +55,7 @@ function Surveys(props) {
             <TableHeaderCell>Survey Name</TableHeaderCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {tableRows}
-        </TableBody>
+        <TableBody>{tableRows}</TableBody>
       </Table>
     </>
   );

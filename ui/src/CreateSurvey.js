@@ -22,7 +22,11 @@ function CreateSurvey() {
 
       const options = surveyTypes.map((surveyTypeOption, index) => (
         <div key={index}>
-          <RadioBtnItem id={surveyTypeOption} value={surveyTypeOption} name="survey-type">
+          <RadioBtnItem
+            id={surveyTypeOption}
+            value={surveyTypeOption}
+            name="survey-type"
+          >
             {surveyTypeOption}
           </RadioBtnItem>
           <br />
@@ -70,14 +74,20 @@ function CreateSurvey() {
 
       <form onSubmit={createSurvey}>
         <div className="ons-field">
-          <TextInput label="Enter a survey name"
-            required value={surveyName}
+          <TextInput
+            label="Enter a survey name"
+            required
+            value={surveyName}
             onChange={handleSurveyNameChange}
-            ref={surveyNameInput} />
+            ref={surveyNameInput}
+          />
         </div>
         <br />
 
-        <RadioBtnGroup legend="Select Survey Type" onChange={handleSurveyTypeChange}>
+        <RadioBtnGroup
+          legend="Select Survey Type"
+          onChange={handleSurveyTypeChange}
+        >
           {surveyTypeOptions}
         </RadioBtnGroup>
 

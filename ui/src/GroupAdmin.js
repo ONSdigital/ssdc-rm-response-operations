@@ -12,7 +12,6 @@ import TableBody from "./DesignSytemComponents/TableBody";
 import TableRow from "./DesignSytemComponents/TableRow";
 import SuccessPanel from "./DesignSytemComponents/SuccessPanel";
 
-
 function GroupAdmin(props) {
   let history = useHistory();
   const [userTableRows, setUserTableRowsRows] = useState([]);
@@ -34,10 +33,15 @@ function GroupAdmin(props) {
         <TableRow key={index}>
           <TableCell>{groupUser.userEmail}</TableCell>
           <TableCell>
-            <Button secondary small onClick={() => openRemoveUserPage(groupUser)}>Remove</Button>
+            <Button
+              secondary
+              small
+              onClick={() => openRemoveUserPage(groupUser)}
+            >
+              Remove
+            </Button>
           </TableCell>
         </TableRow>
-
       ));
       setUserTableRowsRows(usersInGroupRows);
     }

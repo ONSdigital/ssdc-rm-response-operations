@@ -22,12 +22,8 @@ function ExportFileTemplates(props) {
           <TableRow key={index}>
             <TableCell>{exportFileTemplate.packCode}</TableCell>
             <TableCell>{exportFileTemplate.description}</TableCell>
-            <TableCell>
-              {exportFileTemplate.exportFileDestination}
-            </TableCell>
-            <TableCell >
-              {JSON.stringify(exportFileTemplate.template)}
-            </TableCell>
+            <TableCell>{exportFileTemplate.exportFileDestination}</TableCell>
+            <TableCell>{JSON.stringify(exportFileTemplate.template)}</TableCell>
           </TableRow>
         )
       );
@@ -60,18 +56,10 @@ function ExportFileTemplates(props) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableHeaderCell>
-              Pack Code
-            </TableHeaderCell>
-            <TableHeaderCell>
-              Description
-            </TableHeaderCell>
-            <TableHeaderCell>
-              Export File Destination
-            </TableHeaderCell>
-            <TableHeaderCell>
-              Template
-            </TableHeaderCell>
+            <TableHeaderCell>Pack Code</TableHeaderCell>
+            <TableHeaderCell>Description</TableHeaderCell>
+            <TableHeaderCell>Export File Destination</TableHeaderCell>
+            <TableHeaderCell>Template</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>{tableRows}</TableBody>

@@ -22,7 +22,8 @@ function MyGroupsAdmin() {
         <TableRow key={index}>
           <TableCell>
             <Link
-              to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}>
+              to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}
+            >
               {group.name}
             </Link>
           </TableCell>
