@@ -2,8 +2,6 @@ function SuccessPanel(props) {
 
     return (
         <>
-            <br />
-            <br />
             <div class="ons-panel ons-panel--success ons-panel--no-title" id={props.id}>
                 <span class="ons-u-vh">Completed: </span>
                 <span class="ons-panel__icon ons-u-fs-r">
@@ -14,7 +12,6 @@ function SuccessPanel(props) {
                 <div class="ons-panel__body">{props.children}
                 </div>
             </div>
-            <br />
         </>
     )
 }

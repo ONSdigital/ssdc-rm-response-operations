@@ -45,7 +45,8 @@ function ExportFileTemplates(props) {
       {props.flashMessageUntil > Date.now() && (
         <>
           <Announcer text={"New export file Template has been created"} />
-            <SuccessPanel>New export file template has been created</SuccessPanel>
+          <SuccessPanel>New export file template has been created</SuccessPanel>
+          <br />
         </>
       )}
       <h2>Export File Templates</h2>

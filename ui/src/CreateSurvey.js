@@ -83,7 +83,7 @@ function CreateSurvey() {
 
         <p></p>
 
-        <Button type="submit" action>Create Survey</Button>
+        <Button type="submit">Create Survey</Button>
       </form>
     </>
   );

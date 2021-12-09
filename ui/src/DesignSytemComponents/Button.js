@@ -12,8 +12,9 @@ function Button(props) {
         </button>
     );
 
+    // TODO: Do we need this at the moment? Design system not clear
     // This should only be used to link to a new page, with a url provided
-    const acitonButtonFragment = (
+    const linkButtonWithArrow = (
         <a href={props.url} role="button" class="ons-btn ons-btn--link ons-js-submit-btn">
             <span class="ons-btn__inner">{props.children}
                 <svg class="ons-svg-icon ons-u-ml-xs" viewBox="0 0 8 13" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="currentColor">
@@ -25,7 +26,7 @@ function Button(props) {
 
     return (
         <>
-            {props.action ? acitonButtonFragment : buttonFragment}
+            {props.linkBtn ? linkButtonWithArrow : buttonFragment}
         </>
     );
 

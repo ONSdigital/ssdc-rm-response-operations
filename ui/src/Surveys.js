@@ -39,14 +39,18 @@ function Surveys(props) {
         <>
           <Announcer text={"New survey has been created"} />
           <SuccessPanel>New survey has been created</SuccessPanel>
+          <br />
         </>
-      )}
+      )
+      }
       <h2>Surveys</h2>
-      {props.authorisedActivities.includes("CREATE_SURVEY") && (
-        <p>
-          <Link to="/createsurvey">Create New Survey</Link>
-        </p>
-      )}
+      {
+        props.authorisedActivities.includes("CREATE_SURVEY") && (
+          <p>
+            <Link to="/createsurvey">Create New Survey</Link>
+          </p>
+        )
+      }
 
       <Table>
         <TableHead>

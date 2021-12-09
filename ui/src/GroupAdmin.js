@@ -57,7 +57,10 @@ function GroupAdmin(props) {
       {props.flashMessageUntil > Date.now() && (
         <>
           <Announcer text={`Removed user ${props.deletedUserEmail}`} />
+          <br />
+          <br />
           <SuccessPanel>Removed user {props.deletedUserEmail}</SuccessPanel>
+          <br />
         </>
       )}
       <h2>Members Of Group: {props.groupName}</h2>
