@@ -18,12 +18,12 @@ function Button(props) {
     <a
       href={props.url}
       role="button"
-      class="ons-btn ons-btn--link ons-js-submit-btn"
+      className="ons-btn ons-btn--link ons-js-submit-btn"
     >
-      <span class="ons-btn__inner">
+      <span className="ons-btn__inner">
         {props.children}
         <svg
-          class="ons-svg-icon ons-u-ml-xs"
+          className="ons-svg-icon ons-u-ml-xs"
           viewBox="0 0 8 13"
           xmlns="http://www.w3.org/2000/svg"
           focusable="false"

@@ -2,13 +2,13 @@ function SuccessPanel(props) {
   return (
     <>
       <div
-        class="ons-panel ons-panel--success ons-panel--no-title"
+        className="ons-panel ons-panel--success ons-panel--no-title"
         id={props.id}
       >
-        <span class="ons-u-vh">Completed: </span>
-        <span class="ons-panel__icon ons-u-fs-r">
+        <span className="ons-u-vh">Completed: </span>
+        <span className="ons-panel__icon ons-u-fs-r">
           <svg
-            class="ons-svg-icon "
+            className="ons-svg-icon "
             viewBox="0 0 13 10"
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
@@ -20,7 +20,7 @@ function SuccessPanel(props) {
             />
           </svg>
         </span>
-        <div class="ons-panel__body">{props.children}</div>
+        <div className="ons-panel__body">{props.children}</div>
       </div>
     </>
   );

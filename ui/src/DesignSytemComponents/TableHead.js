@@ -1,5 +1,5 @@
 function TableHead(props) {
-  return <thead class="ons-table__head">{props.children}</thead>;
+  return <thead className="ons-table__head">{props.children}</thead>;
 }
 
 export default TableHead;
