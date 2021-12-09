@@ -15,24 +15,3 @@ const TextInput = (props, ref) => (
 )
 
 export default forwardRef(TextInput);
-
-// function TextInput(props) {
-//     const className = "ons-input ons-input--text ons-input-type__input"
-
-//     return (
-//         <div class="ons-field">
-//             <label class="ons-label" for="text" htmlFor={props.id}>{props.label} </label>
-//             <input type="text"
-//                 id={props.id}
-//                 class={className}
-//                 required={props.required}
-//                 value={props.value}
-//                 onChange={props.onChange}
-//             />
-//         </div>
-//     );
-
-// }
-
-// export default TextInput;
-

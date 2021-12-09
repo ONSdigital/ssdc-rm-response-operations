@@ -6,6 +6,7 @@ import Button from "./DesignSytemComponents/Button";
 import TextInput from "./DesignSytemComponents/TextInput";
 import RadioBtnGroup from "./DesignSytemComponents/RadioBtnGroup";
 import RadioBtnItem from "./DesignSytemComponents/RadioBtnItem";
+import ComponentErrorPanel from "./DesignSytemComponents/ComponentErrorPanel"
 
 function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
@@ -291,20 +292,9 @@ function CreateExportFileTemplate() {
   );
 
   const packCodeInputErrorFragment = (
-    <div
-      className="panel panel--error panel--no-title u-mb-s"
-      id="packCodeInputError"
-    >
-      <span className="u-vh">Error: </span>
-      <div className="panel__body">
-        <p className="panel__error">
-          <strong>{packCodeInputErrorSummary}</strong>
-        </p>
-        <div className="field">
-          {packCodeInputFragment}
-        </div>
-      </div>
-    </div>
+    <ComponentErrorPanel id="packCodeInputError" errorSummary={packCodeInputErrorSummary}>
+      {packCodeInputFragment}
+    </ComponentErrorPanel>
   );
 
   const descriptionInputFragment = (
@@ -325,54 +315,32 @@ function CreateExportFileTemplate() {
         onChange={handleTemplateChange}
         required
         value={exportFileTemplate}
-      // ref={exportFileTemplateInput}
+        ref={exportFileTemplateInput}
       />
     </div>
 
   );
 
   const exportFileTemplateErrorFragment = (
-    <div
-      className="panel panel--error panel--no-title u-mb-s"
-      id="exportFileTemplateInputError"
-    >
-      <span className="u-vh">Error: </span>
-      <div className="panel__body">
-        <p className="panel__error">
-          <strong>{exportFileTemplateInputErrorSummary}</strong>
-        </p>
-        <div className="field">
-          {exportFileTemplateFragment}
-        </div>
-      </div>
-    </div>
+    <ComponentErrorPanel id="exportFileTemplateInputError" errorSummary={exportFileTemplateInputErrorSummary}>
+      {exportFileTemplateFragment}
+    </ComponentErrorPanel>
   );
 
   const supplierInputFragment = (
     <div className="question u-mt-no">
-      <RadioBtnGroup legend="Select export file destination" onChange={handleExportFileDestinationChange}>
+      <RadioBtnGroup ref={exportFileDestinationInput}
+        legend="Select export file destination"
+        onChange={handleExportFileDestinationChange}>
         {exportFileDestinationOptions}
       </RadioBtnGroup>
     </div>
   );
 
   const supplierInputErrorFragment = (
-    <div
-      className="panel panel--error panel--no-title u-mb-s"
-      id="SupplierInputError"
-    >
-      <span className="u-vh">Error: </span>
-      <div className="panel__body">
-        <p className="panel__error">
-          <strong>{supplierInputErrorSummary}</strong>
-        </p>
-        <div className="field">
-          <RadioBtnGroup legend="Select export file destination" onChange={handleExportFileDestinationChange}>
-            {exportFileDestinationOptions}
-          </RadioBtnGroup>
-        </div>
-      </div>
-    </div>
+    <ComponentErrorPanel id="SupplierInputError" errorSummary={supplierInputErrorSummary}>
+      {supplierInputFragment}
+    </ComponentErrorPanel>
   );
 
   return (

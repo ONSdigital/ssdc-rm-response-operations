@@ -12,8 +12,6 @@ function CreateSurvey() {
   const [surveyName, setSurveyName] = useState("");
   const [surveyType, setSurveyType] = useState("");
 
-  // const surveyTypeInput = useRef(null);
-
   let history = useHistory();
 
   useEffect(() => {
@@ -34,7 +32,7 @@ function CreateSurvey() {
     }
 
     fetchSurveyTypes();
-    // surveyNameInput.current.focus();
+    surveyNameInput.current.focus();
   }, []);
 
   function handleSurveyNameChange(event) {
