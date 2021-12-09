@@ -233,10 +233,10 @@ function CreateExportFileTemplate() {
     }
 
     const errors = formSummaryErrors.map((formError, index) => (
-      <li key={index} className="list__item">
+      <li key={index} className="ons-list__item">
         <Announcer text={formError.message} />
         <a
-          className="list__link js-inpagelink"
+          className="ons-list__link js-inpagelink"
           // MUST use href in-page links for accessibility
           href={`#${formError.anchorTo}`}
         >
@@ -282,16 +282,13 @@ function CreateExportFileTemplate() {
   );
 
   const exportFileTemplateFragment = (
-    <div className="question u-mt-no">
-      <TextInput label="Enter export file template"
-        id="exportFileTemplateInputXXX"
-        onChange={handleTemplateChange}
-        required
-        value={exportFileTemplate}
-        ref={exportFileTemplateInput}
-      />
-    </div>
-
+    <TextInput label="Enter export file template"
+      id="exportFileTemplateInputXXX"
+      onChange={handleTemplateChange}
+      required
+      value={exportFileTemplate}
+      ref={exportFileTemplateInput}
+    />
   );
 
   const exportFileTemplateErrorFragment = (
@@ -301,13 +298,11 @@ function CreateExportFileTemplate() {
   );
 
   const supplierInputFragment = (
-    <div className="question u-mt-no">
-      <RadioBtnGroup ref={exportFileDestinationInput}
-        legend="Select export file destination"
-        onChange={handleExportFileDestinationChange}>
-        {exportFileDestinationOptions}
-      </RadioBtnGroup>
-    </div>
+    <RadioBtnGroup ref={exportFileDestinationInput}
+      legend="Select export file destination"
+      onChange={handleExportFileDestinationChange}>
+      {exportFileDestinationOptions}
+    </RadioBtnGroup>
   );
 
   const supplierInputErrorFragment = (

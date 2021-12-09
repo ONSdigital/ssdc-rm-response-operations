@@ -7,7 +7,7 @@ function Button(props) {
     const buttonType = (props.type ? props.type : "button");
 
     const buttonFragment = (
-        <button type={buttonType} className={className} onclick={props.onClick}>
+        <button type={buttonType} className={className} onClick={props.onClick}>
             <span className="ons-btn__inner" >{props.children}</span>
         </button>
     );
@@ -24,9 +24,9 @@ function Button(props) {
     );
 
     return (
-        <div>
+        <>
             {props.action ? acitonButtonFragment : buttonFragment}
-        </div>
+        </>
     );
 
 }

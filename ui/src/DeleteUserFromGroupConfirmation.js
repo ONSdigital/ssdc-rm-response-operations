@@ -67,8 +67,10 @@ function DeleteUserFromGroupConfirmation(props) {
         Do you wish to remove user {props.userEmail} from group{" "}
         {props.groupName}?
       </p>
-      <Button onClick={removeUser}>Yes</Button>
-      <Button onClick={cancel} secondary>Cancel</Button>
+
+
+      <Button onClick={() => removeUser()}>Yes</Button>
+      <Button onClick={() => cancel()} secondary>Cancel</Button>
     </>
   );
 }

@@ -10,6 +10,8 @@ import TableHeaderCell from "./DesignSytemComponents/TableHeaderCell";
 import TableCell from "./DesignSytemComponents/TableCell";
 import TableBody from "./DesignSytemComponents/TableBody";
 import TableRow from "./DesignSytemComponents/TableRow";
+import SuccessPanel from "./DesignSytemComponents/SuccessPanel";
+
 
 function GroupAdmin(props) {
   let history = useHistory();
@@ -32,7 +34,7 @@ function GroupAdmin(props) {
         <TableRow key={index}>
           <TableCell>{groupUser.userEmail}</TableCell>
           <TableCell>
-            <Button secondary small onClick={openRemoveUserPage(groupUser)}>Remove</Button>
+            <Button secondary small onClick={() => openRemoveUserPage(groupUser)}>Remove</Button>
           </TableCell>
         </TableRow>
 
@@ -55,17 +57,7 @@ function GroupAdmin(props) {
       {props.flashMessageUntil > Date.now() && (
         <>
           <Announcer text={`Removed user ${props.deletedUserEmail}`} />
-          <div className="panel panel--success">
-            <div className="panel__header">
-              <p
-                id="success"
-                data-qa="success-header"
-                className="panel__title u-fs-r--b"
-              >
-                <strong>Removed user {props.deletedUserEmail}</strong>
-              </p>
-            </div>
-          </div>
+          <SuccessPanel>Removed user {props.deletedUserEmail}</SuccessPanel>
         </>
       )}
       <h2>Members Of Group: {props.groupName}</h2>
