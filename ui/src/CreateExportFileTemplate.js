@@ -127,7 +127,7 @@ function CreateExportFileTemplate() {
 
   function makePanelErrors(errorMessages) {
     const errorPanels = errorMessages.map((error, index) => (
-      <p id={`error${index}`} key={index} className="panel__error">
+      <p id={`error${index}`} key={index} className="ons-panel__error">
         <strong>{error.message}</strong>
       </p>
     ));
@@ -319,21 +319,21 @@ function CreateExportFileTemplate() {
       {errorSummary.length > 0 && <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />}
       <h2>Create a Export File Template</h2>
       <form onSubmit={validateFormAndCreateExportFileTemplate}>
-        <div className="question u-mt-no">
+        <div className="ons-question ons-u-mt-no">
           {packCodeInputErrorSummary.length === 0
             ? packCodeInputFragment
             : packCodeInputErrorFragment}
         </div>
         <br />
-        <div className="question u-mt-no">{descriptionInputFragment}</div>
+        <div className="ons-question ons-u-mt-no">{descriptionInputFragment}</div>
         <br />
-        <div className="question u-mt-no">
+        <div className="ons-question ons-u-mt-no">
           {exportFileTemplateInputErrorSummary.length === 0
             ? exportFileTemplateFragment
             : exportFileTemplateErrorFragment}
         </div>
         <br />
-        <div className="question u-mt-no">
+        <div className="ons-question ons-u-mt-no">
           {supplierInputErrorSummary.length === 0
             ? supplierInputFragment
             : supplierInputErrorFragment}

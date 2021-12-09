@@ -8,6 +8,7 @@ import TableHeaderCell from "./DesignSytemComponents/TableHeaderCell";
 import TableCell from "./DesignSytemComponents/TableCell";
 import TableBody from "./DesignSytemComponents/TableBody";
 import TableRow from "./DesignSytemComponents/TableRow";
+import SuccessPanel from "./DesignSytemComponents/SuccessPanel";
 
 function Surveys(props) {
   const [tableRows, setTableRows] = useState([]);
@@ -37,17 +38,7 @@ function Surveys(props) {
       {props.flashMessageUntil > Date.now() && (
         <>
           <Announcer text={"New survey has been created"} />
-          <div className="panel panel--success">
-            <div className="panel__header">
-              <p
-                id="success"
-                data-qa="success-header"
-                className="panel__title u-fs-r--b"
-              >
-                <strong>New survey has been created</strong>
-              </p>
-            </div>
-          </div>
+          <SuccessPanel>New survey has been created</SuccessPanel>
         </>
       )}
       <h2>Surveys</h2>

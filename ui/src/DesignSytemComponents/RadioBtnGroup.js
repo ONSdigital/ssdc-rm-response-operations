@@ -1,9 +1,9 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-function RadioBtnGroup(props) {
+const RadioBtnGroup =(props, ref) => {
     return (
         <div class="ons-question ons-u-mt-no">
-            <fieldset class="ons-fieldset" onChange={props.onChange}>
+            <fieldset class="ons-fieldset" ref={ref} onChange={props.onChange}>
                 <legend class="ons-fieldset__legend">
                     <h1 id="fieldset-legend-title" class="ons-fieldset__legend-title ">{props.legend}</h1>
                 </legend>
@@ -17,4 +17,4 @@ function RadioBtnGroup(props) {
     );
 }
 
-export default RadioBtnGroup;
+export default forwardRef(RadioBtnGroup);

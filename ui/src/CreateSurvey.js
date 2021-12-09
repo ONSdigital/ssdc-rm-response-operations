@@ -69,7 +69,7 @@ function CreateSurvey() {
       <h2>Create a New Survey</h2>
 
       <form onSubmit={createSurvey}>
-        <div className="field">
+        <div className="ons-field">
           <TextInput label="Enter a survey name"
             required value={surveyName}
             onChange={handleSurveyNameChange}
