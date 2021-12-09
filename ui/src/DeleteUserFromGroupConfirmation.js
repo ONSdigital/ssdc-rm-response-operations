@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
 import Button from "./DesignSytemComponents/Button";
+import ErrorSummary from "./DesignSytemComponents/ErrorSummary";
 
 function DeleteUserFromGroupConfirmation(props) {
   let history = useHistory();
@@ -49,31 +50,6 @@ function DeleteUserFromGroupConfirmation(props) {
     }
   }, [hasErrors]);
 
-  function ErrorSummary() {
-    const validationErrorInfoText = "There is 1 problem with this page";
-
-    return (
-      <div
-        id="errorSummaryTitle"
-        ref={errorSummaryTitle}
-        aria-labelledby="error-summary-title"
-        role="alert"
-        tabIndex="-1"
-        className="panel panel--error"
-      >
-        <Announcer text={"Error"} />
-        <div className="panel__header">
-          <h2 data-qa="error-header" className="panel__title u-fs-r--b">
-            {validationErrorInfoText}
-          </h2>
-        </div>
-        <div className="panel__body">
-          <ol className="list">{errorSummary}</ol>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <Helmet>
@@ -85,7 +61,7 @@ function DeleteUserFromGroupConfirmation(props) {
       >
         ← Back to group admin
       </Link>
-      {errorSummary.length > 0 && <ErrorSummary />}
+      {errorSummary.length > 0 && <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />}
       <h2>User Removal Confirmation Page</h2>
       <p>
         Do you wish to remove user {props.userEmail} from group{" "}
