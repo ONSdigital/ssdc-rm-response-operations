@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
-import Button from "./DesignSytemComponents/Button";
-import TextInput from "./DesignSytemComponents/TextInput";
-import RadioBtnGroup from "./DesignSytemComponents/RadioBtnGroup";
-import RadioBtnItem from "./DesignSytemComponents/RadioBtnItem";
-import ComponentErrorPanel from "./DesignSytemComponents/ComponentErrorPanel";
-import ErrorSummary from "./DesignSytemComponents/ErrorSummary";
+import Button from "./DesignSystemComponents/Button";
+import TextInput from "./DesignSystemComponents/TextInput";
+import RadioBtnGroup from "./DesignSystemComponents/RadioBtnGroup";
+import RadioBtnItem from "./DesignSystemComponents/RadioBtnItem";
+import ComponentErrorPanel from "./DesignSystemComponents/ComponentErrorPanel";
+import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 
 function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
@@ -356,7 +356,7 @@ function CreateExportFileTemplate() {
             : supplierInputErrorFragment}
         </div>
         <br />
-        <Button type="submit">Create Export File Template testing</Button>
+        <Button type="submit">Create Export File Template</Button>
       </form>
     </>
   );

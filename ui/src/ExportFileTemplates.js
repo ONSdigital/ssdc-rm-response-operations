@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
-import Table from "./DesignSytemComponents/Table";
-import TableHead from "./DesignSytemComponents/TableHead";
-import TableHeaderCell from "./DesignSytemComponents/TableHeaderCell";
-import TableCell from "./DesignSytemComponents/TableCell";
-import TableBody from "./DesignSytemComponents/TableBody";
-import TableRow from "./DesignSytemComponents/TableRow";
-import SuccessPanel from "./DesignSytemComponents/SuccessPanel";
+import Table from "./DesignSystemComponents/Table";
+import TableHead from "./DesignSystemComponents/TableHead";
+import TableHeaderCell from "./DesignSystemComponents/TableHeaderCell";
+import TableCell from "./DesignSystemComponents/TableCell";
+import TableBody from "./DesignSystemComponents/TableBody";
+import TableRow from "./DesignSystemComponents/TableRow";
+import SuccessPanel from "./DesignSystemComponents/SuccessPanel";
 
 function ExportFileTemplates(props) {
   const [tableRows, setTableRows] = useState([]);

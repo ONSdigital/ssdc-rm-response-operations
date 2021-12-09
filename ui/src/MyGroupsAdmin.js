@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
-import Table from "./DesignSytemComponents/Table";
-import TableHead from "./DesignSytemComponents/TableHead";
-import TableHeaderCell from "./DesignSytemComponents/TableHeaderCell";
-import TableCell from "./DesignSytemComponents/TableCell";
-import TableBody from "./DesignSytemComponents/TableBody";
-import TableRow from "./DesignSytemComponents/TableRow";
+import Table from "./DesignSystemComponents/Table";
+import TableHead from "./DesignSystemComponents/TableHead";
+import TableHeaderCell from "./DesignSystemComponents/TableHeaderCell";
+import TableCell from "./DesignSystemComponents/TableCell";
+import TableBody from "./DesignSystemComponents/TableBody";
+import TableRow from "./DesignSystemComponents/TableRow";
 
 function MyGroupsAdmin() {
   const [tableRows, setTableRows] = useState([]);

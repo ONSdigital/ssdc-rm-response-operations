@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import Button from "./DesignSytemComponents/Button";
-import TextInput from "./DesignSytemComponents/TextInput";
-import RadioBtnGroup from "./DesignSytemComponents/RadioBtnGroup";
-import RadioBtnItem from "./DesignSytemComponents/RadioBtnItem";
+import Button from "./DesignSystemComponents/Button";
+import TextInput from "./DesignSystemComponents/TextInput";
+import RadioBtnGroup from "./DesignSystemComponents/RadioBtnGroup";
+import RadioBtnItem from "./DesignSystemComponents/RadioBtnItem";
 
 function CreateSurvey() {
   const surveyNameInput = useRef(null);

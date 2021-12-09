@@ -3,8 +3,8 @@ import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
-import Button from "./DesignSytemComponents/Button";
-import ErrorSummary from "./DesignSytemComponents/ErrorSummary";
+import Button from "./DesignSystemComponents/Button";
+import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 
 function DeleteUserFromGroupConfirmation(props) {
   let history = useHistory();
