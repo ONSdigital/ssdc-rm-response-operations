@@ -7,6 +7,7 @@ import TextInput from "./DesignSytemComponents/TextInput";
 import RadioBtnGroup from "./DesignSytemComponents/RadioBtnGroup";
 import RadioBtnItem from "./DesignSytemComponents/RadioBtnItem";
 import ComponentErrorPanel from "./DesignSytemComponents/ComponentErrorPanel"
+import ErrorSummary from "./DesignSytemComponents/ErrorSummary"
 
 function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
@@ -250,34 +251,6 @@ function CreateExportFileTemplate() {
     }
   }
 
-  function ErrorSummary() {
-    const errorSummaryCount = errorSummary.length;
-    const validationErrorInfoText =
-      errorSummaryCount === 1
-        ? "There is 1 problem with this page"
-        : `There are ${errorSummaryCount} problems with this page`;
-
-    return (
-      <div
-        id="errorSummaryTitle"
-        ref={errorSummaryTitle}
-        aria-labelledby="error-summary-title"
-        role="alert"
-        tabIndex="-1"
-        className="panel panel--error"
-      >
-        <Announcer text={"Error"} />
-        <div className="panel__header">
-          <h2 data-qa="error-header" className="panel__title u-fs-r--b">
-            {validationErrorInfoText}
-          </h2>
-        </div>
-        <div className="panel__body">
-          <ol className="list">{errorSummary}</ol>
-        </div>
-      </div>
-    );
-  }
 
   const packCodeInputFragment = (
     <div>
@@ -348,7 +321,7 @@ function CreateExportFileTemplate() {
       <Helmet>
         <title>Create Export File Template</title>
       </Helmet>
-      {errorSummary.length > 0 && <ErrorSummary />}
+      {errorSummary.length > 0 && <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />}
       <h2>Create a Export File Template</h2>
       <form onSubmit={validateFormAndCreateExportFileTemplate}>
         <div className="question u-mt-no">
