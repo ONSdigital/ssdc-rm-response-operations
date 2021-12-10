@@ -5,7 +5,10 @@ const RadioBtnGroup = (props, ref) => {
     <div className="ons-question ons-u-mt-no">
       <fieldset className="ons-fieldset" ref={ref} onChange={props.onChange}>
         <legend className="ons-fieldset__legend">
-          <h1 id="fieldset-legend-title" className="ons-fieldset__legend-title ">
+          <h1
+            id="fieldset-legend-title"
+            className="ons-fieldset__legend-title "
+          >
             {props.legend}
           </h1>
         </legend>

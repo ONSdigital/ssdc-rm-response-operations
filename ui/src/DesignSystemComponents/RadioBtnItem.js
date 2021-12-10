@@ -12,7 +12,11 @@ function RadioBtnItem(props) {
           name={props.name}
           onChange={props.onChange}
         />
-        <label className="ons-radio__label" htmlFor={props.id} id={`${props.id}-label`}>
+        <label
+          className="ons-radio__label"
+          htmlFor={props.id}
+          id={`${props.id}-label`}
+        >
           {props.children}
         </label>
       </span>
