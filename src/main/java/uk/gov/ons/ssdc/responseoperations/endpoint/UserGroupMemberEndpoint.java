@@ -1,5 +1,7 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
+import uk.gov.ons.ssdc.responseoperations.model.LoggingDto;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserGroupMemberDto;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
@@ -20,6 +23,7 @@ import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 @RestController
 @RequestMapping(value = "/api/userGroupMembers")
 public class UserGroupMemberEndpoint {
+  private static final Logger log = LoggerFactory.getLogger(SurveyEndpoint.class);
   private final UserGroupMemberRepository userGroupMemberRepository;
   private final UserGroupRepository userGroupRepository;
 
@@ -66,6 +70,21 @@ public class UserGroupMemberEndpoint {
         .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not an admin");
     }
+
+    log.with(
+            new LoggingDto(
+                true,
+                userEmail,
+                "REMOVED USER FROM GROUP",
+                String.format(
+                    "User %s was removed from group %s",
+                    userGroupMember.getUser().getEmail(), userGroupMember.getGroup().getName())))
+        .info(
+            String.format(
+                "User %s was removed from group %s by %s",
+                userGroupMember.getUser().getEmail(),
+                userGroupMember.getGroup().getName(),
+                userEmail));
 
     userGroupMemberRepository.delete(userGroupMember);
   }
