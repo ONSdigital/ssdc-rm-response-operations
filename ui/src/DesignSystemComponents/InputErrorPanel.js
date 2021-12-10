@@ -1,4 +1,4 @@
-function ComponentErrorPanel(props) {
+function InputErrorPanel(props) {
   return (
     <div
       className="ons-panel ons-panel--error ons-panel--no-title ons-u-mb-s"
@@ -15,4 +15,4 @@ function ComponentErrorPanel(props) {
   );
 }
 
-export default ComponentErrorPanel;
+export default InputErrorPanel;

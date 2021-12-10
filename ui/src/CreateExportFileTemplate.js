@@ -6,7 +6,7 @@ import Button from "./DesignSystemComponents/Button";
 import TextInput from "./DesignSystemComponents/TextInput";
 import RadioBtnGroup from "./DesignSystemComponents/RadioBtnGroup";
 import RadioBtnItem from "./DesignSystemComponents/RadioBtnItem";
-import ComponentErrorPanel from "./DesignSystemComponents/ComponentErrorPanel";
+import InputErrorPanel from "./DesignSystemComponents/InputErrorPanel";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 
 function CreateExportFileTemplate() {
@@ -265,12 +265,12 @@ function CreateExportFileTemplate() {
   );
 
   const packCodeInputErrorFragment = (
-    <ComponentErrorPanel
+    <InputErrorPanel
       id="packCodeInputError"
       errorSummary={packCodeInputErrorSummary}
     >
       {packCodeInputFragment}
-    </ComponentErrorPanel>
+    </InputErrorPanel>
   );
 
   const descriptionInputFragment = (
@@ -297,12 +297,12 @@ function CreateExportFileTemplate() {
   );
 
   const exportFileTemplateErrorFragment = (
-    <ComponentErrorPanel
+    <InputErrorPanel
       id="exportFileTemplateInputError"
       errorSummary={exportFileTemplateInputErrorSummary}
     >
       {exportFileTemplateFragment}
-    </ComponentErrorPanel>
+    </InputErrorPanel>
   );
 
   const supplierInputFragment = (
@@ -316,12 +316,12 @@ function CreateExportFileTemplate() {
   );
 
   const supplierInputErrorFragment = (
-    <ComponentErrorPanel
+    <InputErrorPanel
       id="SupplierInputError"
       errorSummary={supplierInputErrorSummary}
     >
       {supplierInputFragment}
-    </ComponentErrorPanel>
+    </InputErrorPanel>
   );
 
   return (
