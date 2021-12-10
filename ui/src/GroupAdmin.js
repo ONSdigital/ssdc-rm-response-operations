@@ -3,6 +3,14 @@ import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
+import Button from "./DesignSystemComponents/Button";
+import Table from "./DesignSystemComponents/Table";
+import TableHead from "./DesignSystemComponents/TableHead";
+import TableHeaderCell from "./DesignSystemComponents/TableHeaderCell";
+import TableCell from "./DesignSystemComponents/TableCell";
+import TableBody from "./DesignSystemComponents/TableBody";
+import TableRow from "./DesignSystemComponents/TableRow";
+import SuccessPanel from "./DesignSystemComponents/SuccessPanel";
 
 function GroupAdmin(props) {
   let history = useHistory();
@@ -22,18 +30,18 @@ function GroupAdmin(props) {
       const allUsersInGroup = await allGroupMembersResponse.json();
 
       const usersInGroupRows = await allUsersInGroup.map((groupUser, index) => (
-        <tr className="table__row" key={index}>
-          <td className="table__cell">{groupUser.userEmail}</td>
-          <td className="table__cell">
-            <button
-              type="button"
-              className="btn btn--secondary btn--small"
+        <TableRow key={index}>
+          <TableCell>{groupUser.userEmail}</TableCell>
+          <TableCell>
+            <Button
+              secondary
+              small
               onClick={() => openRemoveUserPage(groupUser)}
             >
-              <span className="btn__inner">Remove</span>
-            </button>
-          </td>
-        </tr>
+              Remove
+            </Button>
+          </TableCell>
+        </TableRow>
       ));
       setUserTableRowsRows(usersInGroupRows);
     }
@@ -53,32 +61,22 @@ function GroupAdmin(props) {
       {props.flashMessageUntil > Date.now() && (
         <>
           <Announcer text={`Removed user ${props.deletedUserEmail}`} />
-          <div className="panel panel--success">
-            <div className="panel__header">
-              <p
-                id="success"
-                data-qa="success-header"
-                className="panel__title u-fs-r--b"
-              >
-                <strong>Removed user {props.deletedUserEmail}</strong>
-              </p>
-            </div>
-          </div>
+          <br />
+          <br />
+          <SuccessPanel>Removed user {props.deletedUserEmail}</SuccessPanel>
+          <br />
         </>
       )}
       <h2>Members Of Group: {props.groupName}</h2>
-      <table className="table table--row-hover">
-        <thead className="table__head">
-          <tr className="table__row">
-            <th scope="col" className="table__header">
-              Group Member Email
-            </th>
-            <th scope="col" className="table__header" />
-          </tr>
-        </thead>
-
-        <tbody className="table__body">{userTableRows}</tbody>
-      </table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Group Member Email</TableHeaderCell>
+            <TableHeaderCell></TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{userTableRows}</TableBody>
+      </Table>
     </>
   );
 }

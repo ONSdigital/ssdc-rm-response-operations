@@ -3,6 +3,8 @@ import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
+import Button from "./DesignSystemComponents/Button";
+import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 
 function DeleteUserFromGroupConfirmation(props) {
   let history = useHistory();
@@ -50,31 +52,6 @@ function DeleteUserFromGroupConfirmation(props) {
     }
   }, [hasErrors]);
 
-  function ErrorSummary() {
-    const validationErrorInfoText = "There is 1 problem with this page";
-
-    return (
-      <div
-        id="errorSummaryTitle"
-        ref={errorSummaryTitle}
-        aria-labelledby="error-summary-title"
-        role="alert"
-        tabIndex="-1"
-        className="panel panel--error"
-      >
-        <Announcer text={"Error"} />
-        <div className="panel__header">
-          <h2 data-qa="error-header" className="panel__title u-fs-r--b">
-            {validationErrorInfoText}
-          </h2>
-        </div>
-        <div className="panel__body">
-          <ol className="list">{errorSummary}</ol>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <Helmet>
@@ -86,18 +63,19 @@ function DeleteUserFromGroupConfirmation(props) {
       >
         ← Back to group admin
       </Link>
-      {errorSummary.length > 0 && <ErrorSummary />}
+      {errorSummary.length > 0 && (
+        <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
+      )}
       <h2>User Removal Confirmation Page</h2>
       <p>
         Do you wish to remove user {props.userEmail} from group{" "}
         {props.groupName}?
       </p>
-      <button type="button" className="btn" onClick={removeUser}>
-        <span className="btn__inner">Yes</span>
-      </button>
-      <button type="button" className="btn btn--secondary" onClick={cancel}>
-        <span className="btn__inner">Cancel</span>
-      </button>
+
+      <Button onClick={() => removeUser()}>Yes</Button>
+      <Button onClick={() => cancel()} secondary>
+        Cancel
+      </Button>
     </>
   );
 }
