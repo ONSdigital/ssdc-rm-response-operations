@@ -288,7 +288,7 @@ function CreateExportFileTemplate() {
   const exportFileTemplateFragment = (
     <TextInput
       label="Enter export file template"
-      id="exportFileTemplateInputXXX"
+      id="exportFileTemplateInput"
       onChange={handleTemplateChange}
       required
       value={exportFileTemplate}
