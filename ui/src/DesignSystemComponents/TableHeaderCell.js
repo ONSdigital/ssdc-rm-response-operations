@@ -1,3 +1,5 @@
+import React from "react";
+
 function Th(props) {
   return (
     <th scope="col" className="ons-table__header">

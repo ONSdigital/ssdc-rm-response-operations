@@ -22,7 +22,8 @@ it("renders survey data", async () => {
   const fakeSurvey = {
     name: "Test Survey",
   };
-  jest.spyOn(global, "fetch").mockImplementation(() =>
+
+  const spy = jest.spyOn("fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeSurvey),
     })
@@ -37,5 +38,5 @@ it("renders survey data", async () => {
   expect(surveyNameElement).toBeInTheDocument();
 
   // remove the mock to ensure tests are completely isolated
-  global.fetch.mockRestore();
+  spy.mockRestore();
 });

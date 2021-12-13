@@ -27,7 +27,7 @@ it("renders Users in group", async () => {
     },
   ];
 
-  jest.spyOn(global, "fetch").mockImplementation(() =>
+  const spy = jest.spyOn("fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeUsers),
     })
@@ -47,5 +47,5 @@ it("renders Users in group", async () => {
   expect(groupNameElement).toBeInTheDocument();
 
   // remove the mock to ensure tests are completely isolated
-  global.fetch.mockRestore();
+  spy.mockRestore();
 });

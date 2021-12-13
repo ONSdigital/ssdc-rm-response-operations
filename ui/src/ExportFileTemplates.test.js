@@ -27,7 +27,8 @@ it("renders export file template data", async () => {
       template: ["__uac__"],
     },
   ];
-  jest.spyOn(global, "fetch").mockImplementation(() =>
+
+  const spy = jest.spyOn("fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeExportFileTemplates),
     })
@@ -55,5 +56,5 @@ it("renders export file template data", async () => {
   expect(exportFileTemplateElement).toBeInTheDocument();
 
   // remove the mock to ensure tests are completely isolated
-  global.fetch.mockRestore();
+  spy.mockRestore();
 });

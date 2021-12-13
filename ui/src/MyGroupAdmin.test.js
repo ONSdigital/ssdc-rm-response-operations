@@ -27,7 +27,7 @@ it("renders My admin groups", async () => {
     },
   ];
 
-  jest.spyOn(global, "fetch").mockImplementation(() =>
+  const spy = jest.spyOn("fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeMyGroups),
     })
@@ -47,5 +47,5 @@ it("renders My admin groups", async () => {
   expect(groupNameElement).toBeInTheDocument();
 
   // remove the mock to ensure tests are completely isolated
-  global.fetch.mockRestore();
+  spy.mockRestore();
 });

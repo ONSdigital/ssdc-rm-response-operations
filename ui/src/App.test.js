@@ -20,7 +20,8 @@ afterEach(() => {
 
 it("renders the app", async () => {
   const fakeAuth = ["FOO"];
-  jest.spyOn(global, "fetch").mockImplementation(() =>
+
+  const spy = jest.spyOn("fetch").mockImplementation(() =>
     Promise.resolve({
       ok: true,
       json: () => Promise.resolve(fakeAuth),
@@ -36,5 +37,5 @@ it("renders the app", async () => {
   expect(homeElement).toBeInTheDocument();
 
   // remove the mock to ensure tests are completely isolated
-  global.fetch.mockRestore();
+  spy.mockRestore();
 });

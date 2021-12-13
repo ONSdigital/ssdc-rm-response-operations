@@ -21,7 +21,7 @@ afterEach(() => {
 
 it("renders create export file template", async () => {
   const fakeexportFileDestination = ["SUPPLIER_A"];
-  jest.spyOn(global, "fetch").mockImplementation(() =>
+  const spy = jest.spyOn("fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeexportFileDestination),
     })
@@ -44,4 +44,6 @@ it("renders create export file template", async () => {
 
   const exportFileDestination = screen.getByText(/SUPPLIER_A/i);
   expect(exportFileDestination).toBeInTheDocument();
+
+  spy.mockRestore();
 });
