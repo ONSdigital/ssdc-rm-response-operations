@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
+import Table from "./DesignSystemComponents/Table";
+import TableHead from "./DesignSystemComponents/TableHead";
+import TableHeaderCell from "./DesignSystemComponents/TableHeaderCell";
+import TableCell from "./DesignSystemComponents/TableCell";
+import TableBody from "./DesignSystemComponents/TableBody";
+import TableRow from "./DesignSystemComponents/TableRow";
 
 function MyGroupsAdmin() {
   const [tableRows, setTableRows] = useState([]);
@@ -13,16 +19,16 @@ function MyGroupsAdmin() {
       const userAdminGroupsJson = await response.json();
 
       const tableRows = await userAdminGroupsJson.map((group, index) => (
-        <tr className="table__row" key={index}>
-          <td className="table__cell">
+        <TableRow key={index}>
+          <TableCell>
             <Link
               to={`/groupadmin?groupId=${group.id}&groupName=${group.name}`}
             >
               {group.name}
             </Link>
-          </td>
-          <td className="table__cell">{group.description}</td>
-        </tr>
+          </TableCell>
+          <TableCell>{group.description}</TableCell>
+        </TableRow>
       ));
       setTableRows(tableRows);
     }
@@ -39,20 +45,15 @@ function MyGroupsAdmin() {
       <Link to="/">← Back to home</Link>
       <h2>My Admin Groups</h2>
 
-      <table className="table table--row-hover">
-        <thead className="table__head">
-          <tr className="table__row">
-            <th scope="col" className="table__header">
-              Group Name
-            </th>
-            <th scope="col" className="table__header">
-              Group Description
-            </th>
-          </tr>
-        </thead>
-
-        <tbody className="table__body">{tableRows}</tbody>
-      </table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Group Name</TableHeaderCell>
+            <TableHeaderCell>Group Description</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{tableRows}</TableBody>
+      </Table>
     </>
   );
 }

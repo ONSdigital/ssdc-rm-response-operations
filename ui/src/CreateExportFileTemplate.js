@@ -2,6 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
+import Button from "./DesignSystemComponents/Button";
+import TextInput from "./DesignSystemComponents/TextInput";
+import RadioBtnGroup from "./DesignSystemComponents/RadioBtnGroup";
+import RadioBtnItem from "./DesignSystemComponents/RadioBtnItem";
+import InputErrorPanel from "./DesignSystemComponents/InputErrorPanel";
+import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 
 function CreateExportFileTemplate() {
   const [exportFileDestination, setexportFileDestination] = useState("");
@@ -37,25 +43,9 @@ function CreateExportFileTemplate() {
 
       const options = exportFileDestinations.map((supplier, index) => (
         <div key={index}>
-          <p className="radios__item">
-            <span className="radio">
-              <input
-                id={supplier}
-                type="radio"
-                className="radio__input js-radio"
-                value={supplier}
-                name="supplier"
-                required
-              />
-              <label
-                htmlFor={supplier}
-                id={`${supplier}-label`}
-                className="radio__label"
-              >
-                {supplier}
-              </label>
-            </span>
-          </p>
+          <RadioBtnItem id={supplier} value={supplier} name="supplier">
+            {supplier}
+          </RadioBtnItem>
           <br />
         </div>
       ));
@@ -63,6 +53,7 @@ function CreateExportFileTemplate() {
     }
 
     fetchData();
+
     printPackCodeInput.current.focus();
   }, []);
 
@@ -136,7 +127,7 @@ function CreateExportFileTemplate() {
 
   function makePanelErrors(errorMessages) {
     const errorPanels = errorMessages.map((error, index) => (
-      <p id={`error${index}`} key={index} className="panel__error">
+      <p id={`error${index}`} key={index} className="ons-panel__error">
         <strong>{error.message}</strong>
       </p>
     ));
@@ -242,10 +233,10 @@ function CreateExportFileTemplate() {
     }
 
     const errors = formSummaryErrors.map((formError, index) => (
-      <li key={index} className="list__item">
+      <li key={index} className="ons-list__item">
         <Announcer text={formError.message} />
         <a
-          className="list__link js-inpagelink"
+          className="ons-list__link js-inpagelink"
           // MUST use href in-page links for accessibility
           href={`#${formError.anchorTo}`}
         >
@@ -260,46 +251,13 @@ function CreateExportFileTemplate() {
     }
   }
 
-  function ErrorSummary() {
-    const errorSummaryCount = errorSummary.length;
-    const validationErrorInfoText =
-      errorSummaryCount === 1
-        ? "There is 1 problem with this page"
-        : `There are ${errorSummaryCount} problems with this page`;
-
-    return (
-      <div
-        id="errorSummaryTitle"
-        ref={errorSummaryTitle}
-        aria-labelledby="error-summary-title"
-        role="alert"
-        tabIndex="-1"
-        className="panel panel--error"
-      >
-        <Announcer text={"Error"} />
-        <div className="panel__header">
-          <h2 data-qa="error-header" className="panel__title u-fs-r--b">
-            {validationErrorInfoText}
-          </h2>
-        </div>
-        <div className="panel__body">
-          <ol className="list">{errorSummary}</ol>
-        </div>
-      </div>
-    );
-  }
-
   const packCodeInputFragment = (
     <div>
-      <label className="label venus">Enter pack code</label>
-      <input
+      <TextInput
+        label="Enter pack code"
         id="packCodeInput"
         ref={printPackCodeInput}
-        className="input input--text input-type__input"
         onChange={handlePackCodeChange}
-        type="text"
-        aria-label={"Enter pack code"}
-        aria-required="true"
         required
         value={packCode}
       />
@@ -307,45 +265,20 @@ function CreateExportFileTemplate() {
   );
 
   const packCodeInputErrorFragment = (
-    <div
-      className="panel panel--error panel--no-title u-mb-s"
+    <InputErrorPanel
       id="packCodeInputError"
+      errorSummary={packCodeInputErrorSummary}
     >
-      <span className="u-vh">Error: </span>
-      <div className="panel__body">
-        <p className="panel__error">
-          <strong>{packCodeInputErrorSummary}</strong>
-        </p>
-        <div className="field">
-          <label className="label" htmlFor={printPackCodeInput}>
-            Enter packcode
-          </label>
-          <input
-            id="packCodeInput"
-            ref={printPackCodeInput}
-            className="input input--text input-type__input"
-            onChange={handlePackCodeChange}
-            type="text"
-            aria-label={"Enter pack code"}
-            aria-required="true"
-            required
-            value={packCode}
-          />
-        </div>
-      </div>
-    </div>
+      {packCodeInputFragment}
+    </InputErrorPanel>
   );
 
   const descriptionInputFragment = (
     <div>
-      <label className="label venus">Enter descripton</label>
-      <input
+      <TextInput
+        label="Enter description"
         id="descriptionInput"
-        className="input input--text input-type__input"
         onChange={handleDescriptionChange}
-        type="text"
-        aria-label={"Enter description"}
-        aria-required="true"
         required
         value={description}
       />
@@ -353,105 +286,42 @@ function CreateExportFileTemplate() {
   );
 
   const exportFileTemplateFragment = (
-    <div className="question u-mt-no">
-      <label className="label" htmlFor={exportFileTemplateInput}>
-        Enter export file template
-      </label>
-      <input
-        id="exportFileTemplateInput"
-        ref={exportFileTemplateInput}
-        className="input input--text input-type__input"
-        onChange={handleTemplateChange}
-        type="text"
-        aria-label={"Enter export file template"}
-        aria-required="true"
-        required
-        value={exportFileTemplate}
-      />
-    </div>
+    <TextInput
+      label="Enter export file template"
+      id="exportFileTemplateInput"
+      onChange={handleTemplateChange}
+      required
+      value={exportFileTemplate}
+      ref={exportFileTemplateInput}
+    />
   );
 
   const exportFileTemplateErrorFragment = (
-    <div
-      className="panel panel--error panel--no-title u-mb-s"
+    <InputErrorPanel
       id="exportFileTemplateInputError"
+      errorSummary={exportFileTemplateInputErrorSummary}
     >
-      <span className="u-vh">Error: </span>
-      <div className="panel__body">
-        <p className="panel__error">
-          <strong>{exportFileTemplateInputErrorSummary}</strong>
-        </p>
-        <div className="field">
-          <label className="label" htmlFor={exportFileTemplateInput}>
-            Enter Export File Template
-          </label>
-          <input
-            id="exportFileTemplateInput"
-            ref={exportFileTemplateInput}
-            className="input input--text input-type__input"
-            onChange={handleTemplateChange}
-            type="text"
-            aria-label={"Enter export file template"}
-            aria-required="true"
-            required
-            value={exportFileTemplate}
-          />
-        </div>
-      </div>
-    </div>
+      {exportFileTemplateFragment}
+    </InputErrorPanel>
   );
 
   const supplierInputFragment = (
-    <div className="question u-mt-no">
-      <fieldset
-        id="exportFileDestinationInput"
-        aria-required="true"
-        aria-label={"Select export file destination"}
-        className="fieldset"
-        ref={exportFileDestinationInput}
-        onChange={handleExportFileDestinationChange}
-      >
-        <legend className="fieldset__legend">
-          <label className="label venus">Select export file destination</label>
-        </legend>
-        <div className="input-items">
-          <div className="radios__items">{exportFileDestinationOptions}</div>
-        </div>
-      </fieldset>
-    </div>
+    <RadioBtnGroup
+      ref={exportFileDestinationInput}
+      legend="Select export file destination"
+      onChange={handleExportFileDestinationChange}
+    >
+      {exportFileDestinationOptions}
+    </RadioBtnGroup>
   );
 
   const supplierInputErrorFragment = (
-    <div
-      className="panel panel--error panel--no-title u-mb-s"
+    <InputErrorPanel
       id="SupplierInputError"
+      errorSummary={supplierInputErrorSummary}
     >
-      <span className="u-vh">Error: </span>
-      <div className="panel__body">
-        <p className="panel__error">
-          <strong>{supplierInputErrorSummary}</strong>
-        </p>
-        <div className="field">
-          <label className="label" htmlFor={exportFileDestinationInput}>
-            Select export file destination
-          </label>
-          <fieldset
-            id="exportFileDestinationInput"
-            aria-required="true"
-            aria-label={"Select export file destination"}
-            className="fieldset"
-            ref={exportFileDestinationInput}
-            onChange={handleExportFileDestinationChange}
-          >
-            <div className="input-items">
-              <div className="radios__items">
-                {exportFileDestinationOptions}
-              </div>
-            </div>
-          </fieldset>
-        </div>
-      </div>
-    </div>
+      {supplierInputFragment}
+    </InputErrorPanel>
   );
 
   return (
@@ -459,32 +329,34 @@ function CreateExportFileTemplate() {
       <Helmet>
         <title>Create Export File Template</title>
       </Helmet>
-      {errorSummary.length > 0 && <ErrorSummary />}
+      {errorSummary.length > 0 && (
+        <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
+      )}
       <h2>Create a Export File Template</h2>
       <form onSubmit={validateFormAndCreateExportFileTemplate}>
-        <div className="question u-mt-no">
+        <div className="ons-question ons-u-mt-no">
           {packCodeInputErrorSummary.length === 0
             ? packCodeInputFragment
             : packCodeInputErrorFragment}
         </div>
         <br />
-        <div className="question u-mt-no">{descriptionInputFragment}</div>
+        <div className="ons-question ons-u-mt-no">
+          {descriptionInputFragment}
+        </div>
         <br />
-        <div className="question u-mt-no">
+        <div className="ons-question ons-u-mt-no">
           {exportFileTemplateInputErrorSummary.length === 0
             ? exportFileTemplateFragment
             : exportFileTemplateErrorFragment}
         </div>
         <br />
-        <div className="question u-mt-no">
+        <div className="ons-question ons-u-mt-no">
           {supplierInputErrorSummary.length === 0
             ? supplierInputFragment
             : supplierInputErrorFragment}
         </div>
         <br />
-        <button type="submit" className="btn btn--link">
-          <span className="btn__inner">Create Export File Template</span>
-        </button>
+        <Button type="submit">Create Export File Template</Button>
       </form>
     </>
   );

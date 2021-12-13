@@ -2,6 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
+import Table from "./DesignSystemComponents/Table";
+import TableHead from "./DesignSystemComponents/TableHead";
+import TableHeaderCell from "./DesignSystemComponents/TableHeaderCell";
+import TableCell from "./DesignSystemComponents/TableCell";
+import TableBody from "./DesignSystemComponents/TableBody";
+import TableRow from "./DesignSystemComponents/TableRow";
+import SuccessPanel from "./DesignSystemComponents/SuccessPanel";
 
 function ExportFileTemplates(props) {
   const [tableRows, setTableRows] = useState([]);
@@ -12,16 +19,12 @@ function ExportFileTemplates(props) {
       const exportFileTemplates = await response.json();
       const tableRows = await exportFileTemplates.map(
         (exportFileTemplate, index) => (
-          <tr className="table__row" key={index}>
-            <td className="table__cell">{exportFileTemplate.packCode}</td>
-            <td className="table__cell">{exportFileTemplate.description}</td>
-            <td className="table__cell">
-              {exportFileTemplate.exportFileDestination}
-            </td>
-            <td className="table__cell">
-              {JSON.stringify(exportFileTemplate.template)}
-            </td>
-          </tr>
+          <TableRow key={index}>
+            <TableCell>{exportFileTemplate.packCode}</TableCell>
+            <TableCell>{exportFileTemplate.description}</TableCell>
+            <TableCell>{exportFileTemplate.exportFileDestination}</TableCell>
+            <TableCell>{JSON.stringify(exportFileTemplate.template)}</TableCell>
+          </TableRow>
         )
       );
       setTableRows(tableRows);
@@ -38,17 +41,8 @@ function ExportFileTemplates(props) {
       {props.flashMessageUntil > Date.now() && (
         <>
           <Announcer text={"New export file Template has been created"} />
-          <div className="panel panel--success">
-            <div className="panel__header">
-              <p
-                id="success"
-                data-qa="success-header"
-                className="panel__title u-fs-r--b"
-              >
-                <strong>New export file template has been created</strong>
-              </p>
-            </div>
-          </div>
+          <SuccessPanel>New export file template has been created</SuccessPanel>
+          <br />
         </>
       )}
       <h2>Export File Templates</h2>
@@ -59,25 +53,17 @@ function ExportFileTemplates(props) {
           </Link>
         </p>
       )}
-      <table className="table table--row-hover">
-        <thead className="table__head">
-          <tr className="table__row">
-            <th scope="col" className="table__header">
-              Pack Code
-            </th>
-            <th scope="col" className="table__header">
-              Description
-            </th>
-            <th scope="col" className="table__header">
-              Export File Destination
-            </th>
-            <th scope="col" className="table__header">
-              Template
-            </th>
-          </tr>
-        </thead>
-        <tbody className="table__body">{tableRows}</tbody>
-      </table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Pack Code</TableHeaderCell>
+            <TableHeaderCell>Description</TableHeaderCell>
+            <TableHeaderCell>Export File Destination</TableHeaderCell>
+            <TableHeaderCell>Template</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{tableRows}</TableBody>
+      </Table>
     </>
   );
 }
