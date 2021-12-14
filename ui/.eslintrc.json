@@ -33,5 +33,9 @@
             "version": "detect",
             "flowVersion": "0.53" // Flow version
         }
+    },
+    "globals": {
+        // The 'global' var in the jest tests needs to be allowed
+        "global": true
     }
 }
