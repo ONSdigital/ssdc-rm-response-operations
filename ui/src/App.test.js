@@ -21,7 +21,7 @@ afterEach(() => {
 it("renders the app", async () => {
   const fakeAuth = ["FOO"];
 
-  const spy = jest.spyOn("fetch").mockImplementation(() =>
+  const spy = jest.spyOn(fetch).mockImplementation(() =>
     Promise.resolve({
       ok: true,
       json: () => Promise.resolve(fakeAuth),
