@@ -81,7 +81,7 @@ public class UserGroupMemberEndpoint {
                 String.format(
                     "User %s was removed from group %s",
                     userGroupMember.getUser().getEmail(), userGroupMember.getGroup().getName())))
-        .warn(
+        .info(
             String.format(
                 "User %s was removed from group %s by %s",
                 userGroupMember.getUser().getEmail(),
