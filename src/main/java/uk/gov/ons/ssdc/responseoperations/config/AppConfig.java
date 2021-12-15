@@ -8,11 +8,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
-  @Value("$logging.profile")
+  @Value("{$logging.profile}")
   private String loggingProfile;
 
   @PostConstruct
   public void init() {
+
     if (loggingProfile.equals("STRUCTURED")) {
       LoggingConfigs.setCurrent(LoggingConfigs.getCurrent().useJson());
     }

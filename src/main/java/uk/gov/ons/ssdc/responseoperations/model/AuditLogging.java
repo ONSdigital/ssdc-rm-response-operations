@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RMLoggingDto {
+public class AuditLogging {
   private boolean audit;
   private String userWhoCarriedOutAction;
   private String actionType;

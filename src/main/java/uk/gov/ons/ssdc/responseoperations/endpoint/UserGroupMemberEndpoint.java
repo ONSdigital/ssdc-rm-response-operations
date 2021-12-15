@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
-import uk.gov.ons.ssdc.responseoperations.model.RMLoggingDto;
+import uk.gov.ons.ssdc.responseoperations.model.AuditLogging;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserGroupMemberDto;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
@@ -74,7 +74,7 @@ public class UserGroupMemberEndpoint {
     userGroupMemberRepository.delete(userGroupMember);
 
     log.with(
-            new RMLoggingDto(
+            new AuditLogging(
                 true,
                 userEmail,
                 "REMOVED USER FROM GROUP",
