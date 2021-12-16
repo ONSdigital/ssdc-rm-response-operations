@@ -25,6 +25,7 @@ it("renders survey data", async () => {
       name: "Test Survey",
     },
   ];
+
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeSurveys),

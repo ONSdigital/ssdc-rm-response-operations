@@ -27,6 +27,7 @@ it("renders export file template data", async () => {
       template: ["__uac__"],
     },
   ];
+
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeExportFileTemplates),

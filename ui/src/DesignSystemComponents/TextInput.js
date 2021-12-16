@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 
 const TextInput = (props, ref) => (
   <div className="ons-field">
-    <label className="ons-label" htmlFor="text" htmlFor={props.id}>
+    <label className="ons-label" htmlFor={props.id}>
       {props.label}{" "}
     </label>
     <input

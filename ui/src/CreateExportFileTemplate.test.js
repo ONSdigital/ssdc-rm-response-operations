@@ -44,4 +44,6 @@ it("renders create export file template", async () => {
 
   const exportFileDestination = screen.getByText(/SUPPLIER_A/i);
   expect(exportFileDestination).toBeInTheDocument();
+
+  global.fetch.mockRestore();
 });

@@ -84,7 +84,7 @@ function CreateExportFileTemplate() {
     setHasErrors(false);
   }
 
-  function getExportFileTemplateInputErrors(errorStr) {
+  function getExportFileTemplateInputErrors() {
     const exportFileTemplateInputErrorInfo = {
       arrayFormatError:
         "Export file template must be JSON array with one or more elements",
