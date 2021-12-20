@@ -39,6 +39,9 @@ function App() {
 
   return (
     <Router>
+      <Helmet>
+        <title>Response Operations</title>
+      </Helmet>
       <div className="ons-page account">
         <div className="ons-page__content">
           <header className="ons-header ons-header--internal" role="banner">
@@ -129,20 +132,18 @@ function App() {
             </div>
           </header>
 
-          <div className="ons-container ons-container--wide ons-page__container">
-            <Helmet>
-              <title>Response Operations</title>
-            </Helmet>
-
-            <div className="ons-page__container ons-container ons-container--wide">
-              <main id="main-content" className="ons-page__main">
-                {authorisedActivities.length === 0 && !loading && (
-                  <p>User not authorised</p>
-                )}
-                {authorisedActivities.length > 0 && (
-                  <QueryRouting authorisedActivities={authorisedActivities} />
-                )}
-              </main>
+          <div className="ons-page__container ons-container ">
+            <div className="ons-grid">
+              <div className="ons-grid__col ons-col-8@m">
+                <main id="main-content" className="ons-page__main ">
+                  {authorisedActivities.length === 0 && !loading && (
+                    <p>User not authorised</p>
+                  )}
+                  {authorisedActivities.length > 0 && (
+                    <QueryRouting authorisedActivities={authorisedActivities} />
+                  )}
+                </main>
+              </div>
             </div>
           </div>
         </div>
