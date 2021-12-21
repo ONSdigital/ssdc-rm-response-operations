@@ -80,7 +80,7 @@ function GroupAdmin(props) {
         <TableBody>{userTableRows}</TableBody>
       </Table>
 
-      <h2>Add User To Group</h2>
+      <h2>Add User To Group Using Design System AutoSuggest</h2>
       <AutoSuggest suggestionData="/api/users"></AutoSuggest>
     </>
   );
