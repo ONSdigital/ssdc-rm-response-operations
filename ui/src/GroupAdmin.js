@@ -11,6 +11,8 @@ import TableCell from "./DesignSystemComponents/TableCell";
 import TableBody from "./DesignSystemComponents/TableBody";
 import TableRow from "./DesignSystemComponents/TableRow";
 import SuccessPanel from "./DesignSystemComponents/SuccessPanel";
+import AutoSuggest from "./DesignSystemComponents/AutoSuggest";
+
 
 function GroupAdmin(props) {
   let history = useHistory();
@@ -77,6 +79,9 @@ function GroupAdmin(props) {
         </TableHead>
         <TableBody>{userTableRows}</TableBody>
       </Table>
+
+      <h2>Add User To Group</h2>
+      <AutoSuggest suggestionData="/api/users"></AutoSuggest>
     </>
   );
 }
