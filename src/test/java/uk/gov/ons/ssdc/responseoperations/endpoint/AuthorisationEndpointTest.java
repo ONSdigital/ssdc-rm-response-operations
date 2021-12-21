@@ -125,7 +125,10 @@ public class AuthorisationEndpointTest {
         underTest.getAuthorisedActivities(Optional.of(survey.getId()), "test@test.com");
 
     assertThat(authorisedActivities.size())
-        .isEqualTo(Arrays.stream(UserGroupAuthorisedActivityType.values()).filter(permission -> !permission.isGlobal()).count());
+        .isEqualTo(
+            Arrays.stream(UserGroupAuthorisedActivityType.values())
+                .filter(permission -> !permission.isGlobal())
+                .count());
 
     // Second, check that the user has NO permissions on a DIFFERENT survey
     authorisedActivities =
