@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -124,7 +125,10 @@ public class AuthorisationEndpointTest {
         underTest.getAuthorisedActivities(Optional.of(survey.getId()), "test@test.com");
 
     assertThat(authorisedActivities.size())
-        .isEqualTo(UserGroupAuthorisedActivityType.values().length);
+        .isEqualTo(
+            Arrays.stream(UserGroupAuthorisedActivityType.values())
+                .filter(permission -> !permission.isGlobal())
+                .count());
 
     // Second, check that the user has NO permissions on a DIFFERENT survey
     authorisedActivities =
