@@ -33,3 +33,6 @@ format-ui:
 	$(MAKE) -C ui format
 
 format: format-mvn format-ui
+
+docker-build:
+	SKIP_TESTS=true ./build.sh
