@@ -3,11 +3,12 @@ package uk.gov.ons.ssdc.responseoperations.endpoint;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static uk.gov.ons.ssdc.responseoperations.test_utils.JsonHelper.asJsonString;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -22,10 +24,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import uk.gov.ons.ssdc.common.model.entity.Survey;
 import uk.gov.ons.ssdc.common.model.entity.User;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAdmin;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
+import uk.gov.ons.ssdc.common.validation.ColumnValidator;
+import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyDto;
+import uk.gov.ons.ssdc.responseoperations.model.dto.ui.SurveyType;
+import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserGroupMemberDto;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 
@@ -209,5 +217,43 @@ class UserGroupMemberEndpointTest {
             result ->
                 assertThat(result.getResponse().getStatus())
                     .isEqualTo(HttpStatus.BAD_REQUEST.value()));
+  }
+
+
+  @Test
+  public void testAddUserToGroup() throws Exception {
+    // Given
+    UserGroupMemberDto userGroupMemberDto 
+
+
+
+    SurveyDto survey = new SurveyDto();
+    survey.setName("Test survey");
+    survey.setSurveyType(SurveyType.SOCIAL);
+
+    when(sampleDefinitionClient.getSampleDefinitionUrlForSurveyType(SurveyType.SOCIAL))
+            .thenReturn("test_url");
+    when(sampleDefinitionClient.getColumnValidatorsForSurveyType(SurveyType.SOCIAL))
+            .thenReturn(new ColumnValidator[0]);
+
+    // When
+    mockMvc
+            .perform(
+                    post("/api/surveys", survey)
+                            .requestAttr("userEmail", "test@test.com")
+                            .content(asJsonString(survey))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isCreated())
+            .andExpect(handler().handlerType(SurveyEndpoint.class))
+            .andExpect(handler().methodName("createSurvey"));
+
+    // Then
+    ArgumentCaptor<Survey> surveyArgumentCaptor = ArgumentCaptor.forClass(Survey.class);
+    verify(surveyRepository).saveAndFlush(surveyArgumentCaptor.capture());
+    assertThat(surveyArgumentCaptor.getValue().getName()).isEqualTo("Test survey");
+
+    verify(userIdentity)
+            .checkGlobalUserPermission(
+                    eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_SURVEY));
   }
 }
