@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,15 @@ public class AuthorisationEndpointTest {
 
   @Mock private UserRepository userRepository;
 
-  @InjectMocks private AuthorisationEndpoint underTest;
+  private AuthorisationEndpoint underTest;
+
+  @BeforeEach
+  public void setUp() {
+    boolean dummyUserIdentityAllowed = false;
+    underTest =
+        new AuthorisationEndpoint(
+            userRepository, dummyUserIdentityAllowed, "testDummySuperUserIdentity");
+  }
 
   @Test
   public void testSingleGlobalPermission() {
