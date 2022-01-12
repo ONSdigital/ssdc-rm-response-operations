@@ -11,28 +11,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.ons.ssdc.common.model.entity.User;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
-import uk.gov.ons.ssdc.common.model.entity.UserGroupAdmin;
-import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupAdminRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
-import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static java.util.Collections.emptyList;
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(MockitoExtension.class)

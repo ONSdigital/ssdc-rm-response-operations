@@ -57,12 +57,6 @@ public class UserEndpoint {
     List<UserDto> allUsers =
         userRepository.findAll().stream().map(this::mapDto).collect(Collectors.toList());
 
-//    UserGroup group =
-//        userGroupRepository
-//            .findById(groupId)
-//            .orElseThrow(
-//                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
-
     List<UUID> userIdsAlreadyInGroup =
         userGroupMemberRepository.findById(groupId).stream().map(this::mapUserId).toList();
 
