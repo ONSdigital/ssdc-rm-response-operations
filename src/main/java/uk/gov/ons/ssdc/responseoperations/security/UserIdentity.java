@@ -20,18 +20,17 @@ public class UserIdentity {
   private static final String IAP_ISSUER_URL = "https://cloud.google.com/iap";
 
   private final UserRepository userRepository;
-  private final String iapAudience;
-  private final String dummyUserIdentity;
+
+  @Value("${iapaudience}")
+  String iapAudience;
+
+  @Value("${dummyuseridentity}")
+  String dummyUserIdentity;
 
   private TokenVerifier tokenVerifier = null;
 
-  public UserIdentity(
-      UserRepository userRepository,
-      @Value("${iapaudience}") String iapAudience,
-      @Value("${dummyuseridentity}") String dummyUserIdentity) {
+  public UserIdentity(UserRepository userRepository) {
     this.userRepository = userRepository;
-    this.iapAudience = iapAudience;
-    this.dummyUserIdentity = dummyUserIdentity;
   }
 
   public void checkUserPermission(

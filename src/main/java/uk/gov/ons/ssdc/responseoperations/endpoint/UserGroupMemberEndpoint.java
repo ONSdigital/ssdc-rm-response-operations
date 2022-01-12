@@ -5,8 +5,6 @@ import com.godaddy.logging.LoggerFactory;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,10 +37,10 @@ public class UserGroupMemberEndpoint {
   private final UserRepository userRepository;
 
   public UserGroupMemberEndpoint(
-          UserGroupMemberRepository userGroupMemberRepository,
-          UserGroupRepository userGroupRepository,
-          UserIdentity userIdentity,
-          UserRepository userRepository) {
+      UserGroupMemberRepository userGroupMemberRepository,
+      UserGroupRepository userGroupRepository,
+      UserIdentity userIdentity,
+      UserRepository userRepository) {
     this.userGroupMemberRepository = userGroupMemberRepository;
     this.userGroupRepository = userGroupRepository;
     this.userIdentity = userIdentity;
@@ -106,30 +104,30 @@ public class UserGroupMemberEndpoint {
 
   @PostMapping
   public ResponseEntity<Void> addUserToGroup(
-          @RequestBody UserGroupMemberDto userGroupMemberDto,
-          @RequestAttribute("userEmail") String userEmail) {
+      @RequestBody UserGroupMemberDto userGroupMemberDto,
+      @RequestAttribute("userEmail") String userEmail) {
     UserGroup group =
-            userGroupRepository
-                    .findById(userGroupMemberDto.getGroupId())
-                    .orElseThrow(
-                            () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
+        userGroupRepository
+            .findById(userGroupMemberDto.getGroupId())
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
 
     if (group.getAdmins().stream()
-            .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
+        .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
       // If you're not admin of this group, you have to be super user
       userIdentity.checkGlobalUserPermission(userEmail, UserGroupAuthorisedActivityType.SUPER_USER);
     }
 
     User user =
-            userRepository
-                    .findById(userGroupMemberDto.getUserId())
-                    .orElseThrow(
-                            () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        userRepository
+            .findById(userGroupMemberDto.getUserId())
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
 
     if (user.getMemberOf().stream()
-            .anyMatch(userGroupMember -> userGroupMember.getGroup() == group)) {
+        .anyMatch(userGroupMember -> userGroupMember.getGroup() == group)) {
       throw new ResponseStatusException(
-              HttpStatus.CONFLICT, "User is already a member of this group");
+          HttpStatus.CONFLICT, "User is already a member of this group");
     }
 
     UserGroupMember userGroupMember = new UserGroupMember();

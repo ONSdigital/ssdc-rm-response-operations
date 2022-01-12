@@ -22,6 +22,12 @@ function GroupAdmin(props) {
     );
   }
 
+  function openAddUserPage() {
+    history.push(
+      `addUserToGroup?groupName=${props.groupName}&groupId=${props.groupId}`
+    );
+  }
+
   useEffect(() => {
     async function fetchAllUsersInGroup() {
       const allGroupMembersResponse = await fetch(
@@ -77,6 +83,11 @@ function GroupAdmin(props) {
         </TableHead>
         <TableBody>{userTableRows}</TableBody>
       </Table>
+
+
+      <Button onClick={() => openAddUserPage()}>
+        Add User To Group
+      </Button>
     </>
   );
 }

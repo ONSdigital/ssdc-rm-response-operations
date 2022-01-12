@@ -18,6 +18,7 @@ import { Helmet } from "react-helmet";
 import GroupAdmin from "./GroupAdmin";
 import DeleteUserFromGroupConfirmation from "./DeleteUserFromGroupConfirmation";
 import MyGroupsAdmin from "./MyGroupsAdmin";
+import AddUserToGroup from "./AddUserToGroup";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -251,6 +252,14 @@ function QueryRouting(props) {
       </Route>
       <Route path="/deleteuserfromgroupconfirmation">
         <DeleteUserFromGroupConfirmation
+          groupUserId={query.get("groupUserId")}
+          groupName={query.get("groupName")}
+          groupId={query.get("groupId")}
+          userEmail={query.get("userEmail")}
+        />
+      </Route>
+      <Route path="/addUsertogroup">
+        <AddUserToGroup
           groupUserId={query.get("groupUserId")}
           groupName={query.get("groupName")}
           groupId={query.get("groupId")}
