@@ -34,10 +34,10 @@ function Surveys(props) {
       <Helmet>
         <title>Surveys</title>
       </Helmet>
-      {!props.flashMessageUntil && <Announcer text={"Surveys"} />}
+      {!props.flashMessageUntil && <Announcer text="Surveys" />}
       {props.flashMessageUntil > Date.now() && (
         <>
-          <Announcer text={"New survey has been created"} />
+          <Announcer text="New survey has been created" />
           <SuccessPanel>New survey has been created</SuccessPanel>
           <br />
         </>

@@ -6,6 +6,7 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import Home from "./Home";
 import CreateSurvey from "./CreateSurvey";
 import Surveys from "./Surveys";
@@ -14,7 +15,6 @@ import ExportFileTemplates from "./ExportFileTemplates";
 
 import NotFound from "./NotFound";
 import CreateExportFileTemplate from "./CreateExportFileTemplate";
-import { Helmet } from "react-helmet";
 import GroupAdmin from "./GroupAdmin";
 import DeleteUserFromGroupConfirmation from "./DeleteUserFromGroupConfirmation";
 import MyGroupsAdmin from "./MyGroupsAdmin";
@@ -210,7 +210,7 @@ function useQuery() {
 }
 
 function QueryRouting(props) {
-  let query = useQuery();
+  const query = useQuery();
 
   return (
     <Switch>

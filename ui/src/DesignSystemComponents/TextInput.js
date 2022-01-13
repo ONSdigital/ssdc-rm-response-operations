@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 
-const TextInput = (props, ref) => (
-  <div className="ons-field">
+function TextInput(props, ref) {
+  return <div className="ons-field">
     <label className="ons-label" htmlFor={props.id}>
       {props.label}{" "}
     </label>
@@ -15,6 +15,6 @@ const TextInput = (props, ref) => (
       ref={ref}
     />
   </div>
-);
+}
 
 export default forwardRef(TextInput);

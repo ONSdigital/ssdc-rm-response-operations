@@ -2,8 +2,7 @@ import React from "react";
 
 function SuccessPanel(props) {
   return (
-    <>
-      <div
+    <div
         className="ons-panel ons-panel--success ons-panel--no-title"
         id={props.id}
       >
@@ -24,7 +23,6 @@ function SuccessPanel(props) {
         </span>
         <div className="ons-panel__body">{props.children}</div>
       </div>
-    </>
   );
 }
 

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory , Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
-import { Link } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import Table from "./DesignSystemComponents/Table";
 import TableHead from "./DesignSystemComponents/TableHead";
@@ -13,7 +12,7 @@ import TableRow from "./DesignSystemComponents/TableRow";
 import SuccessPanel from "./DesignSystemComponents/SuccessPanel";
 
 function GroupAdmin(props) {
-  let history = useHistory();
+  const history = useHistory();
   const [userTableRows, setUserTableRowsRows] = useState([]);
 
   function openRemoveUserPage(groupUser) {
@@ -72,7 +71,7 @@ function GroupAdmin(props) {
         <TableHead>
           <TableRow>
             <TableHeaderCell>Group Member Email</TableHeaderCell>
-            <TableHeaderCell></TableHeaderCell>
+            <TableHeaderCell />
           </TableRow>
         </TableHead>
         <TableBody>{userTableRows}</TableBody>

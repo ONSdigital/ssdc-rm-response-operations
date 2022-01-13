@@ -12,7 +12,7 @@ function CreateSurvey() {
   const [surveyName, setSurveyName] = useState("");
   const [surveyType, setSurveyType] = useState("");
 
-  let history = useHistory();
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchSurveyTypes() {
@@ -51,7 +51,7 @@ function CreateSurvey() {
     event.preventDefault();
     const newSurvey = {
       name: surveyName,
-      surveyType: surveyType,
+      surveyType,
     };
 
     const response = await fetch("/api/surveys", {
@@ -91,7 +91,7 @@ function CreateSurvey() {
           {surveyTypeOptions}
         </RadioBtnGroup>
 
-        <p></p>
+        <p />
 
         <Button type="submit">Create Survey</Button>
       </form>

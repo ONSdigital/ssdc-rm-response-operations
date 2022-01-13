@@ -33,7 +33,7 @@ function CreateExportFileTemplate() {
   const exportFileTemplateInput = useRef(null);
   const errorSummaryTitle = useRef(null);
 
-  let history = useHistory();
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchData() {
@@ -91,7 +91,7 @@ function CreateExportFileTemplate() {
       jsonFormatError: "Export file template is not valid JSON",
     };
 
-    let errors = [];
+    const errors = [];
     try {
       const parsedJson = JSON.parse(exportFileTemplate);
       if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
@@ -113,7 +113,7 @@ function CreateExportFileTemplate() {
     error,
     element_to_anchor_to_id
   ) {
-    let errorMessages = [];
+    const errorMessages = [];
 
     if (error !== null) {
       errorMessages.push({
@@ -136,7 +136,7 @@ function CreateExportFileTemplate() {
   }
 
   function getServerSideValidationErrors(errorJson) {
-    let allErrorMessages = [];
+    const allErrorMessages = [];
 
     const packCodeErrorMessages = buildServerSideErrorsMessagesForType(
       errorJson.packCodeErrors,
@@ -190,9 +190,9 @@ function CreateExportFileTemplate() {
 
   async function createExportFileTemplateThroughAPI() {
     const newExportFileTemplate = {
-      packCode: packCode,
-      description: description,
-      exportFileDestination: exportFileDestination,
+      packCode,
+      description,
+      exportFileDestination,
       template: JSON.parse(exportFileTemplate),
     };
 

@@ -37,10 +37,10 @@ function ExportFileTemplates(props) {
       <Helmet>
         <title>View Export File Templates</title>
       </Helmet>
-      {!props.flashMessageUntil && <Announcer text={"Export File Templates"} />}
+      {!props.flashMessageUntil && <Announcer text="Export File Templates" />}
       {props.flashMessageUntil > Date.now() && (
         <>
-          <Announcer text={"New export file Template has been created"} />
+          <Announcer text="New export file Template has been created" />
           <SuccessPanel>New export file template has been created</SuccessPanel>
           <br />
         </>

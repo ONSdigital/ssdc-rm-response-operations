@@ -19,7 +19,7 @@ function ViewSurvey(props) {
         <title>View Survey</title>
       </Helmet>
       <h2>View Survey</h2>
-      <Announcer text={"View Survey"} />
+      <Announcer text="View Survey" />
       {survey && (
         <p data-testid="surveyName">
           <b>Survey name</b>: {survey.name}

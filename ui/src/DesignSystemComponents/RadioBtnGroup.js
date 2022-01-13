@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 
-const RadioBtnGroup = (props, ref) => {
+function RadioBtnGroup(props, ref) {
   return (
     <div className="ons-question ons-u-mt-no">
       <fieldset className="ons-fieldset" ref={ref} onChange={props.onChange}>
@@ -18,6 +18,6 @@ const RadioBtnGroup = (props, ref) => {
       </fieldset>
     </div>
   );
-};
+}
 
 export default forwardRef(RadioBtnGroup);

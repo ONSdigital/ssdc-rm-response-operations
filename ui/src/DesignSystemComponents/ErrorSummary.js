@@ -1,8 +1,8 @@
 import Announcer from "react-a11y-announcer";
 import React, { forwardRef } from "react";
 
-const ErrorSummary = (props, ref) => (
-  <div
+function ErrorSummary(props, ref) {
+  return <div
     id="errorSummaryTitle"
     ref={ref}
     aria-labelledby="error-summary-title"
@@ -10,7 +10,7 @@ const ErrorSummary = (props, ref) => (
     tabIndex="-1"
     className="ons-panel ons-panel--error"
   >
-    <Announcer text={"Error"} />
+    <Announcer text="Error" />
     <div className="ons-panel__header">
       <h2 data-qa="ons-error-header" className="ons-panel__title ons-u-fs-r--b">
         {props.errorSummary.length === 1
@@ -22,6 +22,6 @@ const ErrorSummary = (props, ref) => (
       <ol className="ons-list">{props.errorSummary}</ol>
     </div>
   </div>
-);
+}
 
 export default forwardRef(ErrorSummary);

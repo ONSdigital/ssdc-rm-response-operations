@@ -41,7 +41,7 @@ function MyGroupsAdmin() {
       <Helmet>
         <title>My Admin Groups</title>
       </Helmet>
-      <Announcer text={"My Admin Groups"} />
+      <Announcer text="My Admin Groups" />
       <Link to="/">← Back to home</Link>
       <h2>My Admin Groups</h2>
 

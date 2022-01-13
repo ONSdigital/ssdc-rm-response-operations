@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory , Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
-import { Link } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 
 function DeleteUserFromGroupConfirmation(props) {
-  let history = useHistory();
+  const history = useHistory();
   let removeAdminFromGroupInProgress = false;
   const [errorSummary, setErrorSummary] = useState([]);
   const errorSummaryTitle = useRef(null);
@@ -57,7 +56,7 @@ function DeleteUserFromGroupConfirmation(props) {
       <Helmet>
         <title>Remove User From Group</title>
       </Helmet>
-      <Announcer text={"User Removal Confirmation Page"} />
+      <Announcer text="User Removal Confirmation Page" />
       <Link
         to={`/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`}
       >
