@@ -131,7 +131,6 @@ function AddUserToGroup(props) {
       .map(section => {
         return {
           title: section.title,
-          // users: section.users.filter(user => regex.test(user.email))
           users: section.users.filter(user => user.email.toLowerCase().includes(escapedValue))
         };
       })
@@ -144,10 +143,12 @@ function AddUserToGroup(props) {
 
 
   function renderSuggestion(suggestion) {
-    // Match the value put in by the user in the email, and hightlight it.
-    var boldedText = suggestion.email.replace(value, "<strong>" + value + "</strong>");
+    // This is a cheap and simple implementation of highlighting the matched text
+    // We use a Parser to turn this into valid JSX
+    // Look here https://codepen.io/moroshko/pen/PZWbzK for a fancier set of formatting
+    // if required in future
 
-    // Return in Tags, use Parser to Parse it
+    var boldedText = suggestion.email.replace(value, "<strong>" + value + "</strong>");
     return (
       <>{Parser(boldedText)}</>
     );
@@ -198,8 +199,10 @@ function AddUserToGroup(props) {
         <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
       )}
       <h1>Add User To Group {props.groupName} Page</h1>
+      <br />
 
       <div className='ons-field'>
+        <h2>Select a user to add to the group</h2>
         <Autosuggest
           multiSection={true}
           suggestions={suggestions}
