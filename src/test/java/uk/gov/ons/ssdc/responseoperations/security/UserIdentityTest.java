@@ -8,9 +8,9 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,19 @@ import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
 class UserIdentityTest {
   @Mock private UserRepository userRepository;
 
-  @InjectMocks private UserIdentity underTest;
+  private UserIdentity underTest;
+
+  @BeforeEach
+  public void setUp() {
+    boolean dummyUserIdentityAllowed = false;
+    underTest =
+        new UserIdentity(
+            userRepository,
+            "testIapAudience",
+            "testDummyUserIdentity",
+            dummyUserIdentityAllowed,
+            "testDummySuperUserIdentity");
+  }
 
   @Test
   public void testSingleGlobalPermission() {
