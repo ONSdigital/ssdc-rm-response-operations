@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import Autosuggest from 'react-autosuggest';
+import Parser from 'html-react-parser';
 
 function AddUserToGroup(props) {
   let history = useHistory();
@@ -16,7 +17,7 @@ function AddUserToGroup(props) {
   const [value, setValue] = useState("");
   // Suggestions is tied to the AutoSuggest Component, it can be filted, mutated etc
   const [suggestions, setSuggestions] = useState([]);
-  // We load userList this on the page load, we don't change it. We filter it to create Suggetions
+  // We load userList this on the page load, we don't mutate it. We filter it to create Suggetions
   const [userList, setUserList] = useState([]);
 
 
@@ -25,6 +26,11 @@ function AddUserToGroup(props) {
       const response = await fetch(`/api/users?groupId=${props.groupId}`);
       const usersJson = await response.json();
 
+      /*
+         React-AutoSuggest has the option of 'sections'
+         In order to look a little like the design system lets use this to 
+         create a Suggestions section
+      */
       const users = [
         {
           title: 'Suggestions',
@@ -50,10 +56,9 @@ function AddUserToGroup(props) {
   // Or by cutting and pasting a valid email address.
   // Check it's in out list and get the UserId
   function checkEmailExistsAndGetUserId(userInput) {
-    const usersToCheck = userList[0].users;
-    for (var i = 0; i < usersToCheck.length; i++) {
-      if (usersToCheck[i].email === userInput) {
-        return usersToCheck[i].id;
+    for (var i = 0; i < userList[0].users.length; i++) {
+      if (userList[0].users[i].email === userInput) {
+        return userList[0].users[i].id;
       }
     }
 
@@ -137,9 +142,14 @@ function AddUserToGroup(props) {
     return suggestion.email;
   }
 
+
   function renderSuggestion(suggestion) {
+    // Match the value put in by the user in the email, and hightlight it.
+    var boldedText = suggestion.email.replace(value, "<strong>" + value + "</strong>");
+
+    // Return in Tags, use Parser to Parse it
     return (
-      <strong>{suggestion.email}</strong>
+      <>{Parser(boldedText)}</>
     );
   }
 

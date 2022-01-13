@@ -11,11 +11,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.ons.ssdc.common.model.entity.User;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
+import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupAdminRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
+import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,6 +39,7 @@ class UserEndpointTest {
     @Mock private UserGroupAdminRepository userGroupAdminRepository;
     @Mock private UserGroupMemberRepository userGroupMemberRepository;
     @Mock private UserRepository userRepository;
+    @Mock private UserGroupRepository userGroupRepository;
 
     @InjectMocks
     private UserEndpoint underTest;
@@ -53,15 +57,15 @@ class UserEndpointTest {
         userGroup.setId(UUID.randomUUID());
         userGroup.setName("Test Group");
 
-
         when(userGroupAdminRepository.existsByUserEmail(anyString())).thenReturn(true);
 
         User user = new User();
         user.setId(UUID.randomUUID());
         when(userRepository.findAll()).thenReturn(List.of(user));
+        when(userGroupRepository.findById(any())).thenReturn(Optional.of(userGroup));
 
-        when(userGroupMemberRepository.findById(any())).thenReturn(Optional.empty());
-
+        List<UserGroupMember> usersInGroup = new ArrayList<>();
+        when(userGroupMemberRepository.findByGroup(any())).thenReturn(usersInGroup);
 
         mockMvc.perform(
                         get(String.format("/api/users?groupId=%s", userGroup.getId()))
