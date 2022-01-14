@@ -61,7 +61,8 @@
 }
 
 .react-autosuggest__suggestion--highlighted {
-  background-color: #ddd;
+  background-color: rgba(1, 24, 53, 0.687);
+  color: white;
 }
 
 .auto-suggest-section-title {
