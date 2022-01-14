@@ -5,8 +5,8 @@ import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
-import Autosuggest from 'react-autosuggest';
-import Parser from 'html-react-parser';
+import Autosuggest from "react-autosuggest";
+import Parser from "html-react-parser";
 
 function AddUserToGroup(props) {
   let history = useHistory();
@@ -20,7 +20,6 @@ function AddUserToGroup(props) {
   // We load userList this on the page load, we don't mutate it. We filter it to create Suggetions
   const [userList, setUserList] = useState([]);
 
-
   useEffect(() => {
     async function fetchUsers() {
       const response = await fetch(`/api/users?groupId=${props.groupId}`);
@@ -33,10 +32,9 @@ function AddUserToGroup(props) {
       */
       const users = [
         {
-          title: 'Suggestions',
-          users: usersJson
-
-        }
+          title: "Suggestions",
+          users: usersJson,
+        },
       ];
 
       setUserList(users);
@@ -72,13 +70,15 @@ function AddUserToGroup(props) {
 
     addUserInProgress = true;
 
-    setErrorSummary('');
+    setErrorSummary("");
     setHasErrors(false);
 
     const userId = checkEmailExistsAndGetUserId(value);
 
     if (userId === undefined) {
-      setErrorSummary(["Please select a user to add by the autocomplete below"]);
+      setErrorSummary([
+        "Please select a user to add by the autocomplete below",
+      ]);
       setHasErrors(true);
       addUserInProgress = false;
       return;
@@ -86,7 +86,7 @@ function AddUserToGroup(props) {
 
     const newuUserGroupMember = {
       groupId: props.groupId,
-      userId: userId
+      userId: userId,
     };
 
     const response = await fetch("/api/userGroupMembers", {
@@ -100,8 +100,7 @@ function AddUserToGroup(props) {
         `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
       );
       // history.push(`/surveys?flashMessageUntil=${Date.now() + 5000}`);
-    }
-    else {
+    } else {
       setErrorSummary(["Failed to add user"]);
       setHasErrors(true);
     }
@@ -117,30 +116,31 @@ function AddUserToGroup(props) {
   }, [hasErrors]);
 
   function escapeRegexCharacters(str) {
-    return str.replace(/[*+?^${}()|[\]\\]/g, '\\$&');
+    return str.replace(/[*+?^${}()|[\]\\]/g, "\\$&");
   }
 
-  const getSuggestions = value => {
+  const getSuggestions = (value) => {
     const escapedValue = escapeRegexCharacters(value.trim()).toLowerCase();
 
-    if (escapedValue === '') {
+    if (escapedValue === "") {
       return [];
     }
 
     return userList
-      .map(section => {
+      .map((section) => {
         return {
           title: section.title,
-          users: section.users.filter(user => user.email.toLowerCase().includes(escapedValue))
+          users: section.users.filter((user) =>
+            user.email.toLowerCase().includes(escapedValue)
+          ),
         };
       })
-      .filter(section => section.users.length > 0);
+      .filter((section) => section.users.length > 0);
   };
 
-  const getSuggestionValue = suggestion => {
+  const getSuggestionValue = (suggestion) => {
     return suggestion.email;
-  }
-
+  };
 
   function renderSuggestion(suggestion) {
     // This is a cheap and simple implementation of highlighting the matched text
@@ -148,16 +148,15 @@ function AddUserToGroup(props) {
     // Look here https://codepen.io/moroshko/pen/PZWbzK for a fancier set of formatting
     // if required in future
 
-    var boldedText = suggestion.email.replace(value, "<strong>" + value + "</strong>");
-    return (
-      <>{Parser(boldedText)}</>
+    var boldedText = suggestion.email.replace(
+      value,
+      "<strong>" + value + "</strong>"
     );
+    return <>{Parser(boldedText)}</>;
   }
 
   function renderSectionTitle(section) {
-    return (
-      <span className="auto-suggest-section-title"> {section.title}</span>
-    );
+    return <span className="auto-suggest-section-title"> {section.title}</span>;
   }
 
   const onChange = (event, { newValue }) => {
@@ -179,9 +178,9 @@ function AddUserToGroup(props) {
 
   // Autosuggest will pass through all these props to the input.
   const inputProps = {
-    placeholder: 'Type a users email',
+    placeholder: "Type a users email",
     value,
-    onChange: onChange
+    onChange: onChange,
   };
 
   return (
@@ -201,7 +200,7 @@ function AddUserToGroup(props) {
       <h1>Add User To Group {props.groupName} Page</h1>
       <br />
 
-      <div className='ons-field'>
+      <div className="ons-field">
         <h2>Select a user to add to the group</h2>
         <Autosuggest
           multiSection={true}

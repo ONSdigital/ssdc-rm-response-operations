@@ -84,10 +84,7 @@ function GroupAdmin(props) {
         <TableBody>{userTableRows}</TableBody>
       </Table>
 
-
-      <Button onClick={() => openAddUserPage()}>
-        Add User To Group
-      </Button>
+      <Button onClick={() => openAddUserPage()}>Add User To Group</Button>
     </>
   );
 }
