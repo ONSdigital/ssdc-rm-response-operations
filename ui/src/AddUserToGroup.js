@@ -156,7 +156,7 @@ function AddUserToGroup(props) {
   }
 
   function renderSectionTitle(section) {
-    return <span className="auto-suggest-section-title"> {section.title}</span>;
+    return <div className="auto-suggest-section-title"><span > {section.title}</span></div>;
   }
 
   const onChange = (event, { newValue }) => {

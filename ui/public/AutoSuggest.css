@@ -57,6 +57,7 @@
 .react-autosuggest__suggestion {
   cursor: pointer;
   padding: 10px 20px;
+  border-top: 1px solid #ddd;
 }
 
 .react-autosuggest__suggestion--highlighted {
@@ -64,6 +65,7 @@
 }
 
 .auto-suggest-section-title {
-  padding: 10px 20px;
-  /* background-color: rgba(221, 221, 221, 0.425); */
+  padding: 10px;
+  background-color: rgba(221, 221, 221, 0.425);
 }
+
