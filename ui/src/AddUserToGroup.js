@@ -7,6 +7,7 @@ import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import Autosuggest from "react-autosuggest";
 import Parser from "html-react-parser";
+import './AutoSuggest.css';
 
 function AddUserToGroup(props) {
   let history = useHistory();
@@ -19,6 +20,7 @@ function AddUserToGroup(props) {
   const [suggestions, setSuggestions] = useState([]);
   // We load userList this on the page load, we don't mutate it. We filter it to create Suggetions
   const [userList, setUserList] = useState([]);
+  const [noSuggestions, setNoSuggestions] = useState(false);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -134,8 +136,7 @@ function AddUserToGroup(props) {
             user.email.toLowerCase().includes(escapedValue)
           ),
         };
-      })
-      .filter((section) => section.users.length > 0);
+      }).filter((section) => section.users.length > 0);
   };
 
   const getSuggestionValue = (suggestion) => {
@@ -158,7 +159,7 @@ function AddUserToGroup(props) {
   function renderSectionTitle(section) {
     return (
       <div className="auto-suggest-section-title">
-        <span> {section.title}</span>
+        <span>{section.title}</span>
       </div>
     );
   }
@@ -170,6 +171,10 @@ function AddUserToGroup(props) {
   const onSuggestionsFetchRequested = ({ value }) => {
     const suggestions = getSuggestions(value);
     setSuggestions(suggestions);
+
+    const isInputBlank = value.trim() === '';
+    const noSuggestions = !isInputBlank && suggestions.length === 0;
+    setNoSuggestions(noSuggestions);
   };
 
   const onSuggestionsClearRequested = () => {
@@ -217,6 +222,11 @@ function AddUserToGroup(props) {
           inputProps={inputProps}
           getSectionSuggestions={getSectionSuggestions}
         />
+        {noSuggestions &&
+          <div className="no-suggestions">
+            No suggestions
+          </div>
+        }
       </div>
       <br />
 

@@ -69,3 +69,10 @@
   padding: 10px;
   background-color: rgba(221, 221, 221, 0.425);
 }
+
+.no-suggestions {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: rgba(221, 221, 221, 0.425);
+  cursor: not-allowed;
+}
