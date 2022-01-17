@@ -197,7 +197,7 @@ function AddUserToGroup(props) {
       <Helmet>
         <title>Add User To Group</title>
       </Helmet>
-      <Announcer text={"Add User Page Page"} />
+      <Announcer text={"Add User Page"} />
       <Link
         to={`/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`}
       >
