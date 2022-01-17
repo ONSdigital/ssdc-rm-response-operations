@@ -12,7 +12,7 @@ import './AutoSuggest.css';
 function AddUserToGroup(props) {
   let history = useHistory();
   let addUserInProgress = false;
-  const [errorSummary, setErrorSummary] = useState([]);
+  const [errorSummary, setErrorSummary] = useState("");
   const errorSummaryTitle = useRef(null);
   const [hasErrors, setHasErrors] = useState(false);
   const [value, setValue] = useState("");
@@ -86,7 +86,7 @@ function AddUserToGroup(props) {
       return;
     }
 
-    const newuUserGroupMember = {
+    const newUserGroupMember = {
       groupId: props.groupId,
       userId: userId,
     };
@@ -94,7 +94,7 @@ function AddUserToGroup(props) {
     const response = await fetch("/api/userGroupMembers", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newuUserGroupMember),
+      body: JSON.stringify(newUserGroupMember),
     });
 
     if (response.ok) {
