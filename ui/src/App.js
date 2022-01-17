@@ -248,6 +248,7 @@ function QueryRouting(props) {
           groupName={query.get("groupName")}
           flashMessageUntil={query.get("flashMessageUntil")}
           deletedUserEmail={query.get("deletedUserEmail")}
+          addedUserEmail={query.get("addedUserEmail")}
         />
       </Route>
       <Route path="/deleteuserfromgroupconfirmation">

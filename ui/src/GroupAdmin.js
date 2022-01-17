@@ -66,11 +66,24 @@ function GroupAdmin(props) {
       )}
       {props.flashMessageUntil > Date.now() && (
         <>
-          <Announcer text={`Removed user ${props.deletedUserEmail}`} />
-          <br />
-          <br />
-          <SuccessPanel>Removed user {props.deletedUserEmail}</SuccessPanel>
-          <br />
+          {props.deletedUserEmail && (
+            <>
+              <Announcer text={`Removed user ${props.deletedUserEmail}`} />
+              <br />
+              <br />
+              <SuccessPanel>Removed user {props.deletedUserEmail}</SuccessPanel>
+              <br />
+            </>
+          )}
+          {props.addedUserEmail && (
+            <>
+              <Announcer text={`Added user ${props.addedUserEmail}`} />
+              <br />
+              <br />
+              <SuccessPanel>Added user {props.addedUserEmail}</SuccessPanel>
+              <br />
+            </>
+          )}
         </>
       )}
       <h2>Members Of Group: {props.groupName}</h2>

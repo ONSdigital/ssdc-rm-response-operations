@@ -137,6 +137,21 @@ public class UserGroupMemberEndpoint {
 
     userGroupMemberRepository.saveAndFlush(userGroupMember);
 
+    log.with(
+            new AuditLogging(
+                true,
+                userEmail,
+                "USER ADDED TO GROUP",
+                String.format(
+                    "User %s was added to group %s",
+                    userGroupMember.getUser().getEmail(), userGroupMember.getGroup().getName())))
+        .info(
+            String.format(
+                "User %s was added to group %s by %s",
+                userGroupMember.getUser().getEmail(),
+                userGroupMember.getGroup().getName(),
+                userEmail));
+
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
