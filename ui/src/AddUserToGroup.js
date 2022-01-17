@@ -47,7 +47,9 @@ function AddUserToGroup(props) {
 
   function cancel() {
     history.push(
-      `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+      encodeURI(
+        `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+      )
     );
   }
 
@@ -97,10 +99,13 @@ function AddUserToGroup(props) {
     });
 
     if (response.ok) {
-      history.push(encodeURI(
-        `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}&addedUserEmail=${value}&flashMessageUntil=${Date.now() + 5000
-        }`
-      ));
+      history.push(
+        encodeURI(
+          `/groupadmin?groupId=${props.groupId}&groupName=${
+            props.groupName
+          }&addedUserEmail=${value}&flashMessageUntil=${Date.now() + 5000}`
+        )
+      );
     } else {
       setErrorSummary(["Failed to add user"]);
       setHasErrors(true);
