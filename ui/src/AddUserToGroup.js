@@ -101,8 +101,7 @@ function AddUserToGroup(props) {
     if (response.ok) {
       history.push(
         encodeURI(
-          `/groupadmin?groupId=${props.groupId}&groupName=${
-            props.groupName
+          `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName
           }&addedUserEmail=${value}&flashMessageUntil=${Date.now() + 5000}`
         )
       );
@@ -204,13 +203,15 @@ function AddUserToGroup(props) {
       </Helmet>
       <Announcer text={"Add User Page"} />
       <Link
-        to={`/ groupadmin ? groupId = ${props.groupId} & groupName=${props.groupName}`}
+        to={encodeURI(`/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`)}
       >
         ← Back to group admin
       </Link>
-      {errorSummary.length > 0 && (
-        <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
-      )}
+      {
+        errorSummary.length > 0 && (
+          <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
+        )
+      }
       <h1>Add User To Group {props.groupName}</h1>
       <br />
 
