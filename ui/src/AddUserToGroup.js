@@ -206,7 +206,7 @@ function AddUserToGroup(props) {
       {errorSummary.length > 0 && (
         <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
       )}
-      <h1>Add User To Group {props.groupName} Page</h1>
+      <h1>Add User To Group {props.groupName}</h1>
       <br />
 
       <div className="ons-field">
