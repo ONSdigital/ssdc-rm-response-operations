@@ -215,72 +215,68 @@ function QueryRouting(props) {
   let query = useQuery();
 
   return (
-    <>
-      <p>REMOVE {props.test}</p>
-      <Switch>
-        <Route exact path="/">
-          <Home authorisedActivities={props.authorisedActivities} />
-        </Route>
-        <Route path="/surveys">
-          <Surveys
-            authorisedActivities={props.authorisedActivities}
-            flashMessageUntil={query.get("flashMessageUntil")}
-          />
-        </Route>
-        <Route path="/createsurvey">
-          <CreateSurvey />
-        </Route>
-        <Route path="/viewsurvey">
-          <ViewSurvey surveyId={query.get("surveyId")} />
-        </Route>
-        <Route path="/exportfiletemplates">
-          <ExportFileTemplates
-            authorisedActivities={props.authorisedActivities}
-            flashMessageUntil={query.get("flashMessageUntil")}
-          />
-        </Route>
-        <Route path="/createexportfiletemplate">
-          <CreateExportFileTemplate />
-        </Route>
-        <Route path="/mygroupsadmin">
-          <MyGroupsAdmin />
-        </Route>
-        <Route path="/groupadmin">
-          <GroupAdmin
-            groupId={query.get("groupId")}
-            groupName={query.get("groupName")}
-            flashMessageUntil={query.get("flashMessageUntil")}
-            deletedUserEmail={query.get("deletedUserEmail")}
-            addedUserEmail={query.get("addedUserEmail")}
-          />
-        </Route>
-        <Route path="/deleteuserfromgroupconfirmation">
-          <DeleteUserFromGroupConfirmation
-            groupUserId={query.get("groupUserId")}
-            groupName={query.get("groupName")}
-            groupId={query.get("groupId")}
-            userEmail={query.get("userEmail")}
-          />
-        </Route>
-        <Route path="/addUsertogroup">
-          <AddUserToGroup
-            groupUserId={query.get("groupUserId")}
-            groupName={query.get("groupName")}
-            groupId={query.get("groupId")}
-            userEmail={query.get("userEmail")}
-          />
-        </Route>
-        <Route path="*">
-          <NotFound />
-        </Route>
-      </Switch>
-    </>
+    <Switch>
+      <Route exact path="/">
+        <Home authorisedActivities={props.authorisedActivities} />
+      </Route>
+      <Route path="/surveys">
+        <Surveys
+          authorisedActivities={props.authorisedActivities}
+          flashMessageUntil={query.get("flashMessageUntil")}
+        />
+      </Route>
+      <Route path="/createsurvey">
+        <CreateSurvey />
+      </Route>
+      <Route path="/viewsurvey">
+        <ViewSurvey surveyId={query.get("surveyId")} />
+      </Route>
+      <Route path="/exportfiletemplates">
+        <ExportFileTemplates
+          authorisedActivities={props.authorisedActivities}
+          flashMessageUntil={query.get("flashMessageUntil")}
+        />
+      </Route>
+      <Route path="/createexportfiletemplate">
+        <CreateExportFileTemplate />
+      </Route>
+      <Route path="/mygroupsadmin">
+        <MyGroupsAdmin />
+      </Route>
+      <Route path="/groupadmin">
+        <GroupAdmin
+          groupId={query.get("groupId")}
+          groupName={query.get("groupName")}
+          flashMessageUntil={query.get("flashMessageUntil")}
+          deletedUserEmail={query.get("deletedUserEmail")}
+          addedUserEmail={query.get("addedUserEmail")}
+        />
+      </Route>
+      <Route path="/deleteuserfromgroupconfirmation">
+        <DeleteUserFromGroupConfirmation
+          groupUserId={query.get("groupUserId")}
+          groupName={query.get("groupName")}
+          groupId={query.get("groupId")}
+          userEmail={query.get("userEmail")}
+        />
+      </Route>
+      <Route path="/addUsertogroup">
+        <AddUserToGroup
+          groupUserId={query.get("groupUserId")}
+          groupName={query.get("groupName")}
+          groupId={query.get("groupId")}
+          userEmail={query.get("userEmail")}
+        />
+      </Route>
+      <Route path="*">
+        <NotFound />
+      </Route>
+    </Switch>
   );
 }
 
-App.propTypes = {
-  authorisedActivities: PropTypes.array.isRequired,
-  test: PropTypes.string
+QueryRouting.propTypes = {
+  authorisedActivities: PropTypes.array.isRequired
 }
 
 
