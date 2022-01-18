@@ -22,6 +22,12 @@ function GroupAdmin(props) {
     );
   }
 
+  function openAddUserPage() {
+    history.push(
+      `addUserToGroup?groupName=${props.groupName}&groupId=${props.groupId}`
+    );
+  }
+
   useEffect(() => {
     async function fetchAllUsersInGroup() {
       const allGroupMembersResponse = await fetch(
@@ -60,11 +66,24 @@ function GroupAdmin(props) {
       )}
       {props.flashMessageUntil > Date.now() && (
         <>
-          <Announcer text={`Removed user ${props.deletedUserEmail}`} />
-          <br />
-          <br />
-          <SuccessPanel>Removed user {props.deletedUserEmail}</SuccessPanel>
-          <br />
+          {props.deletedUserEmail && (
+            <>
+              <Announcer text={`Removed user ${props.deletedUserEmail}`} />
+              <br />
+              <br />
+              <SuccessPanel>Removed user {props.deletedUserEmail}</SuccessPanel>
+              <br />
+            </>
+          )}
+          {props.addedUserEmail && (
+            <>
+              <Announcer text={`Added user ${props.addedUserEmail}`} />
+              <br />
+              <br />
+              <SuccessPanel>Added user {props.addedUserEmail}</SuccessPanel>
+              <br />
+            </>
+          )}
         </>
       )}
       <h2>Members Of Group: {props.groupName}</h2>
@@ -77,6 +96,8 @@ function GroupAdmin(props) {
         </TableHead>
         <TableBody>{userTableRows}</TableBody>
       </Table>
+
+      <Button onClick={() => openAddUserPage()}>Add User To Group</Button>
     </>
   );
 }
