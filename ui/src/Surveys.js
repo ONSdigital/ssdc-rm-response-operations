@@ -64,7 +64,7 @@ function Surveys(props) {
 }
 
 Surveys.propTypes = {
-  authorisedActivities: PropTypes.array,
+  authorisedActivities: PropTypes.array.isRequired,
   flashMessageUntil: ExtraPropTypes.datetime,
 }
 

@@ -6,7 +6,7 @@ function TableBody(props) {
 }
 
 TableBody.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.object.isRequired
 }
 
 

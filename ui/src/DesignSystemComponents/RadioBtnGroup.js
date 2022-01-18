@@ -22,9 +22,9 @@ const RadioBtnGroup = (props, ref) => {
 };
 
 RadioBtnGroup.propTypes = {
-  onChange: PropTypes.func,
-  legend: PropTypes.string,
-  children: PropTypes.object
+  onChange: PropTypes.func.isRequired,
+  legend: PropTypes.string.isRequired,
+  children: PropTypes.object.isRequired
 }
 
 export default forwardRef(RadioBtnGroup);

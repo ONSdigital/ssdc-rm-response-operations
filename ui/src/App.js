@@ -279,8 +279,9 @@ function QueryRouting(props) {
 }
 
 App.propTypes = {
-  authorisedActivities: PropTypes.array,
+  authorisedActivities: PropTypes.array.isRequired,
   test: PropTypes.string
 }
+
 
 export default App;

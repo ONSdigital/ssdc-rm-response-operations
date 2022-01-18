@@ -30,8 +30,8 @@ function SuccessPanel(props) {
 }
 
 SuccessPanel.propTypes = {
-  id: PropTypes.string,
-  children: PropTypes.object
+  id: PropTypes.string.isRequired,
+  children: PropTypes.object.isRequired
 }
 
 

@@ -19,9 +19,9 @@ function InputErrorPanel(props) {
 }
 
 InputErrorPanel.propTypes = {
-  id: PropTypes.string,
-  errorSummary: PropTypes.string,
-  children: PropTypes.object
+  id: PropTypes.string.isRequired,
+  errorSummary: PropTypes.string.isRequired,
+  children: PropTypes.object.isRequired
 }
 
 export default InputErrorPanel;

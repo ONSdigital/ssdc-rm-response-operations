@@ -22,8 +22,8 @@ Button.propTypes = {
   secondary: PropTypes.bool,
   small: PropTypes.bool,
   type: PropTypes.string,
-  onClick: PropTypes.func,
-  children: PropTypes.object
+  onClick: PropTypes.func.isRequired,
+  children: PropTypes.object.isRequired
 }
 
 export default Button;

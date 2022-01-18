@@ -44,7 +44,7 @@ function Home(props) {
 }
 
 Home.propTypes = {
-  authorisedActivities: PropTypes.array,
+  authorisedActivities: PropTypes.array.isRequired,
   flashMessageUntil: ExtraPropTypes.datetime,
 }
 

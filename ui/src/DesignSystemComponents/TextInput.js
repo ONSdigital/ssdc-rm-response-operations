@@ -20,10 +20,10 @@ const TextInput = (props, ref) => (
 
 TextInput.propTypes = {
   label: PropTypes.string,
-  id: PropTypes.id,
+  id: PropTypes.isRequired,
   required: PropTypes.bool,
   value: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func.isRequired
 }
 
 export default forwardRef(TextInput);

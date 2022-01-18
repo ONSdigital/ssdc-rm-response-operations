@@ -80,13 +80,11 @@ function DeleteUserFromGroupConfirmation(props) {
   );
 }
 
-DeleteUserFromGroupConfirmation.pr
-
 DeleteUserFromGroupConfirmation.propTypes = {
-  groupId: ExtraPropTypes.uuid,
-  groupName: PropTypes.string,
-  userEmail: PropTypes.string,
-  groupUserId: ExtraPropTypes.uuid
+  groupId: ExtraPropTypes.uuid.isRequired,
+  groupName: PropTypes.string.isRequired,
+  userEmail: PropTypes.string.isRequired,
+  groupUserId: ExtraPropTypes.uuid.isRequired
 }
 
 export default DeleteUserFromGroupConfirmation;

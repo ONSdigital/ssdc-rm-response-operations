@@ -26,7 +26,7 @@ const ErrorSummary = (props, ref) => (
 );
 
 ErrorSummary.propTypes = {
-  errorSummary: PropTypes.arrayOf(PropTypes.number),
+  errorSummary: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default forwardRef(ErrorSummary);

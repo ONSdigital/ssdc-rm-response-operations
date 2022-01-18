@@ -8,7 +8,7 @@ function Table(props) {
 }
 
 Table.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.object.isRequired
 }
 
 export default Table;

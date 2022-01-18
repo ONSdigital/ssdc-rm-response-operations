@@ -6,7 +6,7 @@ function TableHead(props) {
 }
 
 TableHead.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.object.isRequired
 }
 
 export default TableHead;

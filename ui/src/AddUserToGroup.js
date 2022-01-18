@@ -243,8 +243,8 @@ function AddUserToGroup(props) {
 }
 
 AddUserToGroup.propTypes = {
-  groupId: ExtraPropTypes.uuid,
-  groupName: PropTypes.string
+  groupId: ExtraPropTypes.uuid.isRequired,
+  groupName: PropTypes.string.isRequired
 }
 
 export default AddUserToGroup;

@@ -31,7 +31,7 @@ function ViewSurvey(props) {
 }
 
 ViewSurvey.propTypes = {
-  surveyId: ExtraPropTypes.uuid
+  surveyId: ExtraPropTypes.uuid.isRequired
 }
 
 export default ViewSurvey;

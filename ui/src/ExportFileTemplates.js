@@ -73,7 +73,7 @@ function ExportFileTemplates(props) {
 
 ExportFileTemplates.propTypes = {
   flashMessageUntil: ExtraPropTypes.datetime,
-  authorisedActivities: PropTypes.array
+  authorisedActivities: PropTypes.array.isRequired
 }
 
 export default ExportFileTemplates;
