@@ -35,7 +35,7 @@ public class UserEndpointIT {
   @Transactional
   public void setUp() {
     userRepository.deleteAllInBatch();
-    userGroupRepository.deleteAllInBatch()
+    userGroupRepository.deleteAllInBatch();
     userPermissionHelper.clearDown();
   }
 
