@@ -27,11 +27,8 @@ import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class UserEndpointIT {
-  //  @Autowired private UserGroupAdminRepository userGroupAdminRepository;
   @Autowired private UserGroupRepository userGroupRepository;
   @Autowired private UserRepository userRepository;
-  //  @Autowired private UserGroupMemberRepository userGroupMemberRepository;
-  @Autowired private UserIdentity userIdentity;
   @Autowired private UserPermissionHelper userPermissionHelper;
   @LocalServerPort private int port;
 
@@ -39,8 +36,6 @@ public class UserEndpointIT {
   @Transactional
   public void setUp() {
     userPermissionHelper.clearDown();
-    //    userGroupAdminRepository.deleteAllInBatch();
-    //    userGroupMemberRepository.deleteAllInBatch();
     userGroupRepository.deleteAllInBatch();
     userRepository.deleteAllInBatch();
   }
