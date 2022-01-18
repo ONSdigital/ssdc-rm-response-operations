@@ -42,9 +42,8 @@ public class UserGroupMemberEndpointIT {
 
   @BeforeEach
   @Transactional
-  public void setUp() throws InterruptedException {
+  public void setUp() {
     userPermissionHelper.clearDown();
-    Thread.sleep(5000);
     userGroupAdminRepository.deleteAllInBatch();
     userGroupMemberRepository.deleteAllInBatch();
     userGroupRepository.deleteAllInBatch();

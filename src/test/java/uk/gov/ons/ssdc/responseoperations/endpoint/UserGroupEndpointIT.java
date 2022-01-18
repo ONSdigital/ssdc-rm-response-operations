@@ -22,6 +22,7 @@ import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupAdminReposit
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
+import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -31,11 +32,13 @@ public class UserGroupEndpointIT {
   @Autowired private UserGroupRepository userGroupRepository;
   @Autowired private UserRepository userRepository;
   @Autowired private UserGroupMemberRepository userGroupMemberRepository;
+  @Autowired private UserPermissionHelper userPermissionHelper;
   @LocalServerPort private int port;
 
   @BeforeEach
   @Transactional
   public void setUp() {
+    userPermissionHelper.clearDown();
     userGroupAdminRepository.deleteAllInBatch();
     userGroupMemberRepository.deleteAllInBatch();
     userGroupRepository.deleteAllInBatch();
