@@ -18,8 +18,6 @@ import uk.gov.ons.ssdc.common.model.entity.User;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserDto;
-import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupAdminRepository;
-import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
 import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
@@ -29,10 +27,10 @@ import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class UserEndpointIT {
-  @Autowired private UserGroupAdminRepository userGroupAdminRepository;
+  //  @Autowired private UserGroupAdminRepository userGroupAdminRepository;
   @Autowired private UserGroupRepository userGroupRepository;
   @Autowired private UserRepository userRepository;
-  @Autowired private UserGroupMemberRepository userGroupMemberRepository;
+  //  @Autowired private UserGroupMemberRepository userGroupMemberRepository;
   @Autowired private UserIdentity userIdentity;
   @Autowired private UserPermissionHelper userPermissionHelper;
   @LocalServerPort private int port;
@@ -41,8 +39,8 @@ public class UserEndpointIT {
   @Transactional
   public void setUp() {
     userPermissionHelper.clearDown();
-    userGroupAdminRepository.deleteAllInBatch();
-    userGroupMemberRepository.deleteAllInBatch();
+    //    userGroupAdminRepository.deleteAllInBatch();
+    //    userGroupMemberRepository.deleteAllInBatch();
     userGroupRepository.deleteAllInBatch();
     userRepository.deleteAllInBatch();
   }
