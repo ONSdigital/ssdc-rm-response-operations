@@ -20,7 +20,6 @@ import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserDto;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
-import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 
 @ExtendWith(SpringExtension.class)
