@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 function RadioBtnItem(props) {
   return (
@@ -23,5 +24,13 @@ function RadioBtnItem(props) {
     </span>
   );
 }
+
+RadioBtnItem.propTypes = {
+  id: PropTypes.string,
+  value: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  children: PropTypes.object
+};
 
 export default RadioBtnItem;

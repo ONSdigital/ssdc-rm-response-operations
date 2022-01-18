@@ -1,4 +1,5 @@
 import React, { forwardRef } from "react";
+import PropTypes from 'prop-types';
 
 const RadioBtnGroup = (props, ref) => {
   return (
@@ -19,5 +20,11 @@ const RadioBtnGroup = (props, ref) => {
     </div>
   );
 };
+
+RadioBtnGroup.propTypes = {
+  onChange: PropTypes.func,
+  legend: PropTypes.string,
+  children: PropTypes.object
+}
 
 export default forwardRef(RadioBtnGroup);

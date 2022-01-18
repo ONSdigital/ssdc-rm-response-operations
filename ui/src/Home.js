@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import PropTypes from "prop-types";
+import ExtraPropTypes from 'react-extra-prop-types';
 
 function Home(props) {
   const [usersAdminGroups, SetUsersAdminGroups] = useState([]);
@@ -39,6 +41,11 @@ function Home(props) {
       )}
     </>
   );
+}
+
+Home.propTypes = {
+  authorisedActivities: PropTypes.array,
+  flashMessageUntil: ExtraPropTypes.datetime,
 }
 
 export default Home;

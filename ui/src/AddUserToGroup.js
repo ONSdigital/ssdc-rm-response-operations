@@ -7,6 +7,8 @@ import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import Autosuggest from "react-autosuggest";
 import Parser from "html-react-parser";
 import "./AutoSuggest.css";
+import PropTypes from 'prop-types';
+import ExtraPropTypes from 'react-extra-prop-types';
 
 function AddUserToGroup(props) {
   let history = useHistory();
@@ -101,8 +103,7 @@ function AddUserToGroup(props) {
     if (response.ok) {
       history.push(
         encodeURI(
-          `/groupadmin?groupId=${props.groupId}&groupName=${
-            props.groupName
+          `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName
           }&addedUserEmail=${value}&flashMessageUntil=${Date.now() + 5000}`
         )
       );
@@ -239,6 +240,11 @@ function AddUserToGroup(props) {
       </Button>
     </>
   );
+}
+
+AddUserToGroup.propTypes = {
+  groupId: ExtraPropTypes.uuid,
+  groupName: PropTypes.string
 }
 
 export default AddUserToGroup;

@@ -11,6 +11,8 @@ import TableCell from "./DesignSystemComponents/TableCell";
 import TableBody from "./DesignSystemComponents/TableBody";
 import TableRow from "./DesignSystemComponents/TableRow";
 import SuccessPanel from "./DesignSystemComponents/SuccessPanel";
+import PropTypes from "prop-types";
+import ExtraPropTypes from 'react-extra-prop-types';
 
 function GroupAdmin(props) {
   let history = useHistory();
@@ -100,6 +102,14 @@ function GroupAdmin(props) {
       <Button onClick={() => openAddUserPage()}>Add User To Group</Button>
     </>
   );
+}
+
+GroupAdmin.propTypes = {
+  groupName: PropTypes.string,
+  groupId: ExtraPropTypes.uuid,
+  flashMessageUntil: ExtraPropTypes.datetime,
+  addedUserEmail: PropTypes.string,
+  deletedUserEmail: PropTypes.string
 }
 
 export default GroupAdmin;

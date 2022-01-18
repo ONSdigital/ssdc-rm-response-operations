@@ -5,6 +5,8 @@ import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
+import PropTypes from 'prop-types';
+import ExtraPropTypes from 'react-extra-prop-types';
 
 function DeleteUserFromGroupConfirmation(props) {
   let history = useHistory();
@@ -32,10 +34,8 @@ function DeleteUserFromGroupConfirmation(props) {
 
     if (response.ok) {
       history.push(
-        `/groupadmin?groupId=${props.groupId}&groupName=${
-          props.groupName
-        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${
-          Date.now() + 5000
+        `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName
+        }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${Date.now() + 5000
         }`
       );
     } else {
@@ -78,6 +78,15 @@ function DeleteUserFromGroupConfirmation(props) {
       </Button>
     </>
   );
+}
+
+DeleteUserFromGroupConfirmation.pr
+
+DeleteUserFromGroupConfirmation.propTypes = {
+  groupId: ExtraPropTypes.uuid,
+  groupName: PropTypes.string,
+  userEmail: PropTypes.string,
+  groupUserId: ExtraPropTypes.uuid
 }
 
 export default DeleteUserFromGroupConfirmation;

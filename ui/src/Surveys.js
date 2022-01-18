@@ -9,6 +9,8 @@ import TableCell from "./DesignSystemComponents/TableCell";
 import TableBody from "./DesignSystemComponents/TableBody";
 import TableRow from "./DesignSystemComponents/TableRow";
 import SuccessPanel from "./DesignSystemComponents/SuccessPanel";
+import PropTypes from "prop-types";
+import ExtraPropTypes from 'react-extra-prop-types';
 
 function Surveys(props) {
   const [tableRows, setTableRows] = useState([]);
@@ -59,6 +61,11 @@ function Surveys(props) {
       </Table>
     </>
   );
+}
+
+Surveys.propTypes = {
+  authorisedActivities: PropTypes.array,
+  flashMessageUntil: ExtraPropTypes.datetime,
 }
 
 export default Surveys;
