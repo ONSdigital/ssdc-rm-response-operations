@@ -18,6 +18,7 @@ import uk.gov.ons.ssdc.common.model.entity.User;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAuthorisedActivityType;
 import uk.gov.ons.ssdc.responseoperations.model.dto.ui.UserDto;
+import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupMemberRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserGroupRepository;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
 import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
@@ -26,17 +27,20 @@ import uk.gov.ons.ssdc.responseoperations.test_utils.UserPermissionHelper;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class UserEndpointIT {
-  @Autowired private UserGroupRepository userGroupRepository;
   @Autowired private UserRepository userRepository;
+  @Autowired private UserGroupMemberRepository userGroupMemberRepository;
+  @Autowired private UserGroupRepository userGroupRepository;
+
   @Autowired private UserPermissionHelper userPermissionHelper;
   @LocalServerPort private int port;
 
   @BeforeEach
   @Transactional
   public void setUp() {
-    userRepository.deleteAllInBatch();
-    userGroupRepository.deleteAllInBatch();
     userPermissionHelper.clearDown();
+    userGroupMemberRepository.deleteAllInBatch();
+    userGroupRepository.deleteAllInBatch();
+    userRepository.deleteAllInBatch();
   }
 
   @Test
