@@ -30,7 +30,7 @@ import uk.gov.ons.ssdc.responseoperations.security.UserIdentity;
 @RestController
 @RequestMapping(value = "/api/userGroupMembers")
 public class UserGroupMemberEndpoint {
-  private static final Logger log = LoggerFactory.getLogger(SurveyEndpoint.class);
+  private static final Logger log = LoggerFactory.getLogger(UserGroupMemberEndpoint.class);
   private final UserGroupMemberRepository userGroupMemberRepository;
   private final UserGroupRepository userGroupRepository;
   private final UserIdentity userIdentity;
