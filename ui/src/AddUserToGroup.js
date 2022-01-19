@@ -238,6 +238,7 @@ function AddUserToGroup(props) {
       <Button onClick={() => cancel()} secondary>
         Cancel
       </Button>
+      <Button />
     </>
   );
 }

@@ -10,6 +10,11 @@ if ! npx npx eslint .; then
   exit 1
 fi
 
+if ! npm test -- --watchAll=false ; then
+  echo "Problems with React tests"
+  exit 1
+fi
+
 npm run build
 cd ..
 cp -r ui/build/* src/main/resources/static

@@ -6,7 +6,7 @@ function TableRow(props) {
 }
 
 TableRow.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.node
 }
 
 export default TableRow;

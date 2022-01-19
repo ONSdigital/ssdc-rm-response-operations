@@ -75,6 +75,7 @@ function CreateSurvey() {
       <form onSubmit={createSurvey}>
         <div className="ons-field">
           <TextInput
+            id="createSurveyTextInput"
             label="Enter a survey name"
             required
             value={surveyName}

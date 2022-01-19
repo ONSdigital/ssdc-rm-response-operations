@@ -20,7 +20,7 @@ function InputErrorPanel(props) {
 
 InputErrorPanel.propTypes = {
   id: PropTypes.string.isRequired,
-  errorSummary: PropTypes.string.isRequired,
+  errorSummary: PropTypes.array.isRequired,
   children: PropTypes.object.isRequired
 }
 

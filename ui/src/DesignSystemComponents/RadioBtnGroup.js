@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import PropTypes from 'prop-types';
 
-const RadioBtnGroup = (props, ref) => {
+const RadioBtnGroup = forwardRef((props, ref) => {
   return (
     <div className="ons-question ons-u-mt-no">
       <fieldset className="ons-fieldset" ref={ref} onChange={props.onChange}>
@@ -19,12 +19,14 @@ const RadioBtnGroup = (props, ref) => {
       </fieldset>
     </div>
   );
-};
+});
+
+RadioBtnGroup.displayName = "RadioBtnGroup";
 
 RadioBtnGroup.propTypes = {
   onChange: PropTypes.func.isRequired,
   legend: PropTypes.string.isRequired,
-  children: PropTypes.object.isRequired
+  children: PropTypes.array.isRequired
 }
 
-export default forwardRef(RadioBtnGroup);
+export default RadioBtnGroup;

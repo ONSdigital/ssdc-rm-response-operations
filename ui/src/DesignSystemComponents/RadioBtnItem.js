@@ -29,8 +29,8 @@ RadioBtnItem.propTypes = {
   id: PropTypes.string.isRequired,
   value: PropTypes.string,
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  children: PropTypes.object.isRequired
+  onChange: PropTypes.func,
+  children: PropTypes.string.isRequired
 };
 
 export default RadioBtnItem;

@@ -3,6 +3,7 @@ import { screen } from "@testing-library/react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import ViewSurvey from "./ViewSurvey";
+import { uuid } from 'uuidv4';
 
 let container = null;
 beforeEach(() => {
@@ -31,7 +32,7 @@ it("renders survey data", async () => {
 
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
-    render(<ViewSurvey surveyId="123" />, container);
+    render(<ViewSurvey surveyId={uuid()} />, container);
   });
 
   const surveyNameElement = screen.getByText(/Test Survey/i);

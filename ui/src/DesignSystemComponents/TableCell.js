@@ -6,7 +6,7 @@ function TableCell(props) {
 }
 
 TableCell.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.node
 }
 
 export default TableCell;

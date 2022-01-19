@@ -10,7 +10,7 @@ function Th(props) {
 }
 
 Th.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.string
 }
 
 export default Th;

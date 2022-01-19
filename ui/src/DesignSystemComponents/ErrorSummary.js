@@ -2,7 +2,8 @@ import Announcer from "react-a11y-announcer";
 import React, { forwardRef } from "react";
 import PropTypes from 'prop-types';
 
-const ErrorSummary = (props, ref) => (
+
+const ErrorSummary = forwardRef((props, ref) => (
   <div
     id="errorSummaryTitle"
     ref={ref}
@@ -23,10 +24,14 @@ const ErrorSummary = (props, ref) => (
       <ol className="ons-list">{props.errorSummary}</ol>
     </div>
   </div>
-);
+));
+
+// What is this fresh hell, does it appear anywhere?
+ErrorSummary.displayName = 'ErrorSummary';
 
 ErrorSummary.propTypes = {
-  errorSummary: PropTypes.arrayOf(PropTypes.string).isRequired
-}
+  errorSummary: PropTypes.array.isRequired
 
-export default forwardRef(ErrorSummary);
+}
+export default ErrorSummary;
+

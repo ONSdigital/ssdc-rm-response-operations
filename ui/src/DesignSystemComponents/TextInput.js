@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import PropTypes from 'prop-types';
 
-const TextInput = (props, ref) => (
+const TextInput = forwardRef((props, ref) => (
   <div className="ons-field">
     <label className="ons-label" htmlFor={props.id}>
       {props.label}{" "}
@@ -16,14 +16,16 @@ const TextInput = (props, ref) => (
       ref={ref}
     />
   </div>
-);
+));
+
+TextInput.displayName = "TextInput";
 
 TextInput.propTypes = {
   label: PropTypes.string,
-  id: PropTypes.isRequired,
+  id: PropTypes.string.isRequired,
   required: PropTypes.bool,
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired
 }
 
-export default forwardRef(TextInput);
+export default TextInput;
