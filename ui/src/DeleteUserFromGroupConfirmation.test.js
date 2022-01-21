@@ -4,6 +4,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { BrowserRouter as Router } from "react-router-dom";
 import DeleteUserFromGroupConfirmation from "./DeleteUserFromGroupConfirmation";
+import { uuid } from "uuidv4";
 
 let container = null;
 beforeEach(() => {
@@ -27,6 +28,8 @@ it("renders user to delete", async () => {
         <DeleteUserFromGroupConfirmation
           userEmail="test@email.com"
           groupName="test-group"
+          groupId={uuid()}
+          groupUserId={uuid()}
         />
       </Router>,
       container

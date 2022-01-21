@@ -121,7 +121,7 @@ function App() {
                 <div className="ons-container">
                   <div className="ons-grid ons-grid--gutterless ons-grid--flex ons-grid--between ons-grid--vertical-center ons-grid--no-wrap">
                     <div className="ons-grid__col ons-col-auto ons-u-flex-shrink">
-                      <Link to="/" class="ons-header__title-link">
+                      <Link to="/" className="ons-header__title-link">
                         <div className="ons-header__title">
                           Response Management Operations
                         </div>
