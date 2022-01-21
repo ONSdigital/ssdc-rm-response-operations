@@ -5,11 +5,6 @@ rm -r ui/build/* || true
 cd ui
 npm install
 
-if ! npx npx eslint .; then
-  echo "ESLint found issues"
-  exit 1
-fi
-
 if ! npm test -- --watchAll=false ; then
   echo "Problems with React tests"
   exit 1
