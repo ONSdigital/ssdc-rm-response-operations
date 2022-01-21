@@ -20,6 +20,7 @@ import MyGroupsAdmin from "./MyGroupsAdmin";
 import AddUserToGroup from "./AddUserToGroup";
 import PropTypes from 'prop-types';
 
+
 function App() {
 
   const [loading, setLoading] = useState(true);
@@ -211,6 +212,12 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
+// This is required as a workaround PropTypes and Query Strings
+// By forcing a string on it, it's happy
+function getString(key, query) {
+  return "" + query.get(key);
+}
+
 function QueryRouting(props) {
   let query = useQuery();
 
@@ -229,7 +236,7 @@ function QueryRouting(props) {
         <CreateSurvey />
       </Route>
       <Route path="/viewsurvey">
-        <ViewSurvey surveyId={query.get("surveyId")} />
+        <ViewSurvey surveyId={getString("surveyId", query)} />
       </Route>
       <Route path="/exportfiletemplates">
         <ExportFileTemplates
@@ -245,27 +252,27 @@ function QueryRouting(props) {
       </Route>
       <Route path="/groupadmin">
         <GroupAdmin
-          groupId={query.get("groupId")}
-          groupName={query.get("groupName")}
+          groupId={getString("groupId", query)}
+          groupName={getString("groupName", query)}
           flashMessageUntil={query.get("flashMessageUntil")}
-          deletedUserEmail={query.get("deletedUserEmail")}
-          addedUserEmail={query.get("addedUserEmail")}
+          deletedUserEmail={getString("deletedUserEmail", query)}
+          addedUserEmail={getString("addedUserEmail", query)}
         />
       </Route>
       <Route path="/deleteuserfromgroupconfirmation">
         <DeleteUserFromGroupConfirmation
-          groupUserId={query.get("groupUserId")}
-          groupName={query.get("groupName")}
-          groupId={query.get("groupId")}
-          userEmail={query.get("userEmail")}
+          groupUserId={getString("groupUserId", query)}
+          groupName={getString("groupName", query)}
+          groupId={getString("groupId", query)}
+          userEmail={getString("userEmail", query)}
         />
       </Route>
       <Route path="/addUsertogroup">
         <AddUserToGroup
-          groupUserId={query.get("groupUserId")}
-          groupName={query.get("groupName")}
-          groupId={query.get("groupId")}
-          userEmail={query.get("userEmail")}
+          groupUserId={getString("groupUserId", query)}
+          groupName={getString("groupName", query)}
+          groupId={getString("groupId", query)}
+          userEmail={getString("userEmail", query)}
         />
       </Route>
       <Route path="*">

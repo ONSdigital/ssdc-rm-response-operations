@@ -26,12 +26,11 @@ const ErrorSummary = forwardRef((props, ref) => (
   </div>
 ));
 
-// What is this fresh hell, does it appear anywhere?
 ErrorSummary.displayName = 'ErrorSummary';
 
 ErrorSummary.propTypes = {
   errorSummary: PropTypes.array.isRequired
-
 }
+
 export default ErrorSummary;
 

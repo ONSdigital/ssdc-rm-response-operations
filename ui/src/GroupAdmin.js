@@ -106,7 +106,7 @@ function GroupAdmin(props) {
 
 GroupAdmin.propTypes = {
   groupName: PropTypes.string.isRequired,
-  groupId: ExtraPropTypes.uuid.isRequired,
+  groupId: PropTypes.string.isRequired,
   flashMessageUntil: ExtraPropTypes.datetime,
   addedUserEmail: PropTypes.string,
   deletedUserEmail: PropTypes.string

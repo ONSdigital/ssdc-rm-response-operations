@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import PropTypes from 'prop-types';
-import ExtraPropTypes from 'react-extra-prop-types';
+
 
 function DeleteUserFromGroupConfirmation(props) {
   let history = useHistory();
@@ -81,10 +81,10 @@ function DeleteUserFromGroupConfirmation(props) {
 }
 
 DeleteUserFromGroupConfirmation.propTypes = {
-  groupId: ExtraPropTypes.uuid.isRequired,
+  groupId: PropTypes.string.isRequired,
   groupName: PropTypes.string.isRequired,
   userEmail: PropTypes.string.isRequired,
-  groupUserId: ExtraPropTypes.uuid.isRequired
+  groupUserId: PropTypes.string.isRequired
 }
 
 export default DeleteUserFromGroupConfirmation;

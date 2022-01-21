@@ -8,7 +8,6 @@ import Autosuggest from "react-autosuggest";
 import Parser from "html-react-parser";
 import "./AutoSuggest.css";
 import PropTypes from 'prop-types';
-import ExtraPropTypes from 'react-extra-prop-types';
 
 function AddUserToGroup(props) {
   let history = useHistory();
@@ -244,7 +243,7 @@ function AddUserToGroup(props) {
 }
 
 AddUserToGroup.propTypes = {
-  groupId: ExtraPropTypes.uuid.isRequired,
+  groupId: PropTypes.string.isRequired,
   groupName: PropTypes.string.isRequired
 }
 
