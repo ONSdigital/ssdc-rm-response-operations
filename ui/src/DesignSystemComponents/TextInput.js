@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const TextInput = forwardRef((props, ref) => (
   <div className="ons-field">
@@ -25,7 +25,7 @@ TextInput.propTypes = {
   id: PropTypes.string.isRequired,
   required: PropTypes.bool,
   value: PropTypes.string,
-  onChange: PropTypes.func.isRequired
-}
+  onChange: PropTypes.func.isRequired,
+};
 
 export default TextInput;

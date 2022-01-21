@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import ViewSurvey from "./ViewSurvey";
-import { uuid } from 'uuidv4';
+import { uuid } from "uuidv4";
 
 let container = null;
 beforeEach(() => {

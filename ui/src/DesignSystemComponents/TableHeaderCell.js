@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 function Th(props) {
   return (
@@ -10,7 +10,7 @@ function Th(props) {
 }
 
 Th.propTypes = {
-  children: PropTypes.string
-}
+  children: PropTypes.string,
+};
 
 export default Th;

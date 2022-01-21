@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const RadioBtnGroup = forwardRef((props, ref) => {
   return (
@@ -26,7 +26,7 @@ RadioBtnGroup.displayName = "RadioBtnGroup";
 RadioBtnGroup.propTypes = {
   onChange: PropTypes.func.isRequired,
   legend: PropTypes.string.isRequired,
-  children: PropTypes.array.isRequired
-}
+  children: PropTypes.array.isRequired,
+};
 
 export default RadioBtnGroup;

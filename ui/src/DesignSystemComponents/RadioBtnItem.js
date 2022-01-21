@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 function RadioBtnItem(props) {
   return (
@@ -30,7 +30,7 @@ RadioBtnItem.propTypes = {
   value: PropTypes.string,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func,
-  children: PropTypes.string.isRequired
+  children: PropTypes.string.isRequired,
 };
 
 export default RadioBtnItem;

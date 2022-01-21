@@ -18,11 +18,9 @@ import GroupAdmin from "./GroupAdmin";
 import DeleteUserFromGroupConfirmation from "./DeleteUserFromGroupConfirmation";
 import MyGroupsAdmin from "./MyGroupsAdmin";
 import AddUserToGroup from "./AddUserToGroup";
-import PropTypes from 'prop-types';
-
+import PropTypes from "prop-types";
 
 function App() {
-
   const [loading, setLoading] = useState(true);
   const [authorisedActivities, setAuthorisedActivities] = useState([]);
 
@@ -283,8 +281,7 @@ function QueryRouting(props) {
 }
 
 QueryRouting.propTypes = {
-  authorisedActivities: PropTypes.array.isRequired
-}
-
+  authorisedActivities: PropTypes.array.isRequired,
+};
 
 export default App;

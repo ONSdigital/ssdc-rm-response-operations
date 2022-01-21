@@ -1,7 +1,6 @@
 import Announcer from "react-a11y-announcer";
 import React, { forwardRef } from "react";
-import PropTypes from 'prop-types';
-
+import PropTypes from "prop-types";
 
 const ErrorSummary = forwardRef((props, ref) => (
   <div
@@ -26,11 +25,10 @@ const ErrorSummary = forwardRef((props, ref) => (
   </div>
 ));
 
-ErrorSummary.displayName = 'ErrorSummary';
+ErrorSummary.displayName = "ErrorSummary";
 
 ErrorSummary.propTypes = {
-  errorSummary: PropTypes.array.isRequired
-}
+  errorSummary: PropTypes.array.isRequired,
+};
 
 export default ErrorSummary;
-

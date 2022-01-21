@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 function ViewSurvey(props) {
   const [survey, setSurvey] = useState();
@@ -31,7 +31,7 @@ function ViewSurvey(props) {
 }
 
 ViewSurvey.propTypes = {
-  surveyId: PropTypes.string.isRequired
-}
+  surveyId: PropTypes.string.isRequired,
+};
 
 export default ViewSurvey;
