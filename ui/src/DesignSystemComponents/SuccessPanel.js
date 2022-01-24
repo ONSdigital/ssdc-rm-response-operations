@@ -31,7 +31,7 @@ function SuccessPanel(props) {
 
 SuccessPanel.propTypes = {
   id: PropTypes.string.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.string.isRequired,
 };
 
 export default SuccessPanel;

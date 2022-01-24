@@ -213,6 +213,12 @@ function useQuery() {
 // This is required as a workaround PropTypes and Query Strings
 // By forcing a string on it, it's happy
 function getString(key, query) {
+  const val = query.get(key);
+
+  if (val === null) {
+    return "";
+  }
+
   return "" + query.get(key);
 }
 
