@@ -11,7 +11,6 @@ import CreateSurvey from "./CreateSurvey";
 import Surveys from "./Surveys";
 import ViewSurvey from "./ViewSurvey";
 import ExportFileTemplates from "./ExportFileTemplates";
-
 import NotFound from "./NotFound";
 import CreateExportFileTemplate from "./CreateExportFileTemplate";
 import { Helmet } from "react-helmet";
@@ -19,6 +18,7 @@ import GroupAdmin from "./GroupAdmin";
 import DeleteUserFromGroupConfirmation from "./DeleteUserFromGroupConfirmation";
 import MyGroupsAdmin from "./MyGroupsAdmin";
 import AddUserToGroup from "./AddUserToGroup";
+import PropTypes from "prop-types";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -121,7 +121,7 @@ function App() {
                 <div className="ons-container">
                   <div className="ons-grid ons-grid--gutterless ons-grid--flex ons-grid--between ons-grid--vertical-center ons-grid--no-wrap">
                     <div className="ons-grid__col ons-col-auto ons-u-flex-shrink">
-                      <Link to="/" class="ons-header__title-link">
+                      <Link to="/" className="ons-header__title-link">
                         <div className="ons-header__title">
                           Response Management Operations
                         </div>
@@ -210,6 +210,18 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
+// This is required as a workaround PropTypes and Query Strings
+// By forcing a string on it, it's happy
+function getString(key, query) {
+  const val = query.get(key);
+
+  if (val === null) {
+    return "";
+  }
+
+  return "" + query.get(key);
+}
+
 function QueryRouting(props) {
   let query = useQuery();
 
@@ -228,7 +240,7 @@ function QueryRouting(props) {
         <CreateSurvey />
       </Route>
       <Route path="/viewsurvey">
-        <ViewSurvey surveyId={query.get("surveyId")} />
+        <ViewSurvey surveyId={getString("surveyId", query)} />
       </Route>
       <Route path="/exportfiletemplates">
         <ExportFileTemplates
@@ -244,27 +256,27 @@ function QueryRouting(props) {
       </Route>
       <Route path="/groupadmin">
         <GroupAdmin
-          groupId={query.get("groupId")}
-          groupName={query.get("groupName")}
+          groupId={getString("groupId", query)}
+          groupName={getString("groupName", query)}
           flashMessageUntil={query.get("flashMessageUntil")}
-          deletedUserEmail={query.get("deletedUserEmail")}
-          addedUserEmail={query.get("addedUserEmail")}
+          deletedUserEmail={getString("deletedUserEmail", query)}
+          addedUserEmail={getString("addedUserEmail", query)}
         />
       </Route>
       <Route path="/deleteuserfromgroupconfirmation">
         <DeleteUserFromGroupConfirmation
-          groupUserId={query.get("groupUserId")}
-          groupName={query.get("groupName")}
-          groupId={query.get("groupId")}
-          userEmail={query.get("userEmail")}
+          groupUserId={getString("groupUserId", query)}
+          groupName={getString("groupName", query)}
+          groupId={getString("groupId", query)}
+          userEmail={getString("userEmail", query)}
         />
       </Route>
       <Route path="/addUsertogroup">
         <AddUserToGroup
-          groupUserId={query.get("groupUserId")}
-          groupName={query.get("groupName")}
-          groupId={query.get("groupId")}
-          userEmail={query.get("userEmail")}
+          groupUserId={getString("groupUserId", query)}
+          groupName={getString("groupName", query)}
+          groupId={getString("groupId", query)}
+          userEmail={getString("userEmail", query)}
         />
       </Route>
       <Route path="*">
@@ -273,5 +285,9 @@ function QueryRouting(props) {
     </Switch>
   );
 }
+
+QueryRouting.propTypes = {
+  authorisedActivities: PropTypes.array.isRequired,
+};
 
 export default App;

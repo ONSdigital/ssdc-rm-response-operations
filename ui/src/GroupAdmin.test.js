@@ -4,6 +4,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { BrowserRouter as Router } from "react-router-dom";
 import GroupAdmin from "./GroupAdmin";
+import { uuid } from "uuidv4";
 
 let container = null;
 beforeEach(() => {
@@ -37,7 +38,7 @@ it("renders Users in group", async () => {
   await act(async () => {
     render(
       <Router>
-        <GroupAdmin groupId="groupIdxyz" />
+        <GroupAdmin groupId={uuid()} groupName="abc" />
       </Router>,
       container
     );

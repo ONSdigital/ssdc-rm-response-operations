@@ -9,6 +9,8 @@ import TableCell from "./DesignSystemComponents/TableCell";
 import TableBody from "./DesignSystemComponents/TableBody";
 import TableRow from "./DesignSystemComponents/TableRow";
 import SuccessPanel from "./DesignSystemComponents/SuccessPanel";
+import PropTypes from "prop-types";
+import ExtraPropTypes from "react-extra-prop-types";
 
 function ExportFileTemplates(props) {
   const [tableRows, setTableRows] = useState([]);
@@ -67,5 +69,10 @@ function ExportFileTemplates(props) {
     </>
   );
 }
+
+ExportFileTemplates.propTypes = {
+  flashMessageUntil: ExtraPropTypes.datetime,
+  authorisedActivities: PropTypes.array.isRequired,
+};
 
 export default ExportFileTemplates;

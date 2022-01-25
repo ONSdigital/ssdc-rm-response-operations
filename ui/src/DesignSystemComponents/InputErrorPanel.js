@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function InputErrorPanel(props) {
   return (
@@ -16,5 +17,11 @@ function InputErrorPanel(props) {
     </div>
   );
 }
+
+InputErrorPanel.propTypes = {
+  id: PropTypes.string.isRequired,
+  errorSummary: PropTypes.array.isRequired,
+  children: PropTypes.object.isRequired,
+};
 
 export default InputErrorPanel;
