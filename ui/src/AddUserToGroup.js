@@ -7,6 +7,7 @@ import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import Autosuggest from "react-autosuggest";
 import Parser from "html-react-parser";
 import "./AutoSuggest.css";
+import PropTypes from "prop-types";
 
 function AddUserToGroup(props) {
   let history = useHistory();
@@ -240,5 +241,10 @@ function AddUserToGroup(props) {
     </>
   );
 }
+
+AddUserToGroup.propTypes = {
+  groupId: PropTypes.string.isRequired,
+  groupName: PropTypes.string.isRequired,
+};
 
 export default AddUserToGroup;

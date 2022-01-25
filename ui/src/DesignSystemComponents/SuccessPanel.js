@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function SuccessPanel(props) {
   return (
@@ -27,5 +28,10 @@ function SuccessPanel(props) {
     </>
   );
 }
+
+SuccessPanel.propTypes = {
+  id: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
+};
 
 export default SuccessPanel;

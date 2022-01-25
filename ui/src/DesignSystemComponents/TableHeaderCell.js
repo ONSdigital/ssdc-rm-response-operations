@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function Th(props) {
   return (
@@ -7,5 +8,9 @@ function Th(props) {
     </th>
   );
 }
+
+Th.propTypes = {
+  children: PropTypes.string,
+};
 
 export default Th;
