@@ -1,26 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
-import { Link, useHistory } from "react-router-dom";
+import {Link, useHistory, useLocation} from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import Autosuggest from "react-autosuggest";
 import Parser from "html-react-parser";
 import "./AutoSuggest.css";
 import PropTypes from "prop-types";
+import InfoPanel from "./DesignSystemComponents/InfoPanel";
 
 function AddUserToGroup(props) {
   let history = useHistory();
-  let addUserInProgress = false;
-  const [errorSummary, setErrorSummary] = useState("");
+  const location = useLocation();
+
   const errorSummaryTitle = useRef(null);
+  const infoSummaryTitle = useRef(null);
+
+  const [errorSummary, setErrorSummary] = useState([]);
   const [hasErrors, setHasErrors] = useState(false);
+  const [infoSummary, setInfoSummary] = useState([]);
+  const [hasInfo, setHasInfo] = useState(false);
   const [value, setValue] = useState("");
   // Suggestions is tied to the AutoSuggest Component, it can be filted, mutated etc
   const [suggestions, setSuggestions] = useState([]);
   // We load userList this on the page load, we don't mutate it. We filter it to create Suggetions
   const [userList, setUserList] = useState([]);
   const [noSuggestions, setNoSuggestions] = useState(false);
+  let addUserInProgress = false;
 
   useEffect(() => {
     async function fetchUsers() {
@@ -46,6 +53,20 @@ function AddUserToGroup(props) {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    if (hasErrors) {
+      document.title = "Error";
+      errorSummaryTitle.current.focus();
+    }
+  }, [hasErrors]);
+
+  useEffect(() => {
+    if (hasInfo) {
+      document.title = "Info";
+      infoSummaryTitle.current.focus();
+    }
+  }, [hasInfo]);
+
   function cancel() {
     history.push(
       encodeURI(
@@ -67,6 +88,10 @@ function AddUserToGroup(props) {
     return undefined;
   }
 
+  function isEmailAlreadyInGroup(userInput) {
+    return location.state.existingEmailsInGroup.includes(userInput);
+  }
+
   async function addUserToGroup() {
     if (addUserInProgress) {
       return;
@@ -74,8 +99,17 @@ function AddUserToGroup(props) {
 
     addUserInProgress = true;
 
-    setErrorSummary("");
+    setErrorSummary([]);
     setHasErrors(false);
+    setInfoSummary([]);
+    setHasInfo(false);
+
+    if (isEmailAlreadyInGroup(value)) {
+      setInfoSummary(["Email already exists for this group",]);
+      setHasInfo(true);
+      addUserInProgress = false;
+      return;
+    }
 
     const userId = checkEmailExistsAndGetUserId(value);
 
@@ -114,13 +148,6 @@ function AddUserToGroup(props) {
 
     addUserInProgress = false;
   }
-
-  useEffect(() => {
-    if (hasErrors) {
-      document.title = "Error";
-      errorSummaryTitle.current.focus();
-    }
-  }, [hasErrors]);
 
   function escapeRegexCharacters(str) {
     return str.replace(/[*+?^${}()|[\]\\]/g, "\\$&");
@@ -213,6 +240,9 @@ function AddUserToGroup(props) {
       </Link>
       {errorSummary.length > 0 && (
         <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
+      )}
+      {infoSummary.length > 0 && (
+          <InfoPanel infoSummary={infoSummary} ref={infoSummaryTitle} />
       )}
       <h1>Add User To Group {props.groupName}</h1>
       <br />

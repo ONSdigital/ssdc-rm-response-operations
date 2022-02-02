@@ -71,7 +71,7 @@ sampledefinitions:
   health: https://raw.githubusercontent.com/ONSdigital/ssdc-shared-events/main/sample/sis/0.1.0-DRAFT/sis.json
 
 
-dummyuseridentity-allowed: false # This ** MUST ALWAYS!! ** be false in production!!!
+dummyuseridentity-allowed: true # This ** MUST ALWAYS!! ** be false in production!!!
 dummyuseridentity: dummy@fake-email.com
 dummysuperuseridentity: dummy@fake-email.com
 
