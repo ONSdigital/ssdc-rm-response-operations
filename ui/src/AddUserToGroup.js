@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
-import {Link, useHistory, useLocation} from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import Autosuggest from "react-autosuggest";
@@ -92,7 +92,7 @@ function AddUserToGroup(props) {
     setHasErrors(false);
 
     if (isEmailAlreadyInGroup(value)) {
-      setErrorSummary(["Email already exists for this group",]);
+      setErrorSummary(["Email already exists for this group"]);
       setHasErrors(true);
       addUserInProgress = false;
       return;

@@ -27,7 +27,7 @@ function GroupAdmin(props) {
   function openAddUserPage() {
     history.push(
       `addUserToGroup?groupName=${props.groupName}&groupId=${props.groupId}`,
-        {existingEmailsInGroup: existingEmailsInGroup}
+      { existingEmailsInGroup: existingEmailsInGroup }
     );
   }
 
@@ -52,7 +52,7 @@ function GroupAdmin(props) {
           </TableCell>
         </TableRow>
       ));
-      setExistingEmailsInGroup(allUsersInGroup.map((user) => (user.userEmail)));
+      setExistingEmailsInGroup(allUsersInGroup.map((user) => user.userEmail));
       setUserTableRowsRows(usersInGroupRows);
     }
 
