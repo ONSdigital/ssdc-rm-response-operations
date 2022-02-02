@@ -8,19 +8,15 @@ import Autosuggest from "react-autosuggest";
 import Parser from "html-react-parser";
 import "./AutoSuggest.css";
 import PropTypes from "prop-types";
-import InfoPanel from "./DesignSystemComponents/InfoPanel";
 
 function AddUserToGroup(props) {
   let history = useHistory();
   const location = useLocation();
 
   const errorSummaryTitle = useRef(null);
-  const infoSummaryTitle = useRef(null);
 
   const [errorSummary, setErrorSummary] = useState([]);
   const [hasErrors, setHasErrors] = useState(false);
-  const [infoSummary, setInfoSummary] = useState([]);
-  const [hasInfo, setHasInfo] = useState(false);
   const [value, setValue] = useState("");
   // Suggestions is tied to the AutoSuggest Component, it can be filted, mutated etc
   const [suggestions, setSuggestions] = useState([]);
@@ -60,13 +56,6 @@ function AddUserToGroup(props) {
     }
   }, [hasErrors]);
 
-  useEffect(() => {
-    if (hasInfo) {
-      document.title = "Info";
-      infoSummaryTitle.current.focus();
-    }
-  }, [hasInfo]);
-
   function cancel() {
     history.push(
       encodeURI(
@@ -101,12 +90,10 @@ function AddUserToGroup(props) {
 
     setErrorSummary([]);
     setHasErrors(false);
-    setInfoSummary([]);
-    setHasInfo(false);
 
     if (isEmailAlreadyInGroup(value)) {
-      setInfoSummary(["Email already exists for this group",]);
-      setHasInfo(true);
+      setErrorSummary(["Email already exists for this group",]);
+      setHasErrors(true);
       addUserInProgress = false;
       return;
     }
@@ -240,9 +227,6 @@ function AddUserToGroup(props) {
       </Link>
       {errorSummary.length > 0 && (
         <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
-      )}
-      {infoSummary.length > 0 && (
-          <InfoPanel infoSummary={infoSummary} ref={infoSummaryTitle} />
       )}
       <h1>Add User To Group {props.groupName}</h1>
       <br />
