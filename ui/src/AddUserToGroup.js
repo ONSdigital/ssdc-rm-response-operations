@@ -26,7 +26,7 @@ function AddUserToGroup(props) {
   let addUserInProgress = false;
 
   useEffect(() => {
-    async function fetchUsers() {
+    async function fetchAvailableUsersForGroup() {
       const response = await fetch(`/api/users?groupId=${props.groupId}`);
       const usersJson = await response.json();
 
@@ -46,7 +46,7 @@ function AddUserToGroup(props) {
       setSuggestions(users);
     }
 
-    fetchUsers();
+    fetchAvailableUsersForGroup();
   }, []);
 
   useEffect(() => {
