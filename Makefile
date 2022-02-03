@@ -13,7 +13,7 @@ test-ui:
 	cd ui && npm install && npx eslint . && npm test -- --watchAll=false
 
 run-dev-api: build
-	docker run -e spring_profiles_active=docker --network=ssdcrmdockerdev_default --link ons-postgres:postgres -p 7777:7777 eu.gcr.io/ssdc-rm-ci/rm/ssdc-rm-response-operations:latest
+	docker run -e spring_profiles_active=docker --network=ssdcrmdockerdev_default --link ons-postgres:postgres -p 7777:7777 europe-west2-docker.pkg.dev/ssdc-rm-ci/docker/ssdc-rm-response-operations:latest
 
 run-dev-ui:
 	cd ui && npm install && npm start
