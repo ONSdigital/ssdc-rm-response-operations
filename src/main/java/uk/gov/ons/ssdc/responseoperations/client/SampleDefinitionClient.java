@@ -42,6 +42,10 @@ public class SampleDefinitionClient {
     }
   }
 
+  private void aFunctionWithoutUser() {
+    return;
+  }
+
   public String getSampleDefinitionUrlForSurveyType(SurveyType surveyType) {
     String varBlaht = "Hello World";
 
