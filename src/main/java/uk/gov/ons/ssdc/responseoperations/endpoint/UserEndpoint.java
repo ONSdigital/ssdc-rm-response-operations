@@ -40,6 +40,12 @@ public class UserEndpoint {
     this.userGroupRepository = userGroupRepository;
   }
 
+  private int xyzTestThisIsBAD;
+
+  private void sillyFunction() {
+    return;
+  }
+
   @GetMapping
   public List<UserDto> getUsers(
       @RequestParam UUID groupId, @RequestAttribute("userEmail") String userEmail) {

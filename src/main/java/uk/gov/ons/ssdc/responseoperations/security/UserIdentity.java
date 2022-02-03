@@ -18,6 +18,7 @@ import uk.gov.ons.ssdc.common.model.entity.UserGroupPermission;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
 
 @Component
+@SuppressWarnings("PMD.UselessParentheses")
 public class UserIdentity {
   private static final Logger log = LoggerFactory.getLogger(UserIdentity.class);
   private static final String IAP_ISSUER_URL = "https://cloud.google.com/iap";
