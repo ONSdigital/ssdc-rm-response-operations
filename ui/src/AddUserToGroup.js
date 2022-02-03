@@ -92,7 +92,7 @@ function AddUserToGroup(props) {
     setHasErrors(false);
 
     if (isEmailAlreadyInGroup(value)) {
-      setErrorSummary(["Email already exists for this group"]);
+      setErrorSummary(["User is already a member of this group"]);
       setHasErrors(true);
       addUserInProgress = false;
       return;
