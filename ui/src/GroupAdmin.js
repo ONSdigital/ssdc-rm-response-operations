@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
-import { Link } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import Table from "./DesignSystemComponents/Table";
 import TableHead from "./DesignSystemComponents/TableHead";
@@ -17,6 +16,7 @@ import ExtraPropTypes from "react-extra-prop-types";
 function GroupAdmin(props) {
   let history = useHistory();
   const [userTableRows, setUserTableRowsRows] = useState([]);
+  const [existingEmailsInGroup, setExistingEmailsInGroup] = useState([]);
 
   function openRemoveUserPage(groupUser) {
     history.push(
@@ -26,7 +26,8 @@ function GroupAdmin(props) {
 
   function openAddUserPage() {
     history.push(
-      `addUserToGroup?groupName=${props.groupName}&groupId=${props.groupId}`
+      `addUserToGroup?groupName=${props.groupName}&groupId=${props.groupId}`,
+      { existingEmailsInGroup: existingEmailsInGroup }
     );
   }
 
@@ -51,6 +52,7 @@ function GroupAdmin(props) {
           </TableCell>
         </TableRow>
       ));
+      setExistingEmailsInGroup(allUsersInGroup.map((user) => user.userEmail));
       setUserTableRowsRows(usersInGroupRows);
     }
 
