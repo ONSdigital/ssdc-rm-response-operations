@@ -13,9 +13,9 @@ public class AnUneededClass {
   public void setAThing(String a) {
     int b = Integer.parseInt(a);
 
-    // errorProne spots these at least
-    String.format("abc %s, what no variable passed? and result ignored");
-    String.format("variables but no holders", b, a);
+    // errorProne spots these at least, uncomment to see this fail
+//    String.format("abc %s, what no variable passed? and result ignored");
+//    String.format("variables but no holders", b, a);
 
     return; // pointless
   }
