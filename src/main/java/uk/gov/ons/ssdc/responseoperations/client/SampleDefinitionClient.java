@@ -52,6 +52,7 @@ public class SampleDefinitionClient {
         return healthSampleDefinitionUrl;
 
       default:
+        //PMD gets this
         throw new ResponseStatusException(
             HttpStatus.BAD_REQUEST,
             String.format("Cannot find surveyType %s to get survey definition"));
