@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import Announcer from "react-a11y-announcer";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import Autosuggest from "react-autosuggest";
@@ -11,9 +11,11 @@ import PropTypes from "prop-types";
 
 function AddUserToGroup(props) {
   let history = useHistory();
-  let addUserInProgress = false;
-  const [errorSummary, setErrorSummary] = useState("");
+  const location = useLocation();
+
   const errorSummaryTitle = useRef(null);
+
+  const [errorSummary, setErrorSummary] = useState([]);
   const [hasErrors, setHasErrors] = useState(false);
   const [value, setValue] = useState("");
   // Suggestions is tied to the AutoSuggest Component, it can be filted, mutated etc
@@ -21,9 +23,10 @@ function AddUserToGroup(props) {
   // We load userList this on the page load, we don't mutate it. We filter it to create Suggetions
   const [userList, setUserList] = useState([]);
   const [noSuggestions, setNoSuggestions] = useState(false);
+  let addUserInProgress = false;
 
   useEffect(() => {
-    async function fetchUsers() {
+    async function fetchAvailableUsersForGroup() {
       const response = await fetch(`/api/users?groupId=${props.groupId}`);
       const usersJson = await response.json();
 
@@ -43,8 +46,15 @@ function AddUserToGroup(props) {
       setSuggestions(users);
     }
 
-    fetchUsers();
+    fetchAvailableUsersForGroup();
   }, []);
+
+  useEffect(() => {
+    if (hasErrors) {
+      document.title = "Error";
+      errorSummaryTitle.current.focus();
+    }
+  }, [hasErrors]);
 
   function cancel() {
     history.push(
@@ -67,6 +77,10 @@ function AddUserToGroup(props) {
     return undefined;
   }
 
+  function isEmailAlreadyInGroup(userInput) {
+    return location.state.existingEmailsInGroup.includes(userInput);
+  }
+
   async function addUserToGroup() {
     if (addUserInProgress) {
       return;
@@ -74,8 +88,15 @@ function AddUserToGroup(props) {
 
     addUserInProgress = true;
 
-    setErrorSummary("");
+    setErrorSummary([]);
     setHasErrors(false);
+
+    if (isEmailAlreadyInGroup(value)) {
+      setErrorSummary(["User is already a member of this group"]);
+      setHasErrors(true);
+      addUserInProgress = false;
+      return;
+    }
 
     const userId = checkEmailExistsAndGetUserId(value);
 
@@ -114,13 +135,6 @@ function AddUserToGroup(props) {
 
     addUserInProgress = false;
   }
-
-  useEffect(() => {
-    if (hasErrors) {
-      document.title = "Error";
-      errorSummaryTitle.current.focus();
-    }
-  }, [hasErrors]);
 
   function escapeRegexCharacters(str) {
     return str.replace(/[*+?^${}()|[\]\\]/g, "\\$&");
@@ -200,44 +214,46 @@ function AddUserToGroup(props) {
 
   return (
     <>
-      <Helmet>
-        <title>Add User To Group</title>
-      </Helmet>
-      <Announcer text={"Add User Page"} />
-      <Link
-        to={encodeURI(
-          `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+      <div style={{ marginBottom: 150 }}>
+        <Helmet>
+          <title>Add User To Group</title>
+        </Helmet>
+        <Announcer text={"Add User Page"} />
+        <Link
+          to={encodeURI(
+            `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+          )}
+        >
+          ← Back to group admin
+        </Link>
+        {errorSummary.length > 0 && (
+          <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
         )}
-      >
-        ← Back to group admin
-      </Link>
-      {errorSummary.length > 0 && (
-        <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
-      )}
-      <h1>Add User To Group {props.groupName}</h1>
-      <br />
+        <h1>Add User To Group {props.groupName}</h1>
+        <div className="ons-field">
+          <h2>Select a user to add to the group</h2>
+          <Autosuggest
+            multiSection={true}
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={onSuggestionsClearRequested}
+            getSuggestionValue={getSuggestionValue}
+            renderSectionTitle={renderSectionTitle}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps}
+            getSectionSuggestions={getSectionSuggestions}
+          />
+          {noSuggestions && (
+            <div className="no-suggestions">No suggestions</div>
+          )}
+        </div>
+        <br />
 
-      <div className="ons-field">
-        <h2>Select a user to add to the group</h2>
-        <Autosuggest
-          multiSection={true}
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          renderSectionTitle={renderSectionTitle}
-          renderSuggestion={renderSuggestion}
-          inputProps={inputProps}
-          getSectionSuggestions={getSectionSuggestions}
-        />
-        {noSuggestions && <div className="no-suggestions">No suggestions</div>}
+        <Button onClick={() => addUserToGroup()}>Yes</Button>
+        <Button onClick={() => cancel()} secondary>
+          Cancel
+        </Button>
       </div>
-      <br />
-
-      <Button onClick={() => addUserToGroup()}>Yes</Button>
-      <Button onClick={() => cancel()} secondary>
-        Cancel
-      </Button>
     </>
   );
 }
