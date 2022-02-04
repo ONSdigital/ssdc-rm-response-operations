@@ -31,6 +31,10 @@ public class UserIdentity {
 
   private TokenVerifier tokenVerifier = null;
 
+  public String thisIsNotUsed() {
+    return "Not used anyway";
+  }
+
   public UserIdentity(
       UserRepository userRepository,
       @Value("${iapaudience}") String iapAudience,
