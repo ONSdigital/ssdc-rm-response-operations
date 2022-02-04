@@ -214,44 +214,46 @@ function AddUserToGroup(props) {
 
   return (
     <>
-      <Helmet>
-        <title>Add User To Group</title>
-      </Helmet>
-      <Announcer text={"Add User Page"} />
-      <Link
-        to={encodeURI(
-          `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+      <div style={{ marginBottom: 150 }}>
+        <Helmet>
+          <title>Add User To Group</title>
+        </Helmet>
+        <Announcer text={"Add User Page"} />
+        <Link
+          to={encodeURI(
+            `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+          )}
+        >
+          ← Back to group admin
+        </Link>
+        {errorSummary.length > 0 && (
+          <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
         )}
-      >
-        ← Back to group admin
-      </Link>
-      {errorSummary.length > 0 && (
-        <ErrorSummary errorSummary={errorSummary} ref={errorSummaryTitle} />
-      )}
-      <h1>Add User To Group {props.groupName}</h1>
-      <br />
+        <h1>Add User To Group {props.groupName}</h1>
+        <div className="ons-field">
+          <h2>Select a user to add to the group</h2>
+          <Autosuggest
+            multiSection={true}
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={onSuggestionsClearRequested}
+            getSuggestionValue={getSuggestionValue}
+            renderSectionTitle={renderSectionTitle}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps}
+            getSectionSuggestions={getSectionSuggestions}
+          />
+          {noSuggestions && (
+            <div className="no-suggestions">No suggestions</div>
+          )}
+        </div>
+        <br />
 
-      <div className="ons-field">
-        <h2>Select a user to add to the group</h2>
-        <Autosuggest
-          multiSection={true}
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          renderSectionTitle={renderSectionTitle}
-          renderSuggestion={renderSuggestion}
-          inputProps={inputProps}
-          getSectionSuggestions={getSectionSuggestions}
-        />
-        {noSuggestions && <div className="no-suggestions">No suggestions</div>}
+        <Button onClick={() => addUserToGroup()}>Yes</Button>
+        <Button onClick={() => cancel()} secondary>
+          Cancel
+        </Button>
       </div>
-      <br />
-
-      <Button onClick={() => addUserToGroup()}>Yes</Button>
-      <Button onClick={() => cancel()} secondary>
-        Cancel
-      </Button>
     </>
   );
 }
