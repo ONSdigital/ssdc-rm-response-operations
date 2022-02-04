@@ -14,8 +14,8 @@ public class AnUneededClass {
     int b = Integer.parseInt(a);
 
     // errorProne spots these at least
-    //    String.format("abc %s, what no variable passed? and result ignored");
-    //    String.format("variables but no holders", b, a);
+    String.format("abc %s, what no variable passed? and result ignored");
+    String.format("variables but no holders", b, a);
 
     return; // pointless
   }
