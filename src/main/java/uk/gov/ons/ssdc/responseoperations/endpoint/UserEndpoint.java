@@ -45,12 +45,12 @@ public class UserEndpoint {
   @GetMapping
   public List<UserDto> getUsers(
       @RequestParam UUID groupId, @RequestAttribute("userEmail") String userEmail) {
-
-    int a = 0;
-
-    for (int i = 0; i < 10; i++) {
-      a++;
-    }
+    //
+    //    int a = 0;
+    //
+    //    for (int i = 0; i < 10; i++) {
+    //      a++;
+    //    }
 
     userIdentity.checkGlobalUserPermission(userEmail, UserGroupAuthorisedActivityType.LIST_USERS);
 
@@ -59,8 +59,7 @@ public class UserEndpoint {
 
     Optional<UserGroup> groupOpt = userGroupRepository.findById(groupId);
     if (groupOpt.isEmpty()) {
-      throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, "Group Id not matched: " + groupId + a);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group Id not matched: " + groupId);
     }
 
     List<UUID> userIdsAlreadyInGroup =

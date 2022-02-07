@@ -52,10 +52,9 @@ public class SampleDefinitionClient {
         return healthSampleDefinitionUrl;
 
       default:
-        throw new ResponseStatusException(
-            HttpStatus.BAD_REQUEST, "replace with corrected blah");
-            // Error Prone gets this, uncomment to see
-            //String.format("Cannot find surveyType %s to get survey definition"));
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "replace with corrected blah");
+        // Error Prone gets this, uncomment to see
+        // String.format("Cannot find surveyType %s to get survey definition"));
     }
   }
 }
