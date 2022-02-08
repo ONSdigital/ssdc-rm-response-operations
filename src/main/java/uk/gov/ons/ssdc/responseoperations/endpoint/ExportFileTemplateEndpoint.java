@@ -75,6 +75,9 @@ public class ExportFileTemplateEndpoint {
 
   private ExportFileTemplateErrorsDto getExportFileTemplateErrorsDto(
       ExportFileTemplateDto exportFileTemplateDto) {
+
+    int pointless = 0;
+
     ExportFileTemplateErrorsDto exportFileTemplateErrorsDto = new ExportFileTemplateErrorsDto();
 
     exportFileTemplateErrorsDto.setPackCodeErrors(
