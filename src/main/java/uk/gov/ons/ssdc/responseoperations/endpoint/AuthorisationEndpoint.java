@@ -24,6 +24,7 @@ import uk.gov.ons.ssdc.common.model.entity.UserGroupMember;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupPermission;
 import uk.gov.ons.ssdc.responseoperations.model.repository.UserRepository;
 
+@SuppressWarnings("PMD.UselessParentheses")
 @RestController
 @RequestMapping(value = "/api/auth")
 public class AuthorisationEndpoint {

@@ -40,9 +40,17 @@ public class UserEndpoint {
     this.userGroupRepository = userGroupRepository;
   }
 
+  public String b;
+
   @GetMapping
   public List<UserDto> getUsers(
       @RequestParam UUID groupId, @RequestAttribute("userEmail") String userEmail) {
+    //
+    //    int a = 0;
+    //
+    //    for (int i = 0; i < 10; i++) {
+    //      a++;
+    //    }
 
     userIdentity.checkGlobalUserPermission(userEmail, UserGroupAuthorisedActivityType.LIST_USERS);
 
