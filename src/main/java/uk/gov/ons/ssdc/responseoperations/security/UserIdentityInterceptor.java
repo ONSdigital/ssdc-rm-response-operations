@@ -11,6 +11,7 @@ public class UserIdentityInterceptor implements HandlerInterceptor {
     this.userIdentity = userIdentity;
   }
 
+  @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
     String jwtToken = request.getHeader("x-goog-iap-jwt-assertion");
