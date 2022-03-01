@@ -94,8 +94,13 @@ function CreateExportFileTemplate() {
     let errors = [];
     try {
       const parsedJson = JSON.parse(exportFileTemplate);
-      const hasDuplicateTemplateColumns = new Set(parsedJson).size !== parsedJson.length
-      if (!Array.isArray(parsedJson) || parsedJson.length === 0 || hasDuplicateTemplateColumns) {
+      const hasDuplicateTemplateColumns =
+        new Set(parsedJson).size !== parsedJson.length;
+      if (
+        !Array.isArray(parsedJson) ||
+        parsedJson.length === 0 ||
+        hasDuplicateTemplateColumns
+      ) {
         errors.push({
           message: exportFileTemplateInputErrorInfo.arrayFormatError,
           anchorTo: exportFileTemplateInput.current.id,
