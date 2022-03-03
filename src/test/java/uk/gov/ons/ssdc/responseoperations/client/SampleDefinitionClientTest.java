@@ -1,6 +1,7 @@
 package uk.gov.ons.ssdc.responseoperations.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.net.MalformedURLException;
