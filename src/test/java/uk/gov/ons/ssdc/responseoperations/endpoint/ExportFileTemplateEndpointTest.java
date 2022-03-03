@@ -283,4 +283,37 @@ class ExportFileTemplateEndpointTest {
         .checkGlobalUserPermission(
             eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE));
   }
+
+  @Test
+  public void testDuplicateTemplateItemsThrowsError() throws Exception {
+    when(exportFileDestinationConfig.getExportFileDestinations()).thenReturn(Set.of("SUPPLIER_A"));
+
+    ExportFileTemplateDto exportFileTemplateDto = new ExportFileTemplateDto();
+    exportFileTemplateDto.setPackCode("packCode1");
+    exportFileTemplateDto.setTemplate(new String[] {"a", "a"});
+    exportFileTemplateDto.setExportFileDestination("SUPPLIER_A");
+
+    mockMvc
+        .perform(
+            post("/api/exportfiletemplates", exportFileTemplateDto)
+                .requestAttr("userEmail", "test@test.com")
+                .content(asJsonString(exportFileTemplateDto))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(ExportFileTemplateEndpoint.class))
+        .andExpect(handler().methodName("createExportFileTemplate"))
+        .andExpect(
+            result ->
+                assertThat(result.getResponse().getContentAsString())
+                    .isEqualTo(
+                        "{\"packCodeErrors\":null,\"templateErrors\":\"Template cannot have duplicate columns\",\"destinationErrors\":null,\"validationError\":true}"))
+        .andExpect(
+            result ->
+                assertThat(result.getResponse().getStatus())
+                    .isEqualTo(HttpStatus.BAD_REQUEST.value()));
+
+    verify(userIdentity)
+        .checkGlobalUserPermission(
+            eq("test@test.com"), eq(UserGroupAuthorisedActivityType.CREATE_EXPORT_FILE_TEMPLATE));
+  }
 }

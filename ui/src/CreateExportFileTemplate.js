@@ -87,14 +87,20 @@ function CreateExportFileTemplate() {
   function getExportFileTemplateInputErrors() {
     const exportFileTemplateInputErrorInfo = {
       arrayFormatError:
-        "Export file template must be JSON array with one or more elements",
+        "Export file template must be JSON array with one or more unique elements",
       jsonFormatError: "Export file template is not valid JSON",
     };
 
     let errors = [];
     try {
       const parsedJson = JSON.parse(exportFileTemplate);
-      if (!Array.isArray(parsedJson) || parsedJson.length === 0) {
+      const hasDuplicateTemplateColumns =
+        new Set(parsedJson).size !== parsedJson.length;
+      if (
+        !Array.isArray(parsedJson) ||
+        parsedJson.length === 0 ||
+        hasDuplicateTemplateColumns
+      ) {
         errors.push({
           message: exportFileTemplateInputErrorInfo.arrayFormatError,
           anchorTo: exportFileTemplateInput.current.id,
