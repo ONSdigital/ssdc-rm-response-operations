@@ -1,5 +1,6 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -93,5 +94,34 @@ class UserEndpointTest {
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id", is(user2.getId().toString())));
+  }
+
+  @Test
+  public void testGetAllUsersException() throws Exception {
+    UserGroup userGroup = new UserGroup();
+    userGroup.setId(UUID.randomUUID());
+    userGroup.setName("Test Group");
+
+    User user = new User();
+    user.setId(UUID.randomUUID());
+    User user2 = new User();
+    user2.setId(UUID.randomUUID());
+
+    when(userRepository.findAll()).thenReturn(List.of(user, user2));
+    when(userGroupRepository.findById(any())).thenReturn(Optional.empty());
+
+    String expectedExceptionMessage =
+        String.format("400 BAD_REQUEST \"Group Id not matched: %s\"", userGroup.getId());
+
+    mockMvc
+        .perform(
+            get(String.format("/api/users?groupId=%s", userGroup.getId()))
+                .requestAttr("userEmail", "nice@email.com")
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(
+            result ->
+                assertThat(result.getResolvedException().getMessage())
+                    .isEqualTo(expectedExceptionMessage));
   }
 }

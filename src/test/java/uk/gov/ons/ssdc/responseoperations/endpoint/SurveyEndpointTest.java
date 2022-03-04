@@ -102,6 +102,22 @@ class SurveyEndpointTest {
   }
 
   @Test
+  public void testGetSurveyException() throws Exception {
+    // Given
+    when(surveyRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+    // When
+    // Then
+    mockMvc
+        .perform(
+            get(String.format("/api/surveys/%s", UUID.randomUUID()))
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(SurveyEndpoint.class))
+        .andExpect(handler().methodName("getSurvey"));
+  }
+
+  @Test
   public void testCreateSurvey() throws Exception {
     // Given
     SurveyDto survey = new SurveyDto();

@@ -1,7 +1,6 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
@@ -49,15 +48,16 @@ public class UserEndpoint {
     List<UserDto> allUsers =
         userRepository.findAll().stream().map(this::mapDto).collect(Collectors.toList());
 
-    Optional<UserGroup> groupOpt = userGroupRepository.findById(groupId);
-    if (groupOpt.isEmpty()) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group Id not matched: " + groupId);
-    }
+    UserGroup userGroup =
+        userGroupRepository
+            .findById(groupId)
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "Group Id not matched: " + groupId));
 
     List<UUID> userIdsAlreadyInGroup =
-        userGroupMemberRepository.findByGroup(groupOpt.get()).stream()
-            .map(this::mapUserId)
-            .toList();
+        userGroupMemberRepository.findByGroup(userGroup).stream().map(this::mapUserId).toList();
 
     return allUsers.stream().filter(user -> !userIdsAlreadyInGroup.contains(user.getId())).toList();
   }

@@ -357,7 +357,10 @@ class UserGroupMemberEndpointTest {
 
     when(userGroupRepository.findById(any())).thenReturn(Optional.empty());
 
-    String expectedErrorMsg = "404 NOT_FOUND \"Group not found for adding user\"";
+    String expectedErrorMsg =
+        String.format(
+            "404 NOT_FOUND \"Group %s not found for adding user\"",
+            userGroupMemberDto.getGroupId());
 
     mockMvc
         .perform(

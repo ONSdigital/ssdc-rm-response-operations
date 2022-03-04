@@ -4,7 +4,6 @@ import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
 import com.google.api.client.json.webtoken.JsonWebToken;
 import com.google.auth.oauth2.TokenVerifier;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -55,13 +54,13 @@ public class UserIdentity {
       return;
     }
 
-    Optional<User> userOpt = userRepository.findByEmail(userEmail);
-
-    if (!userOpt.isPresent()) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not known to RM");
-    }
-
-    User user = userOpt.get();
+    User user =
+        userRepository
+            .findByEmail(userEmail)
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.FORBIDDEN, String.format("User %s not known to RM", userEmail)));
 
     for (UserGroupMember groupMember : user.getMemberOf()) {
       for (UserGroupPermission permission : groupMember.getGroup().getPermissions()) {
@@ -96,13 +95,13 @@ public class UserIdentity {
       return;
     }
 
-    Optional<User> userOpt = userRepository.findByEmail(userEmail);
-
-    if (!userOpt.isPresent()) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not known to RM");
-    }
-
-    User user = userOpt.get();
+    User user =
+        userRepository
+            .findByEmail(userEmail)
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.FORBIDDEN, String.format("User %s not known to RM", userEmail)));
 
     for (UserGroupMember groupMember : user.getMemberOf()) {
       for (UserGroupPermission permission : groupMember.getGroup().getPermissions()) {

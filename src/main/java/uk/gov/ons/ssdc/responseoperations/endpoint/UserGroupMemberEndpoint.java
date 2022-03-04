@@ -120,7 +120,10 @@ public class UserGroupMemberEndpoint {
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, String.format("Group not found for adding user")));
+                        HttpStatus.NOT_FOUND,
+                        String.format(
+                            "Group %s not found for adding user",
+                            userGroupMemberDto.getGroupId())));
 
     if (group.getAdmins().stream()
         .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
