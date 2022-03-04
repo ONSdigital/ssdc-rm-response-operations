@@ -2,7 +2,6 @@ package uk.gov.ons.ssdc.responseoperations.endpoint;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
@@ -54,13 +53,12 @@ public class SurveyEndpoint {
   public SurveyDto getSurvey(@PathVariable("id") UUID id) {
     // TODO: should we stop unauthorised users getting survey name or is it over the top?
 
-    Optional<Survey> optionalSurvey = surveyRepository.findById(id);
+    Survey survey =
+        surveyRepository
+            .findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-    if (!optionalSurvey.isPresent()) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-
-    return mapSurvey(optionalSurvey.get());
+    return mapSurvey(survey);
   }
 
   @GetMapping(value = "/surveyTypes")

@@ -67,6 +67,20 @@ public class AuthorisationEndpointTest {
   }
 
   @Test
+  public void testGetAuthActivitiesUserUnknownToRMExceptiopn() {
+    // When, then throws
+
+    when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+    RuntimeException thrown =
+        assertThrows(
+            RuntimeException.class,
+            () -> underTest.getAuthorisedActivities(Optional.empty(), "test@test.com"));
+    assertThat(thrown.getMessage())
+        .isEqualTo("403 FORBIDDEN \"User test@test.com not known to RM\"");
+  }
+
+  @Test
   public void testGlobalSuperUserPermission() {
     Survey survey = new Survey();
     survey.setId(UUID.randomUUID());

@@ -57,13 +57,15 @@ public class AuthorisationEndpoint {
       return Set.of(UserGroupAuthorisedActivityType.values());
     }
 
-    Optional<User> userOpt = userRepository.findByEmail(userEmail);
+    User user =
+        userRepository
+            .findByEmail(userEmail)
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.FORBIDDEN, String.format("User %s not known to RM", userEmail)));
 
-    if (!userOpt.isPresent()) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not known to RM");
-    }
-
-    User user = userOpt.get();
+    // TODO: One day make this readable, more testable, maintainable etc
 
     Set<UserGroupAuthorisedActivityType> result = new HashSet<>();
     for (UserGroupMember groupMember : user.getMemberOf()) {
