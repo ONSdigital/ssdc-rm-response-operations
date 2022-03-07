@@ -1,7 +1,10 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -109,6 +112,11 @@ public class ExportFileTemplateEndpoint {
       if (StringUtils.isBlank(column)) {
         return Optional.of("Template cannot have empty columns");
       }
+    }
+
+    Set<String> templateSet = new HashSet<>(Arrays.asList(template));
+    if (templateSet.size() != template.length) {
+      return Optional.of("Template cannot have duplicate columns");
     }
 
     return Optional.empty();
