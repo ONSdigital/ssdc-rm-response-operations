@@ -106,8 +106,7 @@ class SurveyEndpointTest {
     // Given
     when(surveyRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
-    // When
-    // Then
+    // When,then
     mockMvc
         .perform(
             get(String.format("/api/surveys/%s", UUID.randomUUID()))

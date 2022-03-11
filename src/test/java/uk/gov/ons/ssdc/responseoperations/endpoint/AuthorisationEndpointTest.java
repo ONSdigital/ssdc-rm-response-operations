@@ -67,7 +67,7 @@ public class AuthorisationEndpointTest {
   }
 
   @Test
-  public void testGetAuthActivitiesUserUnknownToRMExceptiopn() {
+  public void testGetAuthActivitiesUserUnknownToRMException() {
     // When, then throws
 
     when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
