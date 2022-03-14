@@ -138,6 +138,8 @@ class UserIdentityTest {
                     "test@test.com", new Survey(), UserGroupAuthorisedActivityType.CREATE_SURVEY));
 
     assertThat(thrown.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+    assertThat(thrown.getMessage())
+        .isEqualTo("403 FORBIDDEN \"User test@test.com not known to RM\"");
   }
 
   @Test
@@ -150,6 +152,8 @@ class UserIdentityTest {
                     "test@test.com", UserGroupAuthorisedActivityType.CREATE_SURVEY));
 
     assertThat(thrown.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+    assertThat(thrown.getMessage())
+        .isEqualTo("403 FORBIDDEN \"User test@test.com not known to RM\"");
   }
 
   private User getUser(UserGroupAuthorisedActivityType authorisedActivity, Survey survey) {

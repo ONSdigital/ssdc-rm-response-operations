@@ -55,11 +55,15 @@ public class UserGroupMemberEndpoint {
         userGroupRepository
             .findById(groupId)
             .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, String.format("Group %s not found", groupId)));
 
     if (group.getAdmins().stream()
         .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not an admin");
+      throw new ResponseStatusException(
+          HttpStatus.FORBIDDEN,
+          String.format("User %s not an admin of %s", userEmail, group.getName()));
     }
 
     return userGroupMemberRepository.findByGroup(group).stream()
@@ -77,11 +81,15 @@ public class UserGroupMemberEndpoint {
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST, "Group membership not found"));
+                        HttpStatus.BAD_REQUEST,
+                        String.format("Did not find groupMemberId %s", groupMemberId)));
 
     if (userGroupMember.getGroup().getAdmins().stream()
         .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not an admin");
+      throw new ResponseStatusException(
+          HttpStatus.FORBIDDEN,
+          String.format(
+              "User %s not an admin of %s", userEmail, userGroupMember.getGroup().getName()));
     }
 
     userGroupMemberRepository.delete(userGroupMember);
@@ -110,7 +118,12 @@ public class UserGroupMemberEndpoint {
         userGroupRepository
             .findById(userGroupMemberDto.getGroupId())
             .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format(
+                            "Group %s not found for adding user",
+                            userGroupMemberDto.getGroupId())));
 
     if (group.getAdmins().stream()
         .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {

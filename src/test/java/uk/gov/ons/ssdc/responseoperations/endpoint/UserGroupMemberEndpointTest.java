@@ -2,6 +2,7 @@ package uk.gov.ons.ssdc.responseoperations.endpoint;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static uk.gov.ons.ssdc.responseoperations.test_utils.JsonHelper.asJsonString;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ons.ssdc.common.model.entity.User;
 import uk.gov.ons.ssdc.common.model.entity.UserGroup;
 import uk.gov.ons.ssdc.common.model.entity.UserGroupAdmin;
@@ -89,6 +92,60 @@ class UserGroupMemberEndpointTest {
         .andExpect(jsonPath("$[0].userEmail", is(user.getEmail())));
 
     verify(userGroupRepository).findById(userGroup.getId());
+  }
+
+  @Test
+  public void testGroupNotFoundInGetUsers() throws Exception {
+    User user = new User();
+    user.setId(UUID.randomUUID());
+    user.setEmail("test@ons.gov.uk");
+    UserGroupAdmin admin = new UserGroupAdmin();
+    admin.setUser(user);
+
+    UserGroup userGroup = new UserGroup();
+    userGroup.setId(UUID.randomUUID());
+    userGroup.setName("test group");
+    userGroup.setAdmins(Collections.emptyList());
+
+    when(userGroupRepository.findById(any(UUID.class))).thenReturn(Optional.of(userGroup));
+
+    String expectedErrorMsg = "403 FORBIDDEN \"User test@ons.gov.uk not an admin of test group\"";
+
+    mockMvc
+        .perform(
+            get("/api/userGroupMembers/findByGroup/{groupid}", userGroup.getId())
+                .requestAttr("userEmail", "test@ons.gov.uk")
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(
+            result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
+        .andExpect(
+            result ->
+                assertThat(result.getResolvedException().getMessage()).isEqualTo(expectedErrorMsg))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
+        .andExpect(handler().methodName("findByGroup"));
+  }
+
+  @Test
+  public void testUserNotAdminInGetUsers() throws Exception {
+    when(userGroupRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+    UUID groupId = UUID.randomUUID();
+    String expectedErrorMsg = "400 BAD_REQUEST \"Group " + groupId + " not found\"";
+
+    mockMvc
+        .perform(
+            get("/api/userGroupMembers/findByGroup/{groupid}", groupId)
+                .requestAttr("userEmail", "test@ons.gov.uk")
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(
+            result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
+        .andExpect(
+            result ->
+                assertThat(result.getResolvedException().getMessage()).isEqualTo(expectedErrorMsg))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
+        .andExpect(handler().methodName("findByGroup"));
   }
 
   @Test
@@ -171,6 +228,29 @@ class UserGroupMemberEndpointTest {
   }
 
   @Test
+  public void testRemoveUserFromGroupMemberIdMissing() throws Exception {
+    when(userGroupMemberRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+    UUID userGroupMemberId = UUID.randomUUID();
+    String expectedErrorMsg =
+        "400 BAD_REQUEST \"Did not find groupMemberId " + userGroupMemberId + "\"";
+
+    mockMvc
+        .perform(
+            delete("/api/userGroupMembers/{groupMemberId}", userGroupMemberId)
+                .requestAttr("userEmail", "test@test.com")
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(
+            result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
+        .andExpect(
+            result ->
+                assertThat(result.getResolvedException().getMessage()).isEqualTo(expectedErrorMsg))
+        .andExpect(status().is4xxClientError())
+        .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
+        .andExpect(handler().methodName("removeUserFromGroup"));
+  }
+
+  @Test
   public void testNotAdminForDelete() throws Exception {
     User user = new User();
     user.setId(UUID.randomUUID());
@@ -180,6 +260,7 @@ class UserGroupMemberEndpointTest {
 
     UserGroup userGroup = new UserGroup();
     userGroup.setId(UUID.randomUUID());
+    userGroup.setName("Test Group");
     userGroup.setAdmins(List.of(admin));
 
     UserGroupMember userGroupMember = new UserGroupMember();
@@ -190,33 +271,24 @@ class UserGroupMemberEndpointTest {
     when(userGroupMemberRepository.findById(any(UUID.class)))
         .thenReturn(Optional.of(userGroupMember));
 
+    String expectedErrorMsg =
+        String.format("403 FORBIDDEN \"User notadmin@member.com not an admin of Test Group\"");
+
     mockMvc
         .perform(
             delete("/api/userGroupMembers/{groupMemberId}", UUID.randomUUID())
                 .requestAttr("userEmail", "notadmin@member.com")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError())
+        .andExpect(
+            result ->
+                assertThat(result.getResolvedException().getMessage()).isEqualTo(expectedErrorMsg))
         .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
         .andExpect(handler().methodName("removeUserFromGroup"))
         .andExpect(
             result ->
                 assertThat(result.getResponse().getStatus())
                     .isEqualTo(HttpStatus.FORBIDDEN.value()));
-  }
-
-  @Test
-  public void testGroupMemberNotFoundForDelete() throws Exception {
-    mockMvc
-        .perform(
-            delete("/api/userGroupMembers/{groupMemberId}", UUID.randomUUID())
-                .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().is4xxClientError())
-        .andExpect(handler().handlerType(UserGroupMemberEndpoint.class))
-        .andExpect(handler().methodName("removeUserFromGroup"))
-        .andExpect(
-            result ->
-                assertThat(result.getResponse().getStatus())
-                    .isEqualTo(HttpStatus.BAD_REQUEST.value()));
   }
 
   @Test
@@ -263,5 +335,42 @@ class UserGroupMemberEndpointTest {
         .isEqualTo(userGroup.getId());
     assertThat(userGroupMemberArgumentCaptor.getValue().getUser().getId())
         .isEqualTo(userToAdd.getId());
+  }
+
+  @Test
+  public void testAddUserToGroupGroupNotFound() throws Exception {
+    // Given
+    User adminUser = new User();
+    adminUser.setEmail("test@test.com");
+    adminUser.setId(UUID.randomUUID());
+
+    UserGroupAdmin userGroupAdmin = new UserGroupAdmin();
+    userGroupAdmin.setUser(adminUser);
+
+    User userToAdd = new User();
+    userToAdd.setEmail("AddMe@ons.co.uk");
+    userToAdd.setId(UUID.randomUUID());
+    userToAdd.setMemberOf(List.of());
+
+    UserGroupMemberDto userGroupMemberDto = new UserGroupMemberDto();
+    userGroupMemberDto.setUserId(userToAdd.getId());
+
+    when(userGroupRepository.findById(any())).thenReturn(Optional.empty());
+
+    String expectedErrorMsg =
+        String.format(
+            "404 NOT_FOUND \"Group %s not found for adding user\"",
+            userGroupMemberDto.getGroupId());
+
+    mockMvc
+        .perform(
+            post("/api/userGroupMembers", userGroupMemberDto)
+                .requestAttr("userEmail", adminUser.getEmail())
+                .content(asJsonString(userGroupMemberDto))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(
+            result ->
+                assertThat(result.getResolvedException().getMessage()).isEqualTo(expectedErrorMsg));
   }
 }
