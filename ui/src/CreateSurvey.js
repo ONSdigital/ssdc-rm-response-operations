@@ -94,7 +94,7 @@ function CreateSurvey() {
 
         <p></p>
 
-        <Button type="submit">Create Survey</Button>
+        <Button id="createSurveySubmitBtn" type="submit">Create Survey</Button>
       </form>
     </>
   );
