@@ -1,6 +1,6 @@
 
-describe('My First Test', () => {
-    it('Clicks On Create Survey', () => {
+describe('Happy happy survey', () => {
+    it('Creates a Survey', () => {
         // Navigates to url
         cy.visit('http://localhost:7777/createsurvey')
 
