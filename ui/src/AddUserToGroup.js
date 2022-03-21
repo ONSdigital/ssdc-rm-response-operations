@@ -68,18 +68,24 @@ function AddUserToGroup(props) {
   // Or by cutting and pasting a valid email address.
   // Check it's in out list and get the UserId
   function checkEmailExistsAndGetUserId(userInput) {
-    var matchingUser = userList[0].users.filter((user) => user.email.toLowerCase() === userInput.toLowerCase())
+    var matchingUser = userList[0].users.filter(
+      (user) => user.email.toLowerCase() === userInput.toLowerCase()
+    );
 
     if (matchingUser.length === 0) {
       return undefined;
     }
 
-    return matchingUser[0].id
+    return matchingUser[0].id;
   }
 
   function isEmailAlreadyInGroup(newEmail) {
-
-    if (location.state.existingEmailsInGroup.filter((existingEmail) => existingEmail.toLowerCase() === newEmail.toLowerCase()).length > 0) {
+    if (
+      location.state.existingEmailsInGroup.filter(
+        (existingEmail) =>
+          existingEmail.toLowerCase() === newEmail.toLowerCase()
+      ).length > 0
+    ) {
       return true;
     }
 
@@ -128,7 +134,8 @@ function AddUserToGroup(props) {
     if (response.ok) {
       history.push(
         encodeURI(
-          `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName
+          `/groupadmin?groupId=${props.groupId}&groupName=${
+            props.groupName
           }&addedUserEmail=${value}&flashMessageUntil=${Date.now() + 5000}`
         )
       );
