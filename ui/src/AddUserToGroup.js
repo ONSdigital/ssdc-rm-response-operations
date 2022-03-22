@@ -80,16 +80,10 @@ function AddUserToGroup(props) {
   }
 
   function isEmailAlreadyInGroup(newEmail) {
-    if (
-      location.state.existingEmailsInGroup.filter(
+    return location.state.existingEmailsInGroup.filter(
         (existingEmail) =>
-          existingEmail.toLowerCase() === newEmail.toLowerCase()
-      ).length > 0
-    ) {
-      return true;
-    }
-
-    return false;
+            existingEmail.toLowerCase() === newEmail.toLowerCase()
+    ).length > 0;
   }
 
   async function addUserToGroup() {
