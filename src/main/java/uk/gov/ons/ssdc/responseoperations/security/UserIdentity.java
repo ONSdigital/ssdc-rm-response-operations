@@ -56,7 +56,7 @@ public class UserIdentity {
 
     User user =
         userRepository
-            .findByEmail(userEmail)
+            .findByEmailIgnoreCase(userEmail)
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
@@ -97,7 +97,7 @@ public class UserIdentity {
 
     User user =
         userRepository
-            .findByEmail(userEmail)
+            .findByEmailIgnoreCase(userEmail)
             .orElseThrow(
                 () ->
                     new ResponseStatusException(

@@ -59,7 +59,7 @@ public class AuthorisationEndpoint {
 
     User user =
         userRepository
-            .findByEmail(userEmail)
+            .findByEmailIgnoreCase(userEmail)
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
