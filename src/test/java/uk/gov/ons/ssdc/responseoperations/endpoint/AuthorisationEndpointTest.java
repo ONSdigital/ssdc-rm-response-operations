@@ -47,7 +47,7 @@ public class AuthorisationEndpointTest {
 
     User user = getUser(UserGroupAuthorisedActivityType.CREATE_SURVEY, null);
 
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
 
     // First, check that user has permission when no survey is specified
     Set<UserGroupAuthorisedActivityType> authorisedActivities =
@@ -70,7 +70,7 @@ public class AuthorisationEndpointTest {
   public void testGetAuthActivitiesUserUnknownToRMException() {
     // When, then throws
 
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.empty());
 
     RuntimeException thrown =
         assertThrows(
@@ -87,7 +87,7 @@ public class AuthorisationEndpointTest {
 
     User user = getUser(UserGroupAuthorisedActivityType.SUPER_USER, null);
 
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
 
     // First, check that user has super user permissions when no survey is specified
     Set<UserGroupAuthorisedActivityType> authorisedActivities =
@@ -110,7 +110,7 @@ public class AuthorisationEndpointTest {
     survey.setId(UUID.randomUUID());
     User user = getUser(UserGroupAuthorisedActivityType.CREATE_COLLECTION_EXERCISE, survey);
 
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
 
     // First, check that user has permission on the specific survey
     Set<UserGroupAuthorisedActivityType> authorisedActivities =
@@ -140,7 +140,7 @@ public class AuthorisationEndpointTest {
     survey.setId(UUID.randomUUID());
     User user = getUser(UserGroupAuthorisedActivityType.SUPER_USER, survey);
 
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
 
     // First, check that the user has all permissions on the specific survey
     Set<UserGroupAuthorisedActivityType> authorisedActivities =
