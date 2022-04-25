@@ -2,7 +2,7 @@
 describe('Happy happy survey', () => {
     it('Creates a Survey', () => {
         // Navigates to url
-        cy.visit('http://localhost:7777/createsurvey')
+        cy.visit('/createsurvey')
 
         // Get Unique survey name, to test for later
         var surveyName = "Cypress Test" + new Date().toString();
