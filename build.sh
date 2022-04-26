@@ -5,11 +5,10 @@ rm -r ui/build/* || true
 cd ui
 npm install
 
-# Just removed for frontend
-#if ! npx npx eslint .; then
-#  echo "ESLint found issues"
-#  exit 1
-#fi
+if ! npx npx eslint .; then
+  echo "ESLint found issues"
+  exit 1
+fi
 
 npm run build
 cd ..

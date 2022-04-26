@@ -7,4 +7,3 @@ ui/build
 ui/node_modules
 *.iml
 .vscode/launch.json
-*.mp4
