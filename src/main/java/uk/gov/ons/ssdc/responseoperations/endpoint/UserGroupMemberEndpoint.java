@@ -60,7 +60,7 @@ public class UserGroupMemberEndpoint {
                         HttpStatus.BAD_REQUEST, String.format("Group %s not found", groupId)));
 
     if (group.getAdmins().stream()
-        .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
+        .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equalsIgnoreCase(userEmail))) {
       throw new ResponseStatusException(
           HttpStatus.FORBIDDEN,
           String.format("User %s not an admin of %s", userEmail, group.getName()));
@@ -85,7 +85,7 @@ public class UserGroupMemberEndpoint {
                         String.format("Did not find groupMemberId %s", groupMemberId)));
 
     if (userGroupMember.getGroup().getAdmins().stream()
-        .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
+        .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equalsIgnoreCase(userEmail))) {
       throw new ResponseStatusException(
           HttpStatus.FORBIDDEN,
           String.format(
@@ -126,7 +126,7 @@ public class UserGroupMemberEndpoint {
                             userGroupMemberDto.getGroupId())));
 
     if (group.getAdmins().stream()
-        .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equals(userEmail))) {
+        .noneMatch(groupAdmin -> groupAdmin.getUser().getEmail().equalsIgnoreCase(userEmail))) {
       // If you're not admin of this group, you have to be super user
       userIdentity.checkGlobalUserPermission(userEmail, UserGroupAuthorisedActivityType.SUPER_USER);
     }

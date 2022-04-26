@@ -46,7 +46,7 @@ class UserGroupEndpointTest {
     userGroupAdmin.setGroup(userGroup);
     List<UserGroupAdmin> userGroupList = List.of(userGroupAdmin);
 
-    when(userGroupAdminRepository.findByUserEmail(anyString())).thenReturn(userGroupList);
+    when(userGroupAdminRepository.findByUserEmailIgnoreCase(anyString())).thenReturn(userGroupList);
 
     mockMvc
         .perform(
@@ -59,6 +59,6 @@ class UserGroupEndpointTest {
         .andExpect(jsonPath("$[0].id", is(userGroup.getId().toString())))
         .andExpect(jsonPath("$[0].name", is(userGroup.getName())));
 
-    verify(userGroupAdminRepository).findByUserEmail("nice@email.com");
+    verify(userGroupAdminRepository).findByUserEmailIgnoreCase("nice@email.com");
   }
 }

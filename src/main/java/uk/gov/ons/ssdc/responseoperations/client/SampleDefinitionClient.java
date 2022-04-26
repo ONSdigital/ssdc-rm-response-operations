@@ -28,17 +28,21 @@ public class SampleDefinitionClient {
   private String healthSampleDefinitionUrl;
 
   public ColumnValidator[] getColumnValidatorsForSurveyType(SurveyType surveyType) {
-    String sampleDefintionUrll = getSampleDefinitionUrlForSurveyType(surveyType);
+    String sampleDefinitionUrl = getSampleDefinitionUrlForSurveyType(surveyType);
 
     try {
-      URL url = new URL(sampleDefintionUrll);
+      URL url = new URL(sampleDefinitionUrl);
       return OBJECT_MAPPER.readValue(url, ColumnValidator[].class);
     } catch (Exception e) {
       log.error(
           String.format(
               "Failed to successfully get ColumnValidator[] from %s.  Message: %s",
-              sampleDefintionUrll, e.getMessage()));
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot get Sample Definition");
+              sampleDefinitionUrl, e.getMessage()));
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST,
+          String.format(
+              "Cannot get column validators for sampleDefinitionUrl: %s", sampleDefinitionUrl),
+          e);
     }
   }
 

@@ -22,7 +22,7 @@ public class UserGroupEndpoint {
 
   @GetMapping("/thisUserAdminGroups")
   public List<UserGroupDto> getUserAdminGroups(@RequestAttribute("userEmail") String userEmail) {
-    return userGroupAdminRepository.findByUserEmail(userEmail).stream()
+    return userGroupAdminRepository.findByUserEmailIgnoreCase(userEmail).stream()
         .map(UserGroupAdmin::getGroup)
         .map(this::mapDto)
         .collect(Collectors.toList());

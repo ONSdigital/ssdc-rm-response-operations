@@ -48,7 +48,7 @@ public class UserIdentity {
 
   public void checkUserPermission(
       String userEmail, Survey survey, UserGroupAuthorisedActivityType activity) {
-    if (dummyUserIdentityAllowed && userEmail.equals(dummySuperUserIdentity)) {
+    if (dummyUserIdentityAllowed && userEmail.equalsIgnoreCase(dummySuperUserIdentity)) {
       // Dummy test super user is fully authorised, bypassing all security
       // This is **STRICTLY** for ease of dev/testing in non-production environments
       return;
@@ -56,7 +56,7 @@ public class UserIdentity {
 
     User user =
         userRepository
-            .findByEmail(userEmail)
+            .findByEmailIgnoreCase(userEmail)
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
@@ -89,7 +89,7 @@ public class UserIdentity {
   public void checkGlobalUserPermission(
       String userEmail, UserGroupAuthorisedActivityType activity) {
 
-    if (dummyUserIdentityAllowed && userEmail.equals(dummySuperUserIdentity)) {
+    if (dummyUserIdentityAllowed && userEmail.equalsIgnoreCase(dummySuperUserIdentity)) {
       // Dummy test super user is fully authorised, bypassing all security
       // This is **STRICTLY** for ease of dev/testing in non-production environments
       return;
@@ -97,7 +97,7 @@ public class UserIdentity {
 
     User user =
         userRepository
-            .findByEmail(userEmail)
+            .findByEmailIgnoreCase(userEmail)
             .orElseThrow(
                 () ->
                     new ResponseStatusException(

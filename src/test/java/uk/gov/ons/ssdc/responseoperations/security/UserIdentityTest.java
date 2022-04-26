@@ -48,7 +48,7 @@ class UserIdentityTest {
 
     User user = getUser(UserGroupAuthorisedActivityType.CREATE_SURVEY, null);
 
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
 
     // First check the allowed permission
     underTest.checkGlobalUserPermission(
@@ -74,7 +74,7 @@ class UserIdentityTest {
 
     User user = getUser(UserGroupAuthorisedActivityType.SUPER_USER, null);
 
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
 
     for (UserGroupAuthorisedActivityType activityType : UserGroupAuthorisedActivityType.values()) {
       underTest.checkGlobalUserPermission("test@test.com", activityType);
@@ -87,7 +87,7 @@ class UserIdentityTest {
     survey.setId(UUID.randomUUID());
     User user = getUser(UserGroupAuthorisedActivityType.CREATE_COLLECTION_EXERCISE, survey);
 
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
 
     // First, check that user has permission on the specific survey
     underTest.checkUserPermission(
@@ -110,7 +110,7 @@ class UserIdentityTest {
     survey.setId(UUID.randomUUID());
     User user = getUser(UserGroupAuthorisedActivityType.SUPER_USER, survey);
 
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
 
     // First, check that the user has all permissions on the specific survey
     for (UserGroupAuthorisedActivityType activityType : UserGroupAuthorisedActivityType.values()) {
