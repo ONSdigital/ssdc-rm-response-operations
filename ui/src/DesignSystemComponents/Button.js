@@ -11,7 +11,12 @@ function Button(props) {
 
   return (
     <>
-      <button type={buttonType} className={className} onClick={props.onClick}>
+      <button
+        id={props.id}
+        type={buttonType}
+        className={className}
+        onClick={props.onClick}
+      >
         <span className="ons-btn__inner">{props.children}</span>
       </button>
     </>
@@ -24,6 +29,7 @@ Button.propTypes = {
   type: PropTypes.string,
   onClick: PropTypes.func,
   children: PropTypes.string.isRequired,
+  id: PropTypes.string,
 };
 
 export default Button;
