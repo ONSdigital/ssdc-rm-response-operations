@@ -1,15 +1,9 @@
-FROM openjdk:17-slim
-CMD ["/usr/local/openjdk-17/bin/java", "-jar", "/opt/ssdc-rm-response-operations.jar"]
+FROM eclipse-temurin:17-jdk-alpine
 
-RUN groupadd --gid 999 response-operations && \
-    useradd --create-home --system --uid 999 --gid response-operations response-operations
+CMD ["java", "-jar", "/opt/ssdc-rm-response-operations.jar"]
 
-RUN apt-get update && \
-apt-get -yq install curl && \
-apt-get -yq clean && \
-rm -rf /var/lib/apt/lists/*
-
+RUN addgroup --gid 1000 response-operations && \
+    adduser --system --uid 1000 response-operations response-operations
 USER response-operations
 
-ARG JAR_FILE=ssdc-rm-response-operations*.jar
-COPY target/$JAR_FILE /opt/ssdc-rm-response-operations.jar
+COPY target/ssdc-rm-response-operations*.jar /opt/ssdc-rm-response-operations.jar
