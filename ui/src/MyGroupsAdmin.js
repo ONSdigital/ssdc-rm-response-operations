@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
 import Table from "./DesignSystemComponents/Table";
 import TableHead from "./DesignSystemComponents/TableHead";
@@ -41,7 +40,6 @@ function MyGroupsAdmin() {
       <Helmet>
         <title>My Admin Groups</title>
       </Helmet>
-      <Announcer text={"My Admin Groups"} />
       <Link to="/">← Back to home</Link>
       <h2>My Admin Groups</h2>
 

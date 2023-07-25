@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
 import PropTypes from "prop-types";
 
@@ -20,7 +19,6 @@ function ViewSurvey(props) {
         <title>View Survey</title>
       </Helmet>
       <h2>View Survey</h2>
-      <Announcer text={"View Survey"} />
       {survey && (
         <p data-testid="surveyName">
           <b>Survey name</b>: {survey.name}

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
 import Button from "./DesignSystemComponents/Button";
 import TextInput from "./DesignSystemComponents/TextInput";
@@ -240,7 +239,6 @@ function CreateExportFileTemplate() {
 
     const errors = formSummaryErrors.map((formError, index) => (
       <li key={index} className="ons-list__item">
-        <Announcer text={formError.message} />
         <a
           className="ons-list__link js-inpagelink"
           // MUST use href in-page links for accessibility
