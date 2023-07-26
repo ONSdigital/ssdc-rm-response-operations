@@ -26,7 +26,7 @@ it("renders not found", async () => {
       <Router>
         <NotFound />
       </Router>,
-      container
+      container,
     );
   });
 

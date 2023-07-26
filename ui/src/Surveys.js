@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
 import Table from "./DesignSystemComponents/Table";
 import TableHead from "./DesignSystemComponents/TableHead";
@@ -36,10 +35,9 @@ function Surveys(props) {
       <Helmet>
         <title>Surveys</title>
       </Helmet>
-      {!props.flashMessageUntil && <Announcer text={"Surveys"} />}
+      {!props.flashMessageUntil}
       {props.flashMessageUntil > Date.now() && (
         <>
-          <Announcer text={"New survey has been created"} />
           <SuccessPanel>New survey has been created</SuccessPanel>
           <br />
         </>

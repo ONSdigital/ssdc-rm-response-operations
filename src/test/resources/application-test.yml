@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:16436/postgres
+    url: jdbc:postgresql://localhost:16436/rm
 
 dummyuseridentity: test@test.com
 dummyuseridentity-allowed: true # This ** MUST ALWAYS!! ** be false in production!!!

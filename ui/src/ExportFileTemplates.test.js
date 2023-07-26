@@ -31,7 +31,7 @@ it("renders export file template data", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeExportFileTemplates),
-    })
+    }),
   );
 
   // Use the asynchronous version of act to apply resolved promises
@@ -40,7 +40,7 @@ it("renders export file template data", async () => {
       <Router>
         <ExportFileTemplates authorisedActivities={[]} />
       </Router>,
-      container
+      container,
     );
   });
 
@@ -48,7 +48,7 @@ it("renders export file template data", async () => {
   expect(packCodeElement).toBeInTheDocument();
 
   const exportFileDestinationElement = screen.getByText(
-    /Test Export File Destination/i
+    /Test Export File Destination/i,
   );
   expect(exportFileDestinationElement).toBeInTheDocument();
 

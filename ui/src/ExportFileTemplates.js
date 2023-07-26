@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Announcer from "react-a11y-announcer";
 import { Helmet } from "react-helmet";
 import Table from "./DesignSystemComponents/Table";
 import TableHead from "./DesignSystemComponents/TableHead";
@@ -27,7 +26,7 @@ function ExportFileTemplates(props) {
             <TableCell>{exportFileTemplate.exportFileDestination}</TableCell>
             <TableCell>{JSON.stringify(exportFileTemplate.template)}</TableCell>
           </TableRow>
-        )
+        ),
       );
       setTableRows(tableRows);
     }
@@ -39,10 +38,9 @@ function ExportFileTemplates(props) {
       <Helmet>
         <title>View Export File Templates</title>
       </Helmet>
-      {!props.flashMessageUntil && <Announcer text={"Export File Templates"} />}
+      {!props.flashMessageUntil}
       {props.flashMessageUntil > Date.now() && (
         <>
-          <Announcer text={"New export file Template has been created"} />
           <SuccessPanel>New export file template has been created</SuccessPanel>
           <br />
         </>

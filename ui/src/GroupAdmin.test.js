@@ -31,7 +31,7 @@ it("renders Users in group", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeUsers),
-    })
+    }),
   );
 
   // Use the asynchronous version of act to apply resolved promises
@@ -40,7 +40,7 @@ it("renders Users in group", async () => {
       <Router>
         <GroupAdmin groupId={uuid()} groupName="abc" />
       </Router>,
-      container
+      container,
     );
   });
 

@@ -29,7 +29,7 @@ it("renders survey data", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeSurveys),
-    })
+    }),
   );
 
   // Use the asynchronous version of act to apply resolved promises
@@ -38,7 +38,7 @@ it("renders survey data", async () => {
       <Router>
         <Surveys authorisedActivities={[]} />
       </Router>,
-      container
+      container,
     );
   });
 

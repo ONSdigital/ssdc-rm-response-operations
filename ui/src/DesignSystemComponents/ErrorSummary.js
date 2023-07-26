@@ -1,4 +1,3 @@
-import Announcer from "react-a11y-announcer";
 import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 
@@ -11,7 +10,6 @@ const ErrorSummary = forwardRef((props, ref) => (
     tabIndex="-1"
     className="ons-panel ons-panel--error"
   >
-    <Announcer text={"Error"} />
     <div className="ons-panel__header">
       <h2 data-qa="ons-error-header" className="ons-panel__title ons-u-fs-r--b">
         {props.errorSummary.length === 1

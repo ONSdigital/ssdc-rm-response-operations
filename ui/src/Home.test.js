@@ -28,7 +28,7 @@ it("renders home page", async () => {
           authorisedActivities={["LIST_SURVEYS", "LIST_EXPORT_FILE_TEMPLATES"]}
         />
       </Router>,
-      container
+      container,
     );
   });
 
@@ -36,7 +36,7 @@ it("renders home page", async () => {
   expect(surveysLinkElement).toBeInTheDocument();
 
   const exportFileTemplatesLinkElement = screen.getByText(
-    /Export File Templates/i
+    /Export File Templates/i,
   );
   expect(exportFileTemplatesLinkElement).toBeInTheDocument();
 });

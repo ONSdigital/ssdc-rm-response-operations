@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import Announcer from "react-a11y-announcer";
 import { Link } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
@@ -16,7 +15,7 @@ function DeleteUserFromGroupConfirmation(props) {
 
   function cancel() {
     history.push(
-      `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+      `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`,
     );
   }
 
@@ -37,7 +36,7 @@ function DeleteUserFromGroupConfirmation(props) {
           props.groupName
         }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${
           Date.now() + 5000
-        }`
+        }`,
       );
     } else {
       // we need to decide on a standard - unexpected backend error strategy/page?
@@ -58,7 +57,6 @@ function DeleteUserFromGroupConfirmation(props) {
       <Helmet>
         <title>Remove User From Group</title>
       </Helmet>
-      <Announcer text={"User Removal Confirmation Page"} />
       <Link
         to={`/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`}
       >

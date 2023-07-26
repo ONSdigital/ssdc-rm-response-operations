@@ -30,7 +30,7 @@ it("renders My admin groups", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeMyGroups),
-    })
+    }),
   );
 
   // Use the asynchronous version of act to apply resolved promises
@@ -39,7 +39,7 @@ it("renders My admin groups", async () => {
       <Router>
         <MyGroupsAdmin />
       </Router>,
-      container
+      container,
     );
   });
 

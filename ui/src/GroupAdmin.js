@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import Announcer from "react-a11y-announcer";
 import Button from "./DesignSystemComponents/Button";
 import Table from "./DesignSystemComponents/Table";
 import TableHead from "./DesignSystemComponents/TableHead";
@@ -20,21 +19,21 @@ function GroupAdmin(props) {
 
   function openRemoveUserPage(groupUser) {
     history.push(
-      `deleteuserfromgroupconfirmation?groupUserId=${groupUser.id}&groupName=${props.groupName}&groupId=${props.groupId}&userEmail=${groupUser.userEmail}`
+      `deleteuserfromgroupconfirmation?groupUserId=${groupUser.id}&groupName=${props.groupName}&groupId=${props.groupId}&userEmail=${groupUser.userEmail}`,
     );
   }
 
   function openAddUserPage() {
     history.push(
       `addUserToGroup?groupName=${props.groupName}&groupId=${props.groupId}`,
-      { existingEmailsInGroup: existingEmailsInGroup }
+      { existingEmailsInGroup: existingEmailsInGroup },
     );
   }
 
   useEffect(() => {
     async function fetchAllUsersInGroup() {
       const allGroupMembersResponse = await fetch(
-        `/api/userGroupMembers/findByGroup/${props.groupId}`
+        `/api/userGroupMembers/findByGroup/${props.groupId}`,
       );
       const allUsersInGroup = await allGroupMembersResponse.json();
 
@@ -65,14 +64,11 @@ function GroupAdmin(props) {
         <title>View Group</title>
       </Helmet>
       <Link to="/mygroupsadmin">← Back to groups</Link>
-      {!props.flashMessageUntil && (
-        <Announcer text={`Users in group: ${props.groupName}`} />
-      )}
+      {!props.flashMessageUntil}
       {props.flashMessageUntil > Date.now() && (
         <>
           {props.deletedUserEmail && (
             <>
-              <Announcer text={`Removed user ${props.deletedUserEmail}`} />
               <br />
               <br />
               <SuccessPanel>Removed user {props.deletedUserEmail}</SuccessPanel>
@@ -81,7 +77,6 @@ function GroupAdmin(props) {
           )}
           {props.addedUserEmail && (
             <>
-              <Announcer text={`Added user ${props.addedUserEmail}`} />
               <br />
               <br />
               <SuccessPanel>Added user {props.addedUserEmail}</SuccessPanel>
