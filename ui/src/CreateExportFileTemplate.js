@@ -22,7 +22,7 @@ function CreateExportFileTemplate() {
     setExportFileTemplateInputErrorSummary,
   ] = useState([]);
   const [packCodeInputErrorSummary, setPackCodeInputErrorSummary] = useState(
-    []
+    [],
   );
   const [supplierInputErrorSummary, setexportFileDestinationErrorSummary] =
     useState([]);
@@ -116,7 +116,7 @@ function CreateExportFileTemplate() {
 
   function buildServerSideErrorsMessagesForType(
     error,
-    element_to_anchor_to_id
+    element_to_anchor_to_id,
   ) {
     let errorMessages = [];
 
@@ -145,7 +145,7 @@ function CreateExportFileTemplate() {
 
     const packCodeErrorMessages = buildServerSideErrorsMessagesForType(
       errorJson.packCodeErrors,
-      printPackCodeInput.current.id
+      printPackCodeInput.current.id,
     );
 
     if (packCodeErrorMessages.length > 0) {
@@ -156,27 +156,27 @@ function CreateExportFileTemplate() {
     const exportFileTemplateErrorMessages =
       buildServerSideErrorsMessagesForType(
         errorJson.templateErrors,
-        exportFileTemplateInput.current.id
+        exportFileTemplateInput.current.id,
       );
 
     if (exportFileTemplateErrorMessages.length > 0) {
       setExportFileTemplateInputErrorSummary(
-        makePanelErrors(exportFileTemplateErrorMessages)
+        makePanelErrors(exportFileTemplateErrorMessages),
       );
       Array.prototype.push.apply(
         allErrorMessages,
-        exportFileTemplateErrorMessages
+        exportFileTemplateErrorMessages,
       );
     }
 
     const supplierErrorMessages = buildServerSideErrorsMessagesForType(
       errorJson.destinationErrors,
-      exportFileDestinationInput.current.id
+      exportFileDestinationInput.current.id,
     );
 
     if (supplierErrorMessages.length > 0) {
       setexportFileDestinationErrorSummary(
-        makePanelErrors(supplierErrorMessages)
+        makePanelErrors(supplierErrorMessages),
       );
       Array.prototype.push.apply(allErrorMessages, supplierErrorMessages);
     }
@@ -187,7 +187,7 @@ function CreateExportFileTemplate() {
   function validateExportFileTemplateForm() {
     const exportFileTemplateInputErrors = getExportFileTemplateInputErrors();
     setExportFileTemplateInputErrorSummary(
-      makePanelErrors(exportFileTemplateInputErrors)
+      makePanelErrors(exportFileTemplateInputErrors),
     );
 
     return exportFileTemplateInputErrors;
@@ -209,7 +209,7 @@ function CreateExportFileTemplate() {
 
     if (response.ok) {
       history.push(
-        `/exportfiletemplates?flashMessageUntil=${Date.now() + 5000}`
+        `/exportfiletemplates?flashMessageUntil=${Date.now() + 5000}`,
       );
       return [];
     }

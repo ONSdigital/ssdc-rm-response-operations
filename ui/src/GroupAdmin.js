@@ -19,21 +19,21 @@ function GroupAdmin(props) {
 
   function openRemoveUserPage(groupUser) {
     history.push(
-      `deleteuserfromgroupconfirmation?groupUserId=${groupUser.id}&groupName=${props.groupName}&groupId=${props.groupId}&userEmail=${groupUser.userEmail}`
+      `deleteuserfromgroupconfirmation?groupUserId=${groupUser.id}&groupName=${props.groupName}&groupId=${props.groupId}&userEmail=${groupUser.userEmail}`,
     );
   }
 
   function openAddUserPage() {
     history.push(
       `addUserToGroup?groupName=${props.groupName}&groupId=${props.groupId}`,
-      { existingEmailsInGroup: existingEmailsInGroup }
+      { existingEmailsInGroup: existingEmailsInGroup },
     );
   }
 
   useEffect(() => {
     async function fetchAllUsersInGroup() {
       const allGroupMembersResponse = await fetch(
-        `/api/userGroupMembers/findByGroup/${props.groupId}`
+        `/api/userGroupMembers/findByGroup/${props.groupId}`,
       );
       const allUsersInGroup = await allGroupMembersResponse.json();
 

@@ -24,7 +24,7 @@ it("renders the app", async () => {
     Promise.resolve({
       ok: true,
       json: () => Promise.resolve(fakeAuth),
-    })
+    }),
   );
 
   // Use the asynchronous version of act to apply resolved promises

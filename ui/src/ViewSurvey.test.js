@@ -27,7 +27,7 @@ it("renders survey data", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeSurvey),
-    })
+    }),
   );
 
   // Use the asynchronous version of act to apply resolved promises

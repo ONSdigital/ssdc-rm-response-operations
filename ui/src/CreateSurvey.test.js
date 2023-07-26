@@ -28,7 +28,7 @@ it("renders create survey", async () => {
   jest.spyOn(global, "fetch").mockImplementationOnce(() =>
     Promise.resolve({
       json: () => Promise.resolve(surveyTypes),
-    })
+    }),
   );
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
@@ -36,7 +36,7 @@ it("renders create survey", async () => {
       <Router>
         <CreateSurvey />
       </Router>,
-      container
+      container,
     );
   });
 
@@ -52,13 +52,13 @@ it("Creating a survey called Test_survey", async () => {
   jest.spyOn(global, "fetch").mockImplementationOnce(() =>
     Promise.resolve({
       json: () => Promise.resolve(surveyTypes),
-    })
+    }),
   );
 
   // Mocking the second fetch to return a response ok for the post
   const fetchResponse = fetchMock.mockResponse(
     JSON.stringify({ statusText: "success" }),
-    { status: 200 }
+    { status: 200 },
   );
 
   // Use the asynchronous version of act to apply resolved promises
@@ -67,7 +67,7 @@ it("Creating a survey called Test_survey", async () => {
       <Router>
         <CreateSurvey />
       </Router>,
-      container
+      container,
     );
   });
 
@@ -91,6 +91,6 @@ it("Creating a survey called Test_survey", async () => {
   expect(global.window.location.pathname).toEqual("/surveys");
   expect(global.window.location.search).toContain("?flashMessageUntil");
   expect(String(fetchResponse.mock.calls[1][1].body)).toEqual(
-    expectedPostRequest
+    expectedPostRequest,
   );
 });

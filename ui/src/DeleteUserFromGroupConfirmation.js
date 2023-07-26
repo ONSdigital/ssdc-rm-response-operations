@@ -15,7 +15,7 @@ function DeleteUserFromGroupConfirmation(props) {
 
   function cancel() {
     history.push(
-      `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+      `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`,
     );
   }
 
@@ -36,7 +36,7 @@ function DeleteUserFromGroupConfirmation(props) {
           props.groupName
         }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${
           Date.now() + 5000
-        }`
+        }`,
       );
     } else {
       // we need to decide on a standard - unexpected backend error strategy/page?

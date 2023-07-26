@@ -32,7 +32,7 @@ it("renders user to delete", async () => {
           groupUserId={uuid()}
         />
       </Router>,
-      container
+      container,
     );
   });
 

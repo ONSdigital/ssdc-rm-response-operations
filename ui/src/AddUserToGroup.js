@@ -58,8 +58,8 @@ function AddUserToGroup(props) {
   function cancel() {
     history.push(
       encodeURI(
-        `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
-      )
+        `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`,
+      ),
     );
   }
 
@@ -68,7 +68,7 @@ function AddUserToGroup(props) {
   // Check it's in out list and get the UserId
   function checkEmailExistsAndGetUserId(userInput) {
     var matchingUser = userList[0].users.filter(
-      (user) => user.email.toLowerCase() === userInput.toLowerCase()
+      (user) => user.email.toLowerCase() === userInput.toLowerCase(),
     );
 
     if (matchingUser.length === 0) {
@@ -82,7 +82,7 @@ function AddUserToGroup(props) {
     return (
       location.state.existingEmailsInGroup.filter(
         (existingEmail) =>
-          existingEmail.toLowerCase() === newEmail.toLowerCase()
+          existingEmail.toLowerCase() === newEmail.toLowerCase(),
       ).length > 0
     );
   }
@@ -131,8 +131,8 @@ function AddUserToGroup(props) {
         encodeURI(
           `/groupadmin?groupId=${props.groupId}&groupName=${
             props.groupName
-          }&addedUserEmail=${value}&flashMessageUntil=${Date.now() + 5000}`
-        )
+          }&addedUserEmail=${value}&flashMessageUntil=${Date.now() + 5000}`,
+        ),
       );
     } else {
       setErrorSummary(["Failed to add user"]);
@@ -158,7 +158,7 @@ function AddUserToGroup(props) {
         return {
           title: section.title,
           users: section.users.filter((user) =>
-            user.email.toLowerCase().includes(escapedValue)
+            user.email.toLowerCase().includes(escapedValue),
           ),
         };
       })
@@ -177,7 +177,7 @@ function AddUserToGroup(props) {
 
     var boldedText = suggestion.email.replace(
       value,
-      "<strong>" + value + "</strong>"
+      "<strong>" + value + "</strong>",
     );
     return <>{Parser(boldedText)}</>;
   }
@@ -226,7 +226,7 @@ function AddUserToGroup(props) {
         </Helmet>
         <Link
           to={encodeURI(
-            `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`
+            `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`,
           )}
         >
           ← Back to group admin

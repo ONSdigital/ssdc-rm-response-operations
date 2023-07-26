@@ -26,7 +26,7 @@ function ExportFileTemplates(props) {
             <TableCell>{exportFileTemplate.exportFileDestination}</TableCell>
             <TableCell>{JSON.stringify(exportFileTemplate.template)}</TableCell>
           </TableRow>
-        )
+        ),
       );
       setTableRows(tableRows);
     }
