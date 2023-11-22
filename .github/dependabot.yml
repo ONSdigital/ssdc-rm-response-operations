@@ -12,3 +12,4 @@ updates:
       interval: "daily"
     labels:
       - "patch"
+      - "dependencies"
