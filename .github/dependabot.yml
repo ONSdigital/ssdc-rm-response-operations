@@ -6,6 +6,7 @@ updates:
       interval: "daily"
     labels:
       - "patch"
+      - "dependencies"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
