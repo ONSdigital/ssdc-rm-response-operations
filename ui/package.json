@@ -21,6 +21,9 @@
     "uuidv4": "^6.2.12",
     "web-vitals": "^1.1.2"
   },
+  "overrides": {
+    "nth-check@1.x": "2.0.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
