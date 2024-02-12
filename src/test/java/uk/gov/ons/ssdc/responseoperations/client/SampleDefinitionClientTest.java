@@ -70,7 +70,7 @@ class SampleDefinitionClientTest {
             () -> underTest.getColumnValidatorsForSurveyType(SurveyType.SOCIAL));
 
     // Then
-    Assertions.assertThat(thrown.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+    Assertions.assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     Assertions.assertThat(thrown.getReason())
         .isEqualTo("Cannot get column validators for sampleDefinitionUrl: a-malformed-url");
   }

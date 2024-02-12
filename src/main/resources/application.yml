@@ -21,7 +21,7 @@ spring:
     hikari:
       maximumPoolSize: 50
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
     properties:
@@ -57,10 +57,11 @@ management:
     tags:
       application: Response Operations
       pod: ${HOSTNAME}
-    export:
-      stackdriver:
-        project-id: dummy-project-id
+  stackdriver:
+    metrics:
+      export:
         enabled: false
+        project-id: dummy-project-id
         step: PT1M
 
 iapaudience: DUMMY

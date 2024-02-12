@@ -62,7 +62,7 @@ class UserIdentityTest {
                 ResponseStatusException.class,
                 () -> underTest.checkGlobalUserPermission("test@test.com", activityType));
 
-        assertThat(thrown.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+        assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
       }
     }
   }
@@ -100,7 +100,7 @@ class UserIdentityTest {
               ResponseStatusException.class,
               () -> underTest.checkUserPermission("test@test.com", new Survey(), activityType));
 
-      assertThat(thrown.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+      assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
   }
 
@@ -124,7 +124,7 @@ class UserIdentityTest {
               ResponseStatusException.class,
               () -> underTest.checkUserPermission("test@test.com", new Survey(), activityType));
 
-      assertThat(thrown.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+      assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
   }
 
@@ -137,7 +137,7 @@ class UserIdentityTest {
                 underTest.checkUserPermission(
                     "test@test.com", new Survey(), UserGroupAuthorisedActivityType.CREATE_SURVEY));
 
-    assertThat(thrown.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+    assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     assertThat(thrown.getMessage())
         .isEqualTo("403 FORBIDDEN \"User test@test.com not known to RM\"");
   }
@@ -151,7 +151,7 @@ class UserIdentityTest {
                 underTest.checkGlobalUserPermission(
                     "test@test.com", UserGroupAuthorisedActivityType.CREATE_SURVEY));
 
-    assertThat(thrown.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+    assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     assertThat(thrown.getMessage())
         .isEqualTo("403 FORBIDDEN \"User test@test.com not known to RM\"");
   }

@@ -171,7 +171,7 @@ public class AuthorisationEndpointTest {
             ResponseStatusException.class,
             () -> underTest.getAuthorisedActivities(Optional.empty(), "test@test.com"));
 
-    assertThat(thrown.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+    assertThat(thrown.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
   }
 
   private User getUser(UserGroupAuthorisedActivityType authorisedActivity, Survey survey) {
