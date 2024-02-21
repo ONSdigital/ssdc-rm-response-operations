@@ -9,7 +9,6 @@
     "@testing-library/user-event": "^12.8.3",
     "html-react-parser": "^1.4.5",
     "install": "^0.13.0",
-    "npm": "^8.3.1",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-autosuggest": "^10.1.0",
@@ -20,6 +19,13 @@
     "react-scripts": "^5.0.0",
     "uuidv4": "^6.2.12",
     "web-vitals": "^1.1.2"
+  },
+  "overrides": {
+    "nth-check@1.x": "2.0.1",
+    "postcss": "^8.4.31"
+  },
+  "engines": {
+    "npm": "^10.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
