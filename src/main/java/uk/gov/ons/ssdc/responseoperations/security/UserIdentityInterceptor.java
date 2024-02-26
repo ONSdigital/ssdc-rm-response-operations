@@ -1,7 +1,7 @@
 package uk.gov.ons.ssdc.responseoperations.security;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 public class UserIdentityInterceptor implements HandlerInterceptor {
