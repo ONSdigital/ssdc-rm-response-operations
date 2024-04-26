@@ -1,9 +1,9 @@
 package uk.gov.ons.ssdc.responseoperations.security;
 
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
 import com.google.api.client.json.webtoken.JsonWebToken;
 import com.google.auth.oauth2.TokenVerifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,10 @@ public class UserIdentity {
     this.dummySuperUserIdentity = dummySuperUserIdentity;
 
     if (dummyUserIdentityAllowed) {
-      log.error("*** SECURITY ALERT *** IF YOU SEE THIS IN PRODUCTION, SHUT DOWN IMMEDIATELY!!!");
+      log.atError()
+          .setMessage(
+              "*** SECURITY ALERT *** IF YOU SEE THIS IN PRODUCTION, SHUT DOWN IMMEDIATELY!!!")
+          .log();
     }
   }
 
