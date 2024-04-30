@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   Link,
   useLocation,
@@ -226,63 +226,75 @@ function QueryRouting(props) {
   let query = useQuery();
 
   return (
-    <Switch>
-      <Route exact path="/">
-        <Home authorisedActivities={props.authorisedActivities} />
-      </Route>
-      <Route path="/surveys">
-        <Surveys
-          authorisedActivities={props.authorisedActivities}
-          flashMessageUntil={query.get("flashMessageUntil")}
-        />
-      </Route>
-      <Route path="/createsurvey">
-        <CreateSurvey />
-      </Route>
-      <Route path="/viewsurvey">
-        <ViewSurvey surveyId={getString("surveyId", query)} />
-      </Route>
-      <Route path="/exportfiletemplates">
-        <ExportFileTemplates
-          authorisedActivities={props.authorisedActivities}
-          flashMessageUntil={query.get("flashMessageUntil")}
-        />
-      </Route>
-      <Route path="/createexportfiletemplate">
-        <CreateExportFileTemplate />
-      </Route>
-      <Route path="/mygroupsadmin">
-        <MyGroupsAdmin />
-      </Route>
-      <Route path="/groupadmin">
-        <GroupAdmin
-          groupId={getString("groupId", query)}
-          groupName={getString("groupName", query)}
-          flashMessageUntil={query.get("flashMessageUntil")}
-          deletedUserEmail={getString("deletedUserEmail", query)}
-          addedUserEmail={getString("addedUserEmail", query)}
-        />
-      </Route>
-      <Route path="/deleteuserfromgroupconfirmation">
-        <DeleteUserFromGroupConfirmation
-          groupUserId={getString("groupUserId", query)}
-          groupName={getString("groupName", query)}
-          groupId={getString("groupId", query)}
-          userEmail={getString("userEmail", query)}
-        />
-      </Route>
-      <Route path="/addUsertogroup">
-        <AddUserToGroup
-          groupUserId={getString("groupUserId", query)}
-          groupName={getString("groupName", query)}
-          groupId={getString("groupId", query)}
-          userEmail={getString("userEmail", query)}
-        />
-      </Route>
-      <Route path="*">
-        <NotFound />
-      </Route>
-    </Switch>
+    <Routes>
+      <Route
+        path="/"
+        element={<Home authorisedActivities={props.authorisedActivities} />}
+      />
+      <Route
+        path="/surveys"
+        element={
+          <Surveys
+            authorisedActivities={props.authorisedActivities}
+            flashMessageUntil={query.get("flashMessageUntil")}
+          />
+        }
+      />
+      <Route path="/createsurvey" element={<CreateSurvey />} />
+      <Route
+        path="/viewsurvey"
+        element={<ViewSurvey surveyId={getString("surveyId", query)} />}
+      />
+      <Route
+        path="/exportfiletemplates"
+        element={
+          <ExportFileTemplates
+            authorisedActivities={props.authorisedActivities}
+            flashMessageUntil={query.get("flashMessageUntil")}
+          />
+        }
+      />
+      <Route
+        path="/createexportfiletemplate"
+        element={<CreateExportFileTemplate />}
+      />
+      <Route path="/mygroupsadmin" element={<MyGroupsAdmin />} />
+      <Route
+        path="/groupadmin"
+        element={
+          <GroupAdmin
+            groupId={getString("groupId", query)}
+            groupName={getString("groupName", query)}
+            flashMessageUntil={query.get("flashMessageUntil")}
+            deletedUserEmail={getString("deletedUserEmail", query)}
+            addedUserEmail={getString("addedUserEmail", query)}
+          />
+        }
+      />
+      <Route
+        path="/deleteuserfromgroupconfirmation"
+        element={
+          <DeleteUserFromGroupConfirmation
+            groupUserId={getString("groupUserId", query)}
+            groupName={getString("groupName", query)}
+            groupId={getString("groupId", query)}
+            userEmail={getString("userEmail", query)}
+          />
+        }
+      />
+      <Route
+        path="/addUsertogroup"
+        element={
+          <AddUserToGroup
+            groupUserId={getString("groupUserId", query)}
+            groupName={getString("groupName", query)}
+            groupId={getString("groupId", query)}
+            userEmail={getString("userEmail", query)}
+          />
+        }
+      />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 

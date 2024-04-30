@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Button from "./DesignSystemComponents/Button";
 import TextInput from "./DesignSystemComponents/TextInput";
@@ -12,7 +12,7 @@ function CreateSurvey() {
   const [surveyName, setSurveyName] = useState("");
   const [surveyType, setSurveyType] = useState("");
 
-  let history = useHistory();
+  let navigate = useNavigate();
 
   useEffect(() => {
     async function fetchSurveyTypes() {
@@ -61,7 +61,7 @@ function CreateSurvey() {
     });
 
     if (response.ok) {
-      history.push(`/surveys?flashMessageUntil=${Date.now() + 5000}`);
+      navigate(`/surveys?flashMessageUntil=${Date.now() + 5000}`);
     }
   }
 

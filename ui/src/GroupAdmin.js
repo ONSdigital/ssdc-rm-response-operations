@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Button from "./DesignSystemComponents/Button";
 import Table from "./DesignSystemComponents/Table";
@@ -13,18 +13,18 @@ import PropTypes from "prop-types";
 import ExtraPropTypes from "react-extra-prop-types";
 
 function GroupAdmin(props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   const [userTableRows, setUserTableRowsRows] = useState([]);
   const [existingEmailsInGroup, setExistingEmailsInGroup] = useState([]);
 
   function openRemoveUserPage(groupUser) {
-    history.push(
+    navigate(
       `deleteuserfromgroupconfirmation?groupUserId=${groupUser.id}&groupName=${props.groupName}&groupId=${props.groupId}&userEmail=${groupUser.userEmail}`,
     );
   }
 
   function openAddUserPage() {
-    history.push(
+    navigate(
       `addUserToGroup?groupName=${props.groupName}&groupId=${props.groupId}`,
       { existingEmailsInGroup: existingEmailsInGroup },
     );
