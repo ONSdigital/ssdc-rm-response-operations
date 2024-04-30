@@ -1,10 +1,10 @@
 package uk.gov.ons.ssdc.responseoperations.endpoint;
 
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -94,7 +94,8 @@ public class UserGroupMemberEndpoint {
 
     userGroupMemberRepository.delete(userGroupMember);
 
-    log.with(
+    log.atInfo()
+        .addArgument(
             new AuditLogging(
                 true,
                 userEmail,
@@ -102,12 +103,13 @@ public class UserGroupMemberEndpoint {
                 String.format(
                     "User %s was removed from group %s",
                     userGroupMember.getUser().getEmail(), userGroupMember.getGroup().getName())))
-        .info(
+        .setMessage(
             String.format(
                 "User %s was removed from group %s by %s",
                 userGroupMember.getUser().getEmail(),
                 userGroupMember.getGroup().getName(),
-                userEmail));
+                userEmail))
+        .log();
   }
 
   @PostMapping
@@ -150,7 +152,8 @@ public class UserGroupMemberEndpoint {
 
     userGroupMemberRepository.saveAndFlush(userGroupMember);
 
-    log.with(
+    log.atInfo()
+        .addArgument(
             new AuditLogging(
                 true,
                 userEmail,
@@ -158,12 +161,13 @@ public class UserGroupMemberEndpoint {
                 String.format(
                     "User %s was added to group %s",
                     userGroupMember.getUser().getEmail(), userGroupMember.getGroup().getName())))
-        .info(
+        .setMessage(
             String.format(
                 "User %s was added to group %s by %s",
                 userGroupMember.getUser().getEmail(),
                 userGroupMember.getGroup().getName(),
-                userEmail));
+                userEmail))
+        .log();
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }

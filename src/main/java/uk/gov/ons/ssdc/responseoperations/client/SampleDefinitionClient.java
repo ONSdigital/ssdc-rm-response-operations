@@ -1,9 +1,9 @@
 package uk.gov.ons.ssdc.responseoperations.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.godaddy.logging.Logger;
-import com.godaddy.logging.LoggerFactory;
 import java.net.URL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -34,10 +34,12 @@ public class SampleDefinitionClient {
       URL url = new URL(sampleDefinitionUrl);
       return OBJECT_MAPPER.readValue(url, ColumnValidator[].class);
     } catch (Exception e) {
-      log.error(
-          String.format(
-              "Failed to successfully get ColumnValidator[] from %s.  Message: %s",
-              sampleDefinitionUrl, e.getMessage()));
+      log.atError()
+          .setMessage(
+              String.format(
+                  "Failed to successfully get ColumnValidator[] from %s.  Message: %s",
+                  sampleDefinitionUrl, e.getMessage()))
+          .log();
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST,
           String.format(
