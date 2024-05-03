@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
@@ -7,14 +7,14 @@ import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import PropTypes from "prop-types";
 
 function DeleteUserFromGroupConfirmation(props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let removeAdminFromGroupInProgress = false;
   const [errorSummary, setErrorSummary] = useState([]);
   const errorSummaryTitle = useRef(null);
   const [hasErrors, setHasErrors] = useState(false);
 
   function cancel() {
-    history.push(
+    navigate(
       `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`,
     );
   }
@@ -31,7 +31,7 @@ function DeleteUserFromGroupConfirmation(props) {
     });
 
     if (response.ok) {
-      history.push(
+      navigate(
         `/groupadmin?groupId=${props.groupId}&groupName=${
           props.groupName
         }&deletedUserEmail=${props.userEmail}&flashMessageUntil=${

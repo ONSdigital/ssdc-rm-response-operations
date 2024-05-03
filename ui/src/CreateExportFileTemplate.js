@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Button from "./DesignSystemComponents/Button";
 import TextInput from "./DesignSystemComponents/TextInput";
@@ -32,7 +32,7 @@ function CreateExportFileTemplate() {
   const exportFileTemplateInput = useRef(null);
   const errorSummaryTitle = useRef(null);
 
-  let history = useHistory();
+  let navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -208,9 +208,7 @@ function CreateExportFileTemplate() {
     });
 
     if (response.ok) {
-      history.push(
-        `/exportfiletemplates?flashMessageUntil=${Date.now() + 5000}`,
-      );
+      navigate(`/exportfiletemplates?flashMessageUntil=${Date.now() + 5000}`);
       return [];
     }
 

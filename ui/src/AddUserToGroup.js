@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Button from "./DesignSystemComponents/Button";
 import ErrorSummary from "./DesignSystemComponents/ErrorSummary";
 import Autosuggest from "react-autosuggest";
@@ -9,7 +9,7 @@ import "./AutoSuggest.css";
 import PropTypes from "prop-types";
 
 function AddUserToGroup(props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   const location = useLocation();
 
   const errorSummaryTitle = useRef(null);
@@ -56,7 +56,7 @@ function AddUserToGroup(props) {
   }, [hasErrors]);
 
   function cancel() {
-    history.push(
+    navigate(
       encodeURI(
         `/groupadmin?groupId=${props.groupId}&groupName=${props.groupName}`,
       ),
@@ -127,7 +127,7 @@ function AddUserToGroup(props) {
     });
 
     if (response.ok) {
-      history.push(
+      navigate(
         encodeURI(
           `/groupadmin?groupId=${props.groupId}&groupName=${
             props.groupName
